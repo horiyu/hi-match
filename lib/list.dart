@@ -128,7 +128,20 @@ class _NextPageState extends State<NextPage> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('暇な人リスト'),
-        backgroundColor: Colors.lightBlue,
+        leading: Row(
+          children: [
+            const Icon(Icons.person),
+            Container(
+              height: 20,
+              width: 20,
+              decoration: BoxDecoration(
+                color: _isHima ? Colors.green : Colors.grey,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: Colors.white,
         actions: [
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -201,6 +214,8 @@ class _NextPageState extends State<NextPage> {
                                               ))
                                       .name ??
                                   "No Name",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                             Text(
                               himaPeople
@@ -219,6 +234,8 @@ class _NextPageState extends State<NextPage> {
                                               ))
                                       .deadline ??
                                   "No LIMIT",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                             Text(
                               himaPeople
@@ -237,6 +254,8 @@ class _NextPageState extends State<NextPage> {
                                               ))
                                       .place ??
                                   "Nowhere",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
@@ -249,10 +268,23 @@ class _NextPageState extends State<NextPage> {
                         leading: const Icon(Icons.person),
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Text(person.name ?? "No Name"),
-                            Text(person.deadline ?? "No LIMIT"),
-                            Text(person.place ?? "Nowhere"),
+                            children: <Widget>[
+                            Text(
+                              person.name ?? "No Name",
+                              maxLines: 1, // 表示する最大行数を1行に制限
+                              overflow: TextOverflow.ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                            ),
+                            Text(
+                              person.deadline ?? "No LIMIT",
+                              maxLines: 1, // 表示する最大行数を1行に制限
+                              overflow: TextOverflow.ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                            ),
+                            Text(
+                              person.place ?? "Nowhere",
+                              maxLines: 1, // 表示する最大行数を1行に制限
+                              overflow: TextOverflow.ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                            ),
+                            
                           ],
                         ),
                       ),
@@ -271,7 +303,7 @@ class _NextPageState extends State<NextPage> {
             inactiveFgColor: Colors.white,
             activeBgColors: [
               [Colors.black45, Colors.black26],
-              [Colors.yellow, Colors.orange]
+              [const Color.fromARGB(255, 75, 159, 78), Colors.green]
             ],
             animate:
                 true, // with just animate set to true, default curve = Curves.easeIn
