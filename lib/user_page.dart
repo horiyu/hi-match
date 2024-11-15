@@ -17,7 +17,7 @@ class UserPage extends StatefulWidget {
     mail: '',
     isHima: true,
     name: '',
-    deadline: '',
+    deadline: null,
     place: '',
   );
 
