@@ -1,35 +1,45 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:my_web_app/firebase/analytics_repository.dart';
 import 'package:my_web_app/list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:my_web_app/signup_page.dart';
 import 'firebase_options.dart';
 import 'package:my_web_app/login_page.dart';
+import 'package:my_web_app/user_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    var analytics = ref.watch(analyticsRepository);
+    var analyticsObserver = ref.watch(analyticsObserverRepository);
+
+    analytics.logAppOpen();
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,
       ),
-      // ログイン済みならNextPage、未ログインならMyHomePageを表示
-      home: FirebaseAuth.instance.currentUser == null
-          ? const MyHomePage()
-          : const NextPage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MyHomePage(),
+        '/next_page': (context) => const NextPage(),
+      },
+      navigatorObservers: [analyticsObserver],
     );
   }
 }
@@ -80,7 +90,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const LoginPage()));
+                          builder: (context) => const LoginPage(),
+                          settings: const RouteSettings(name: '/login'),
+                        ));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey[300],
@@ -96,7 +108,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const SignupPage()));
+                          builder: (context) => const SignupPage(),
+                          settings: const RouteSettings(name: '/signup'),
+                        ));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey[300],

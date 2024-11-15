@@ -128,8 +128,11 @@ class _NameRegState extends State<NameReg> {
 
                 // getHimaPeople();
                 get();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const NextPage()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NextPage(),
+                        settings: const RouteSettings(name: '/next_page')));
 // await Firestore.instance
                 // TODO: 新規登録
               },

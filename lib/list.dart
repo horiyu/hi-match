@@ -147,7 +147,10 @@ class _NextPageState extends State<NextPage> {
     if (!isLogin) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const MyHomePage()),
+        MaterialPageRoute(
+          builder: (context) => const MyHomePage(),
+          settings: const RouteSettings(name: '/my_home_page'),
+        ),
       );
     }
     final snapshot = await FirebaseFirestore.instance
@@ -208,8 +211,12 @@ class _NextPageState extends State<NextPage> {
             onPressed: () async {
               try {
                 await FirebaseAuth.instance.signOut();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const MyApp()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MyApp(),
+                      settings: const RouteSettings(name: '/my_app'),
+                    ));
               } catch (e) {
                 setState(() {
                   var infoText = "ログアウトに失敗しました：${e.toString()}";
@@ -328,7 +335,10 @@ class _NextPageState extends State<NextPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => UserPage(person)));
+                                  builder: (context) => UserPage(person),
+                                  settings:
+                                      const RouteSettings(name: '/user_page'),
+                                ));
                           },
                         ),
                         title: Row(
@@ -341,7 +351,8 @@ class _NextPageState extends State<NextPage> {
                                   .ellipsis, // テキストが制限を超えた場合に省略記号を表示
                             ),
                             Text(
-                              _getCountdownString(person.deadline ?? DateTime.now()),
+                              _getCountdownString(
+                                  person.deadline ?? DateTime.now()),
                               maxLines: 1, // 表示する最大行数を1行に制限
                               overflow: TextOverflow
                                   .ellipsis, // テキストが制限を超えた場合に省略記号を表示
