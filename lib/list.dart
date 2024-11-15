@@ -7,6 +7,7 @@ import 'package:my_web_app/model/himapeople.dart';
 import 'package:my_web_app/firebase/firestore.dart';
 import 'package:my_web_app/name_reg.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:my_web_app/user_page.dart';
 
 class NextPage extends StatefulWidget {
   const NextPage({super.key});
@@ -265,26 +266,38 @@ class _NextPageState extends State<NextPage> {
                     if (person.isHima &&
                         person.id != FirebaseAuth.instance.currentUser?.uid)
                       ListTile(
-                        leading: const Icon(Icons.person),
+                        leading: IconButton(
+                          icon: const Icon(Icons.person),
+                          onPressed: () {
+                            // ボタンが押された際の動作を記述する
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        UserPage(person)));
+                          },
+                        ),
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
+                          children: <Widget>[
                             Text(
                               person.name ?? "No Name",
                               maxLines: 1, // 表示する最大行数を1行に制限
-                              overflow: TextOverflow.ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                              overflow: TextOverflow
+                                  .ellipsis, // テキストが制限を超えた場合に省略記号を表示
                             ),
                             Text(
                               person.deadline ?? "No LIMIT",
                               maxLines: 1, // 表示する最大行数を1行に制限
-                              overflow: TextOverflow.ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                              overflow: TextOverflow
+                                  .ellipsis, // テキストが制限を超えた場合に省略記号を表示
                             ),
                             Text(
                               person.place ?? "Nowhere",
                               maxLines: 1, // 表示する最大行数を1行に制限
-                              overflow: TextOverflow.ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                              overflow: TextOverflow
+                                  .ellipsis, // テキストが制限を超えた場合に省略記号を表示
                             ),
-                            
                           ],
                         ),
                       ),

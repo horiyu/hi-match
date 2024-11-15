@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart'; //←追加します
 class FirestoreHelper {
   // DbHelperをinstance化する
   static final FirestoreHelper instance = FirestoreHelper._createInstance();
+  List<HimaPeople> himaPeople = [];
 
   FirestoreHelper._createInstance();
 
@@ -80,4 +81,9 @@ class FirestoreHelper {
         .doc(name)
         .delete();
   }
+
+
 }
+
+  
+  
