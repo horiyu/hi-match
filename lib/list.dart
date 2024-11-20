@@ -31,6 +31,7 @@ class _NextPageState extends State<NextPage> {
   };
 
   bool _isHima = false;
+  DateTime _deadline = DateTime.now().add(const Duration(minutes: 30));
   String myperson = "";
 
   bool _switchValue = false; // トグルの状態を保持する変数
@@ -394,7 +395,11 @@ class _NextPageState extends State<NextPage> {
                                               showTitleActions: true,
                                               showSecondsColumn: false,
                                               onChanged: (date) {},
-                                              onConfirm: (date) {},
+                                              onConfirm: (date) {
+                                                setState(() {
+                                                  _deadline = date;
+                                                });
+                                              },
                                               currentTime: DateTime.now(),
                                               locale: LocaleType.jp,
                                             );
