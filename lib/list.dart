@@ -419,13 +419,15 @@ class _NextPageState extends State<NextPage> {
                                       children: <Widget>[
                                         TextButton(
                                           onPressed: () {
-                                            DatePicker.showTimePicker(context,
-                                                showTitleActions: true,
-                                                showSecondsColumn: false,
-                                                onChanged: (date) {},
-                                                onConfirm: (date) {},
-                                                currentTime: DateTime.now(),
-                                                locale: LocaleType.jp);
+                                            DatePicker.showTimePicker(
+                                              context,
+                                              showTitleActions: true,
+                                              showSecondsColumn: false,
+                                              onChanged: (date) {},
+                                              onConfirm: (date) {},
+                                              currentTime: DateTime.now(),
+                                              locale: LocaleType.jp,
+                                            );
                                           },
                                           child: const Text(
                                             '日付を選択',
