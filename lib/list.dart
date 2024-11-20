@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:my_web_app/main.dart';
 import 'package:my_web_app/model/himapeople.dart';
 import 'package:my_web_app/firebase/firestore.dart';
@@ -403,93 +404,115 @@ class _NextPageState extends State<NextPage> {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       // title: const Text('暇ステータスを変更しました'),
-                      content: Navigator(
-                        onGenerateRoute: (settings) {
-                          return MaterialPageRoute(
-                            builder: (context) {
-                              return Scaffold(
-                                appBar: AppBar(
-                                  title: const Text('暇ステータスを変更しました'),
-                                ),
-                                body: Center(
-                                  child: Column(
-                                    children: <Widget>[
-                                      SizedBox(
-                                        // height: 500,
-                                        child: ListView(
-                                          shrinkWrap: true,
-                                          children:
-                                              values.keys.map((String key) {
-                                            return CheckboxListTile(
-                                              title: Text(key),
-                                              value: values[key],
-                                              onChanged: (bool? value) {
-                                                setState(() {
-                                                  values[key] = value!;
-                                                });
-                                              },
-                                            );
-                                          }).toList(),
+                      content: SizedBox(
+                        width: 500,
+                        child: Navigator(
+                          onGenerateRoute: (settings) {
+                            return MaterialPageRoute(
+                              builder: (context) {
+                                return Scaffold(
+                                  appBar: AppBar(
+                                    title: const Text('暇ステータスを変更しました'),
+                                  ),
+                                  body: Center(
+                                    child: Column(
+                                      children: <Widget>[
+                                        SizedBox(
+                                          // height: 500,
+                                          child: ListView(
+                                            shrinkWrap: true,
+                                            children:
+                                                values.keys.map((String key) {
+                                              return CheckboxListTile(
+                                                title: Text(key),
+                                                value: values[key],
+                                                onChanged: (bool? value) {
+                                                  setState(() {
+                                                    values[key] = value!;
+                                                  });
+                                                },
+                                              );
+                                            }).toList(),
+                                          ),
                                         ),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) {
-                                                return AlertDialog(
-                                                  title: const Text('2のページ'),
-                                                  content: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: <Widget>[
-                                                      TextField(
-                                                        decoration:
-                                                            const InputDecoration(
-                                                          labelText:
-                                                              'Year/Month/Day Hour:Minute',
-                                                          hintText:
-                                                              '2023/10/31 14:30',
-                                                        ),
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .datetime,
-                                                        onChanged: (value) {
-                                                          // Handle the input value
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    // title: const Text('2のページ'),
+                                                    content: SizedBox(
+                                                      width: 500,
+                                                      child: Navigator(
+                                                        onGenerateRoute:
+                                                            (settings) {
+                                                          return MaterialPageRoute(
+                                                            builder: (context) {
+                                                              return Scaffold(
+                                                                appBar: AppBar(
+                                                                  title: const Text(
+                                                                      '2のページ'),
+                                                                ),
+                                                                body: Center(
+                                                                  child:
+                                                                      TextButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      DatePicker.showTimePicker(
+                                                                          context,
+                                                                          showTitleActions:
+                                                                              true,
+                                                                          showSecondsColumn:
+                                                                              false,
+                                                                          onChanged:
+                                                                              (date) {},
+                                                                          onConfirm:
+                                                                              (date) {},
+                                                                          currentTime: DateTime
+                                                                              .now(),
+                                                                          locale:
+                                                                              LocaleType.jp);
+                                                                    },
+                                                                    child:
+                                                                        const Text(
+                                                                      '日付を選択',
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              Colors.blue),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            },
+                                                          );
                                                         },
                                                       ),
+                                                    ),
+                                                    actions: <Widget>[
                                                       ElevatedButton(
                                                         onPressed: () {
-                                                          // Handle the button press
+                                                          Navigator.of(context)
+                                                              .pop();
                                                         },
-                                                        child: const Text(
-                                                            'Submit'),
+                                                        child: const Text('戻る'),
                                                       ),
                                                     ],
-                                                  ),
-                                                  actions: <Widget>[
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      child: const Text('戻る'),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            ),
-                                          );
-                                        },
-                                        child: const Text('2のページに進む'),
-                                      ),
-                                    ],
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
+                                          child: const Text('2のページに進む'),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                          );
-                        },
+                                );
+                              },
+                            );
+                          },
+                        ),
                       ),
                       // actions: <Widget>[
                       //   SizedBox(
