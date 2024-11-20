@@ -51,11 +51,15 @@ class _NextPageState extends State<NextPage> {
     return '$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
+  Map<String, Map<String, dynamic>> himaActivitiesMap = {};
+  late Future<Map<String, Map<String, dynamic>>> _futureHimaActivities;
+
   @override
   void initState() {
     super.initState();
     _initializeAsync();
     get();
+    _futureHimaActivities = fetchHimaActivities();
 
     // 1秒ごとに再描画するためのタイマーを設定
     Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -156,6 +160,30 @@ class _NextPageState extends State<NextPage> {
       _isHima = !isHima;
     });
     get();
+  }
+
+  Future<Map<String, Map<String, dynamic>>> fetchHimaActivities() async {
+    final user = FirebaseAuth.instance.currentUser;
+    final uid = user?.uid;
+    final snapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .where("id", isEqualTo: uid)
+        .get();
+    var himaActivities = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(snapshot.docs[0].id)
+        .collection("himaActivities")
+        .get();
+
+    Map<String, Map<String, dynamic>> himaActivitiesMap = {};
+    for (var doc in himaActivities.docs) {
+      himaActivitiesMap[doc.id] = {
+        'icon': doc.data()['icon'],
+        'content': doc.data()['content'],
+        'selected': false,
+      };
+    }
+    return himaActivitiesMap;
   }
 
   @override
@@ -453,16 +481,29 @@ class _NextPageState extends State<NextPage> {
                                                   ),
                                                   actions: <Widget>[
                                                     ElevatedButton(
-                                                      onPressed: () {
+                                                      onPressed: () async {
                                                         if (newActivity
                                                             .isNotEmpty) {
-                                                          setState(() {
-                                                            values[newActivity] =
-                                                                false;
+                                                          await FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  "users")
+                                                              .doc(snapshot
+                                                                  .docs[0].id)
+                                                              .collection(
+                                                                  "himaActivities")
+                                                              .add({
+                                                            'icon': 'person',
+                                                            'content':
+                                                                newActivity,
                                                           });
+                                                          setState(() {
+                                                            _futureHimaActivities =
+                                                                fetchHimaActivities();
+                                                          });
+                                                          Navigator.of(context)
+                                                              .pop();
                                                         }
-                                                        Navigator.of(context)
-                                                            .pop();
                                                       },
                                                       child: const Text('追加'),
                                                     ),
@@ -483,125 +524,69 @@ class _NextPageState extends State<NextPage> {
                                         ),
                                         SizedBox(
                                           // height: 500,
-                                          child: ListView(
-                                            shrinkWrap: true,
-                                            children:
-                                                // firestoreからデータを取得したい
-                                                //  final snapshot = await FirebaseFirestore.instance
-                                                // .collection("users")
-                                                // .where("id", isEqualTo: uid)
-                                                // .get();から取得して，それをCheckboxListTileとして表示
-                                                himaActivitiesMap.keys
-                                                    .map((String key) {
-                                              return StatefulBuilder(
-                                                builder: (BuildContext context,
-                                                    StateSetter setState) {
-                                                  return CheckboxListTile(
-                                                    title: Text(
-                                                        himaActivitiesMap[key]![
-                                                            'content']),
-                                                    value: himaActivitiesMap[
-                                                        key]!['selected'],
-                                                    onChanged: (bool? value) {
-                                                      setState(() {
-                                                        himaActivitiesMap[key]![
-                                                                'selected'] =
-                                                            value!;
-                                                      });
-                                                    },
-                                                  );
-                                                },
-                                              );
-                                            }).toList(),
-
-                                            //     values.keys.map((String key) {
-                                            //   return StatefulBuilder(
-                                            //     builder: (BuildContext context,
-                                            //         StateSetter setState) {
-                                            //       return CheckboxListTile(
-                                            //         title: Text(key),
-                                            //         value: values[key],
-                                            //         onChanged: (bool? value) {
-                                            //           setState(() {
-                                            //             values[key] = value!;
-                                            //           });
-                                            //         },
-                                            //       );
-                                            //     },
-                                            //   );
-                                            // }).toList(),
+                                          child: FutureBuilder<
+                                              Map<String,
+                                                  Map<String, dynamic>>>(
+                                            future: _futureHimaActivities,
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<
+                                                        Map<
+                                                            String,
+                                                            Map<String,
+                                                                dynamic>>>
+                                                    snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return CircularProgressIndicator();
+                                              } else if (snapshot.hasError) {
+                                                return Text(
+                                                    'Error: ${snapshot.error}');
+                                              } else if (!snapshot.hasData ||
+                                                  snapshot.data!.isEmpty) {
+                                                return Text(
+                                                    'No activities found');
+                                              } else {
+                                                Map<String,
+                                                        Map<String, dynamic>>
+                                                    himaActivitiesMap =
+                                                    snapshot.data!;
+                                                return ListView(
+                                                  shrinkWrap: true,
+                                                  children: himaActivitiesMap
+                                                      .keys
+                                                      .map((String key) {
+                                                    return StatefulBuilder(
+                                                      builder:
+                                                          (BuildContext context,
+                                                              StateSetter
+                                                                  setState) {
+                                                        return CheckboxListTile(
+                                                          title: Text(
+                                                              himaActivitiesMap[
+                                                                      key]![
+                                                                  'content']),
+                                                          value:
+                                                              himaActivitiesMap[
+                                                                      key]![
+                                                                  'selected'],
+                                                          onChanged:
+                                                              (bool? value) {
+                                                            setState(() {
+                                                              himaActivitiesMap[
+                                                                          key]![
+                                                                      'selected'] =
+                                                                  value!;
+                                                            });
+                                                          },
+                                                        );
+                                                      },
+                                                    );
+                                                  }).toList(),
+                                                );
+                                              }
+                                            },
                                           ),
                                         ),
-                                        // ElevatedButton(
-                                        //   onPressed: () {
-                                        //     Navigator.of(context).push(
-                                        //       MaterialPageRoute(
-                                        //         builder: (context) {
-                                        //           return AlertDialog(
-                                        //             // title: const Text('2のページ'),
-                                        //             content: SizedBox(
-                                        //               width: 500,
-                                        //               child: Navigator(
-                                        //                 onGenerateRoute:
-                                        //                     (settings) {
-                                        //                   return MaterialPageRoute(
-                                        //                     builder: (context) {
-                                        //                       return Scaffold(
-                                        //                         appBar: AppBar(
-                                        //                           title: const Text(
-                                        //                               '2のページ'),
-                                        //                         ),
-                                        //                         body: Center(
-                                        //                           child:
-                                        //                               TextButton(
-                                        //                             onPressed:
-                                        //                                 () {
-                                        //                               DatePicker.showTimePicker(
-                                        //                                   context,
-                                        //                                   showTitleActions:
-                                        //                                       true,
-                                        //                                   showSecondsColumn:
-                                        //                                       false,
-                                        //                                   onChanged:
-                                        //                                       (date) {},
-                                        //                                   onConfirm:
-                                        //                                       (date) {},
-                                        //                                   currentTime: DateTime
-                                        //                                       .now(),
-                                        //                                   locale:
-                                        //                                       LocaleType.jp);
-                                        //                             },
-                                        //                             child:
-                                        //                                 const Text(
-                                        //                               '日付を選択',
-                                        //                               style: TextStyle(
-                                        //                                   color:
-                                        //                                       Colors.blue),
-                                        //                             ),
-                                        //                           ),
-                                        //                         ),
-                                        //                       );
-                                        //                     },
-                                        //                   );
-                                        //                 },
-                                        //               ),
-                                        //             ),
-                                        //             actions: <Widget>[
-                                        //               ElevatedButton(
-                                        //                 onPressed: () {
-                                        //                   Navigator.of(context)
-                                        //                       .pop();
-                                        //                 },
-                                        //                 child: const Text('戻る'),
-                                        //               ),
-                                        //             ],
-                                        //           );
-                                        //         },
-                                        //       ),
-                                        //     );
-                                        //   },
-                                        //   child: const Text('2のページに進む'),
-                                        // ),
                                       ],
                                     ),
                                   ),
@@ -611,49 +596,6 @@ class _NextPageState extends State<NextPage> {
                           },
                         ),
                       ),
-                      // actions: <Widget>[
-                      //   SizedBox(
-                      //     height: 500, // Set a fixed height for the ListView
-                      //     width: 500,
-                      //     child: ListView(
-                      //       shrinkWrap: true,
-                      //       children: values.keys.map((String key) {
-                      //         return CheckboxListTile(
-                      //           title: Text(key),
-                      //           value: values[key],
-                      //           onChanged: (bool? value) {
-                      //             setState(() {
-                      //               values[key] = value!;
-                      //             });
-                      //           },
-                      //         );
-                      //       }).toList(),
-                      //     ),
-                      //   ),
-                      //   ElevatedButton(
-                      //     onPressed: () {
-                      //       Navigator.of(context).push(
-                      //         MaterialPageRoute(
-                      //           builder: (context) {
-                      //             return AlertDialog(
-                      //               title: const Text('2のページ'),
-                      //               content: const Text('2のページに遷移しました'),
-                      //               actions: <Widget>[
-                      //                 ElevatedButton(
-                      //                   onPressed: () {
-                      //                     Navigator.of(context).pop();
-                      //                   },
-                      //                   child: const Text('閉じる'),
-                      //                 ),
-                      //               ],
-                      //             );
-                      //           },
-                      //         ),
-                      //       );
-                      //     },
-                      //     child: const Text('2のページに進む'),
-                      //   ),
-                      // ],
                     );
                   },
                 );
@@ -662,78 +604,6 @@ class _NextPageState extends State<NextPage> {
           ),
         ),
       ),
-      // floatingActionButton: FloatingActionButton.large(
-      //   backgroundColor: _isHima
-      //       ? const Color.fromARGB(255, 86, 21, 89)
-      //       : const Color.fromARGB(255, 246, 154, 15), // Light blue color
-      //   elevation: 8.0,
-      //   shape: const CircleBorder(), // Ensures a perfect circle shape
-      //   onPressed: () async {
-      //     DateTime now = DateTime.now();
-      //     String formattedTime = "${now.hour}:${now.minute}";
-
-      //     // ユーザー情報を取得
-      //     final user = FirebaseAuth.instance.currentUser;
-      //     final uid = user?.uid;
-      //     final email = user?.email;
-
-      //     // ログインできているか確認
-      //     bool isLogin = FirebaseAuth.instance.currentUser != null;
-
-      //     // ログインしていなければログイン画面に遷移
-      //     if (!isLogin) {
-      //       Navigator.push(
-      //         context,
-      //         MaterialPageRoute(builder: (context) => const MyHomePage()),
-      //       );
-      //     }
-
-      //     final snapshot = await FirebaseFirestore.instance
-      //         .collection("users")
-      //         .where("id", isEqualTo: uid)
-      //         .get();
-
-      //     HimaPeople newPerson;
-      //     bool isHima = true;
-
-      //     if (snapshot.docs.isEmpty) {
-      //       newPerson = HimaPeople(
-      //         id: '$uid',
-      //         mail: '$email',
-      //         isHima: true,
-      //         name: name,
-      //         deadline: "12:34",
-      //         place: "春日",
-      //       );
-      //       await addHimaPerson(newPerson);
-      //     } else {
-      //       // snapshot.docs[0].data()の中身のisHimaを取得
-      //       isHima = snapshot.docs[0].data()['isHima'];
-
-      //       // snapshot.docs[0]のisHimaを反転
-      //       await FirebaseFirestore.instance
-      //           .collection("users")
-      //           .doc(snapshot.docs[0].id)
-      //           .update({'isHima': !isHima});
-      //     }
-
-      //     setState(() {
-      //       _isHima = !isHima;
-      //     });
-
-      //     get();
-      //   },
-      //   child: Text(
-      //     _isHima ? '忙' : '暇',
-      //     style: const TextStyle(
-      //       fontSize: 36, // Increased font size
-      //       fontWeight: FontWeight.bold, // Optional: makes the text bolder
-      //       color: Colors.white, // Ensures good contrast with the background
-      //     ),
-      //   ),
-      // ),
     );
   }
 }
-
-//toggle
