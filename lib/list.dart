@@ -7,7 +7,6 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:my_web_app/main.dart';
 import 'package:my_web_app/model/himapeople.dart';
 import 'package:my_web_app/firebase/firestore.dart';
-import 'package:my_web_app/name_reg.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:my_web_app/user_page.dart';
 
@@ -31,10 +30,7 @@ class _NextPageState extends State<NextPage> {
   };
 
   bool _isHima = false;
-  DateTime _deadline = DateTime.now().add(const Duration(minutes: 30));
   String myperson = "";
-
-  bool _switchValue = false; // トグルの状態を保持する変数
 
   String _getCountdownString(DateTime deadline) {
     final now = DateTime.now();
@@ -120,7 +116,6 @@ class _NextPageState extends State<NextPage> {
   }
 
   void _toggleHimaStatus(int index) async {
-    DateTime now = DateTime.now();
     final user = FirebaseAuth.instance.currentUser;
     final uid = user?.uid;
     final email = user?.email;
@@ -223,9 +218,7 @@ class _NextPageState extends State<NextPage> {
                       settings: const RouteSettings(name: '/my_app'),
                     ));
               } catch (e) {
-                setState(() {
-                  var infoText = "ログアウトに失敗しました：${e.toString()}";
-                });
+                setState(() {});
               }
             },
           ),
@@ -384,9 +377,9 @@ class _NextPageState extends State<NextPage> {
             activeFgColor: Colors.white,
             inactiveBgColor: Colors.grey,
             inactiveFgColor: Colors.white,
-            activeBgColors: [
+            activeBgColors: const [
               [Colors.black45, Colors.black26],
-              [const Color.fromARGB(255, 75, 159, 78), Colors.green]
+              [Color.fromARGB(255, 75, 159, 78), Colors.green]
             ],
             animate:
                 true, // with just animate set to true, default curve = Curves.easeIn
@@ -394,7 +387,7 @@ class _NextPageState extends State<NextPage> {
                 .bounceInOut, // animate must be set to true when using custom curve
             initialLabelIndex: _isHima ? 1 : 0,
             totalSwitches: 2,
-            labels: ['忙', '暇'],
+            labels: const ['忙', '暇'],
             onToggle: (index) async {
               _toggleHimaStatus(index!);
               if (!_isHima) {
@@ -409,9 +402,6 @@ class _NextPageState extends State<NextPage> {
                     .doc(snapshot.docs[0].id)
                     .collection("himaActivities")
                     .get();
-                for (var doc in himaActivities.docs) {
-                  print(doc.data());
-                }
                 Map<String, Map<String, dynamic>> himaActivitiesMap = {};
                 for (var doc in himaActivities.docs) {
                   himaActivitiesMap[doc.id] = {
@@ -420,8 +410,6 @@ class _NextPageState extends State<NextPage> {
                     'selected': false,
                   };
                 }
-                print(himaActivitiesMap);
-                print(snapshot.docs[0].id);
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -448,9 +436,7 @@ class _NextPageState extends State<NextPage> {
                                               showSecondsColumn: false,
                                               onChanged: (date) {},
                                               onConfirm: (date) {
-                                                setState(() {
-                                                  _deadline = date;
-                                                });
+                                                setState(() {});
                                               },
                                               currentTime: DateTime.now(),
                                               locale: LocaleType.jp,
@@ -537,13 +523,13 @@ class _NextPageState extends State<NextPage> {
                                                     snapshot) {
                                               if (snapshot.connectionState ==
                                                   ConnectionState.waiting) {
-                                                return CircularProgressIndicator();
+                                                return const CircularProgressIndicator();
                                               } else if (snapshot.hasError) {
                                                 return Text(
                                                     'Error: ${snapshot.error}');
                                               } else if (!snapshot.hasData ||
                                                   snapshot.data!.isEmpty) {
-                                                return Text(
+                                                return const Text(
                                                     'No activities found');
                                               } else {
                                                 Map<String,
