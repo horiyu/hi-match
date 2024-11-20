@@ -26,19 +26,24 @@ class _NextPageState extends State<NextPage> {
   bool _isHima = false;
   String myperson = "";
 
-  String _getCountdownString(DateTime deadline) {
+  Widget _getCountdownString(DateTime deadline) {
     final now = DateTime.now();
     final difference = deadline.difference(now);
 
     if (difference.isNegative) {
-      return "Time's up!";
+      return const Text('期限切れ');
     }
 
     final hours = difference.inHours;
     final minutes = difference.inMinutes % 60;
-    final seconds = difference.inSeconds % 60;
 
-    return '$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+    if (difference.inHours >= 1) {
+      return Text('残り $hours 時間');
+    } else if (difference.inMinutes >= 30) {
+      return Text('残り $minutes 分');
+    } else {
+      return Text('残り $minutes 分', style: const TextStyle(color: Colors.red));
+    }
   }
 
   Map<String, Map<String, dynamic>> himaActivitiesMap = {};
@@ -52,7 +57,7 @@ class _NextPageState extends State<NextPage> {
     _futureHimaActivities = fetchHimaActivities();
 
     // 1秒ごとに再描画するためのタイマーを設定
-    Timer.periodic(const Duration(seconds: 1), (timer) {
+    Timer.periodic(const Duration(minutes: 1), (timer) {
       if (mounted) {
         setState(() {});
       } else {
@@ -342,13 +347,8 @@ class _NextPageState extends State<NextPage> {
                               overflow: TextOverflow
                                   .ellipsis, // テキストが制限を超えた場合に省略記号を表示
                             ),
-                            Text(
-                              _getCountdownString(
-                                  person.deadline ?? DateTime.now()),
-                              maxLines: 1, // 表示する最大行数を1行に制限
-                              overflow: TextOverflow
-                                  .ellipsis, // テキストが制限を超えた場合に省略記号を表示
-                            ),
+                            _getCountdownString(
+                                person.deadline ?? DateTime.now()),
                             Text(
                               person.place ?? "Nowhere",
                               maxLines: 1, // 表示する最大行数を1行に制限
