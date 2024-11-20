@@ -79,8 +79,13 @@ class _LoginPageState extends State<LoginPage> {
                         password: password,
                       );
                       // ユーザー登録に成功した場合
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const NextPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const NextPage(),
+                            settings:
+                                const RouteSettings(name: '/next_page'),
+                          ));
                     } catch (e) {
                       // ユーザー登録に失敗した場合
                       setState(() {

@@ -17,7 +17,7 @@ class UserPage extends StatefulWidget {
     mail: '',
     isHima: true,
     name: '',
-    deadline: '',
+    deadline: null,
     place: '',
   );
 
@@ -88,7 +88,10 @@ class _UserPageState extends State<UserPage> {
                         onPressed: () async {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => NextPage()),
+                            MaterialPageRoute(
+                                builder: (context) => NextPage(),
+                                settings:
+                                    const RouteSettings(name: '/next_page')),
                           );
                         },
                         child: Text('フォロー'),
