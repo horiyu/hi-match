@@ -50,35 +50,6 @@ class _NextPageState extends State<NextPage> {
     return '$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
-  DateTime? _parseDateTime(String? dateTimeString) {
-    if (dateTimeString == null) return null;
-    final parts = dateTimeString.split('/');
-    if (parts.length == 4) {
-      final year = int.tryParse(parts[0]);
-      final month = int.tryParse(parts[1]);
-      final day = int.tryParse(parts[2]);
-      final timeParts = parts[3].split(':');
-      if (timeParts.length == 2) {
-        final hour = int.tryParse(timeParts[0]);
-        final minute = int.tryParse(timeParts[1]);
-        print(year);
-        print(month);
-        print(day);
-        print(hour);
-        print(minute);
-
-        if (year != null &&
-            month != null &&
-            day != null &&
-            hour != null &&
-            minute != null) {
-          print(DateTime(year, month, day, hour, minute));
-          return DateTime(year, month, day, hour, minute);
-        }
-      }
-    }
-  }
-
   @override
   void initState() {
     super.initState();
