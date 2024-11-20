@@ -23,12 +23,6 @@ class _NextPageState extends State<NextPage> {
   bool isLoading = false;
   late String name;
 
-  Map<String, bool> values = {
-    'ご飯食べ行こ': false,
-    '昼寝しよう': false,
-    '散歩しよう': false,
-  };
-
   bool _isHima = false;
   String myperson = "";
 
