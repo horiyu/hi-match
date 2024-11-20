@@ -441,13 +441,18 @@ class _NextPageState extends State<NextPage> {
                                             shrinkWrap: true,
                                             children:
                                                 values.keys.map((String key) {
-                                              return CheckboxListTile(
-                                                title: Text(key),
-                                                value: values[key],
-                                                onChanged: (bool? value) {
-                                                  setState(() {
-                                                    values[key] = value!;
-                                                  });
+                                              return StatefulBuilder(
+                                                builder: (BuildContext context,
+                                                    StateSetter setState) {
+                                                  return CheckboxListTile(
+                                                    title: Text(key),
+                                                    value: values[key],
+                                                    onChanged: (bool? value) {
+                                                      setState(() {
+                                                        values[key] = value!;
+                                                      });
+                                                    },
+                                                  );
                                                 },
                                               );
                                             }).toList(),
