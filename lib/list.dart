@@ -435,6 +435,53 @@ class _NextPageState extends State<NextPage> {
                                                 TextStyle(color: Colors.blue),
                                           ),
                                         ),
+                                        OutlinedButton(
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                String newActivity = '';
+                                                return AlertDialog(
+                                                  title: const Text('新規入力'),
+                                                  content: TextField(
+                                                    onChanged: (value) {
+                                                      newActivity = value;
+                                                    },
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      hintText: "新しいアクティビティを入力",
+                                                    ),
+                                                  ),
+                                                  actions: <Widget>[
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        if (newActivity
+                                                            .isNotEmpty) {
+                                                          setState(() {
+                                                            values[newActivity] =
+                                                                false;
+                                                          });
+                                                        }
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: const Text('追加'),
+                                                    ),
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child:
+                                                          const Text('キャンセル'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
+                                          child: const Text('新規入力'),
+                                        ),
                                         SizedBox(
                                           // height: 500,
                                           child: ListView(
