@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -28,65 +27,11 @@ class _NextPageState extends State<NextPage> {
 
   bool _switchValue = false; // トグルの状態を保持する変数
 
-  String _getCountdownString(DateTime deadline) {
-    print(deadline);
-    final now = DateTime.now();
-    final difference = deadline.difference(now);
-
-    if (difference.isNegative) {
-      return "Time's up!";
-    }
-
-    final hours = difference.inHours;
-    final minutes = difference.inMinutes % 60;
-    final seconds = difference.inSeconds % 60;
-
-    return '$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
-  }
-
-  DateTime? _parseDateTime(String? dateTimeString) {
-    if (dateTimeString == null) return null;
-    final parts = dateTimeString.split('/');
-    if (parts.length == 4) {
-      final year = int.tryParse(parts[0]);
-      final month = int.tryParse(parts[1]);
-      final day = int.tryParse(parts[2]);
-      final timeParts = parts[3].split(':');
-      if (timeParts.length == 2) {
-        final hour = int.tryParse(timeParts[0]);
-        final minute = int.tryParse(timeParts[1]);
-        print(year);
-        print(month);
-        print(day);
-        print(hour);
-        print(minute);
-
-        if (year != null &&
-            month != null &&
-            day != null &&
-            hour != null &&
-            minute != null) {
-          print(DateTime(year, month, day, hour, minute));
-          return DateTime(year, month, day, hour, minute);
-        }
-      }
-    }
-  }
-
   @override
   void initState() {
     super.initState();
     _initializeAsync();
     get();
-
-    // 1秒ごとに再描画するためのタイマーを設定
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (mounted) {
-        setState(() {});
-      } else {
-        timer.cancel();
-      }
-    });
   }
 
   Future<void> _initializeAsync() async {
@@ -147,10 +92,7 @@ class _NextPageState extends State<NextPage> {
     if (!isLogin) {
       Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (context) => const MyHomePage(),
-          settings: const RouteSettings(name: '/my_home_page'),
-        ),
+        MaterialPageRoute(builder: (context) => const MyHomePage()),
       );
     }
     final snapshot = await FirebaseFirestore.instance
@@ -165,7 +107,7 @@ class _NextPageState extends State<NextPage> {
           mail: '$email',
           isHima: true,
           name: name,
-          deadline: null,
+          deadline: "12:34",
           place: "春日");
       await addHimaPerson(newPerson);
     } else {
@@ -211,12 +153,8 @@ class _NextPageState extends State<NextPage> {
             onPressed: () async {
               try {
                 await FirebaseAuth.instance.signOut();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MyApp(),
-                      settings: const RouteSettings(name: '/my_app'),
-                    ));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const MyApp()));
               } catch (e) {
                 setState(() {
                   var infoText = "ログアウトに失敗しました：${e.toString()}";
@@ -272,7 +210,7 @@ class _NextPageState extends State<NextPage> {
                                                 mail: '',
                                                 isHima: false,
                                                 name: 'No Name',
-                                                deadline: null,
+                                                deadline: '',
                                                 place: '',
                                               ))
                                       .name ??
@@ -280,26 +218,6 @@ class _NextPageState extends State<NextPage> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            // Text(
-                            //   himaPeople
-                            //           .firstWhere(
-                            //               (person) =>
-                            //                   person.id ==
-                            //                   FirebaseAuth
-                            //                       .instance.currentUser?.uid,
-                            //               orElse: () => HimaPeople(
-                            //                     id: '',
-                            //                     mail: '',
-                            //                     isHima: false,
-                            //                     name: 'No Name',
-                            //                     deadline: null,
-                            //                     place: '',
-                            //                   ))
-                            //           .deadline ??
-                            //       null,
-                            //   maxLines: 1,
-                            //   overflow: TextOverflow.ellipsis,
-                            // ),
                             Text(
                               himaPeople
                                       .firstWhere(
@@ -312,7 +230,27 @@ class _NextPageState extends State<NextPage> {
                                                 mail: '',
                                                 isHima: false,
                                                 name: 'No Name',
-                                                deadline: null,
+                                                deadline: '',
+                                                place: '',
+                                              ))
+                                      .deadline ??
+                                  "No LIMIT",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              himaPeople
+                                      .firstWhere(
+                                          (person) =>
+                                              person.id ==
+                                              FirebaseAuth
+                                                  .instance.currentUser?.uid,
+                                          orElse: () => HimaPeople(
+                                                id: '',
+                                                mail: '',
+                                                isHima: false,
+                                                name: 'No Name',
+                                                deadline: '',
                                                 place: '',
                                               ))
                                       .place ??
@@ -335,10 +273,8 @@ class _NextPageState extends State<NextPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => UserPage(person),
-                                  settings:
-                                      const RouteSettings(name: '/user_page'),
-                                ));
+                                    builder: (context) =>
+                                        UserPage(person)));
                           },
                         ),
                         title: Row(
@@ -351,8 +287,7 @@ class _NextPageState extends State<NextPage> {
                                   .ellipsis, // テキストが制限を超えた場合に省略記号を表示
                             ),
                             Text(
-                              _getCountdownString(
-                                  person.deadline ?? DateTime.now()),
+                              person.deadline ?? "No LIMIT",
                               maxLines: 1, // 表示する最大行数を1行に制限
                               overflow: TextOverflow
                                   .ellipsis, // テキストが制限を超えた場合に省略記号を表示

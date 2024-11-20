@@ -103,12 +103,8 @@ class _SignupPageState extends State<SignupPage> {
                           infoText = "確認メールを送信しました。メールを確認してください。";
                         });
                       }
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const NameReg(),
-                              settings:
-                                  const RouteSettings(name: '/name_reg')));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => const NameReg()));
                     } catch (e) {
                       // ユーザー登録に失敗した場合
                       setState(() {
