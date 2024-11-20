@@ -367,9 +367,33 @@ class _NextPageState extends State<NextPage> {
             initialLabelIndex: _isHima ? 1 : 0,
             totalSwitches: 2,
             labels: ['忙', '暇'],
-            onToggle: (index) {
+            onToggle: (index) async {
               _toggleHimaStatus(index!);
               if (!_isHima) {
+                final user = FirebaseAuth.instance.currentUser;
+                final uid = user?.uid;
+                final snapshot = await FirebaseFirestore.instance
+                    .collection("users")
+                    .where("id", isEqualTo: uid)
+                    .get();
+                var himaActivities = await FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(snapshot.docs[0].id)
+                    .collection("himaActivities")
+                    .get();
+                for (var doc in himaActivities.docs) {
+                  print(doc.data());
+                }
+                Map<String, Map<String, dynamic>> himaActivitiesMap = {};
+                for (var doc in himaActivities.docs) {
+                  himaActivitiesMap[doc.id] = {
+                    'icon': doc.data()['icon'],
+                    'content': doc.data()['content'],
+                    'selected': false,
+                  };
+                }
+                print(himaActivitiesMap);
+                print(snapshot.docs[0].id);
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -462,22 +486,50 @@ class _NextPageState extends State<NextPage> {
                                           child: ListView(
                                             shrinkWrap: true,
                                             children:
-                                                values.keys.map((String key) {
+                                                // firestoreからデータを取得したい
+                                                //  final snapshot = await FirebaseFirestore.instance
+                                                // .collection("users")
+                                                // .where("id", isEqualTo: uid)
+                                                // .get();から取得して，それをCheckboxListTileとして表示
+                                                himaActivitiesMap.keys
+                                                    .map((String key) {
                                               return StatefulBuilder(
                                                 builder: (BuildContext context,
                                                     StateSetter setState) {
                                                   return CheckboxListTile(
-                                                    title: Text(key),
-                                                    value: values[key],
+                                                    title: Text(
+                                                        himaActivitiesMap[key]![
+                                                            'content']),
+                                                    value: himaActivitiesMap[
+                                                        key]!['selected'],
                                                     onChanged: (bool? value) {
                                                       setState(() {
-                                                        values[key] = value!;
+                                                        himaActivitiesMap[key]![
+                                                                'selected'] =
+                                                            value!;
                                                       });
                                                     },
                                                   );
                                                 },
                                               );
                                             }).toList(),
+
+                                            //     values.keys.map((String key) {
+                                            //   return StatefulBuilder(
+                                            //     builder: (BuildContext context,
+                                            //         StateSetter setState) {
+                                            //       return CheckboxListTile(
+                                            //         title: Text(key),
+                                            //         value: values[key],
+                                            //         onChanged: (bool? value) {
+                                            //           setState(() {
+                                            //             values[key] = value!;
+                                            //           });
+                                            //         },
+                                            //       );
+                                            //     },
+                                            //   );
+                                            // }).toList(),
                                           ),
                                         ),
                                         // ElevatedButton(
