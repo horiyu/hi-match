@@ -89,14 +89,11 @@ class _NameRegState extends State<NameReg> {
 
                 // ログインできているか確認
                 bool isLogin = FirebaseAuth.instance.currentUser != null;
-                print('isLogin: $isLogin');
 
                 // ログインしていなければログイン画面に遷移
                 if (!isLogin) {
                   Navigator.pop(context);
                 }
-
-                print('uid: $uid');
 
                 // FirebaseFirestore.instance.collection("users").where("id", isEqualTo: uid).get()に該当するドキュメントがあるか否か判定
                 final snapshot = await FirebaseFirestore.instance
@@ -112,7 +109,7 @@ class _NameRegState extends State<NameReg> {
                     mail: '$email',
                     isHima: true,
                     name: name,
-                    deadline: "",
+                    deadline: null,
                     place: "",
                   );
                   await addHimaPerson(newPerson);
@@ -131,8 +128,11 @@ class _NameRegState extends State<NameReg> {
 
                 // getHimaPeople();
                 get();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const NextPage()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NextPage(),
+                        settings: const RouteSettings(name: '/next_page')));
 // await Firestore.instance
                 // TODO: 新規登録
               },

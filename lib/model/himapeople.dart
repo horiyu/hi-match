@@ -5,7 +5,7 @@ class HimaPeople {
   String? name;
   bool isHima;
   String mail;
-  String? deadline;
+  DateTime? deadline;
   String? place;
 
   HimaPeople({
@@ -19,21 +19,17 @@ class HimaPeople {
 
   factory HimaPeople.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data()!;
-    var deadlineFormatted = "";
+    var deadline = DateTime.now();
     if (data['deadline'] != null) {
-      final deadline = data['deadline'] as Timestamp;
-      final deadlineTodate = deadline.toDate();
-      deadlineFormatted =
-          "${deadlineTodate.year}/${deadlineTodate.month}/${deadlineTodate.day}";
-    } else {
-      deadlineFormatted = "";
+      deadline = (data['deadline'] as Timestamp).toDate();
     }
+
     return HimaPeople(
       id: data['id'] ?? "",
       name: data['name'] ?? "",
       isHima: data['isHima'] ?? false,
       mail: data['mail'] ?? "",
-      deadline: deadlineFormatted,
+      deadline: deadline,
       place: data['place'] ?? "",
     );
   }
