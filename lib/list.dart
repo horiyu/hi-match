@@ -116,7 +116,6 @@ class _NextPageState extends State<NextPage> {
 
   void _toggleHimaStatus(int index) async {
     DateTime now = DateTime.now();
-    String formattedTime = "${now.hour}:${now.minute}";
     final user = FirebaseAuth.instance.currentUser;
     final uid = user?.uid;
     final email = user?.email;
