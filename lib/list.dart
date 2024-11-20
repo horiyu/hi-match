@@ -417,6 +417,22 @@ class _NextPageState extends State<NextPage> {
                                   body: Center(
                                     child: Column(
                                       children: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            DatePicker.showTimePicker(context,
+                                                showTitleActions: true,
+                                                showSecondsColumn: false,
+                                                onChanged: (date) {},
+                                                onConfirm: (date) {},
+                                                currentTime: DateTime.now(),
+                                                locale: LocaleType.jp);
+                                          },
+                                          child: const Text(
+                                            '日付を選択',
+                                            style:
+                                                TextStyle(color: Colors.blue),
+                                          ),
+                                        ),
                                         SizedBox(
                                           // height: 500,
                                           child: ListView(
@@ -435,76 +451,76 @@ class _NextPageState extends State<NextPage> {
                                             }).toList(),
                                           ),
                                         ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (context) {
-                                                  return AlertDialog(
-                                                    // title: const Text('2のページ'),
-                                                    content: SizedBox(
-                                                      width: 500,
-                                                      child: Navigator(
-                                                        onGenerateRoute:
-                                                            (settings) {
-                                                          return MaterialPageRoute(
-                                                            builder: (context) {
-                                                              return Scaffold(
-                                                                appBar: AppBar(
-                                                                  title: const Text(
-                                                                      '2のページ'),
-                                                                ),
-                                                                body: Center(
-                                                                  child:
-                                                                      TextButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      DatePicker.showTimePicker(
-                                                                          context,
-                                                                          showTitleActions:
-                                                                              true,
-                                                                          showSecondsColumn:
-                                                                              false,
-                                                                          onChanged:
-                                                                              (date) {},
-                                                                          onConfirm:
-                                                                              (date) {},
-                                                                          currentTime: DateTime
-                                                                              .now(),
-                                                                          locale:
-                                                                              LocaleType.jp);
-                                                                    },
-                                                                    child:
-                                                                        const Text(
-                                                                      '日付を選択',
-                                                                      style: TextStyle(
-                                                                          color:
-                                                                              Colors.blue),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            },
-                                                          );
-                                                        },
-                                                      ),
-                                                    ),
-                                                    actions: <Widget>[
-                                                      ElevatedButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                        child: const Text('戻る'),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              ),
-                                            );
-                                          },
-                                          child: const Text('2のページに進む'),
-                                        ),
+                                        // ElevatedButton(
+                                        //   onPressed: () {
+                                        //     Navigator.of(context).push(
+                                        //       MaterialPageRoute(
+                                        //         builder: (context) {
+                                        //           return AlertDialog(
+                                        //             // title: const Text('2のページ'),
+                                        //             content: SizedBox(
+                                        //               width: 500,
+                                        //               child: Navigator(
+                                        //                 onGenerateRoute:
+                                        //                     (settings) {
+                                        //                   return MaterialPageRoute(
+                                        //                     builder: (context) {
+                                        //                       return Scaffold(
+                                        //                         appBar: AppBar(
+                                        //                           title: const Text(
+                                        //                               '2のページ'),
+                                        //                         ),
+                                        //                         body: Center(
+                                        //                           child:
+                                        //                               TextButton(
+                                        //                             onPressed:
+                                        //                                 () {
+                                        //                               DatePicker.showTimePicker(
+                                        //                                   context,
+                                        //                                   showTitleActions:
+                                        //                                       true,
+                                        //                                   showSecondsColumn:
+                                        //                                       false,
+                                        //                                   onChanged:
+                                        //                                       (date) {},
+                                        //                                   onConfirm:
+                                        //                                       (date) {},
+                                        //                                   currentTime: DateTime
+                                        //                                       .now(),
+                                        //                                   locale:
+                                        //                                       LocaleType.jp);
+                                        //                             },
+                                        //                             child:
+                                        //                                 const Text(
+                                        //                               '日付を選択',
+                                        //                               style: TextStyle(
+                                        //                                   color:
+                                        //                                       Colors.blue),
+                                        //                             ),
+                                        //                           ),
+                                        //                         ),
+                                        //                       );
+                                        //                     },
+                                        //                   );
+                                        //                 },
+                                        //               ),
+                                        //             ),
+                                        //             actions: <Widget>[
+                                        //               ElevatedButton(
+                                        //                 onPressed: () {
+                                        //                   Navigator.of(context)
+                                        //                       .pop();
+                                        //                 },
+                                        //                 child: const Text('戻る'),
+                                        //               ),
+                                        //             ],
+                                        //           );
+                                        //         },
+                                        //       ),
+                                        //     );
+                                        //   },
+                                        //   child: const Text('2のページに進む'),
+                                        // ),
                                       ],
                                     ),
                                   ),
