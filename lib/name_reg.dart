@@ -125,8 +125,6 @@ class _NameRegState extends State<NameReg> {
                     MaterialPageRoute(
                         builder: (context) => const NextPage(),
                         settings: const RouteSettings(name: '/next_page')));
-// await Firestore.instance
-                // TODO: 新規登録
               },
             ),
           ],
