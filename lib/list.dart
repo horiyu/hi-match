@@ -51,6 +51,8 @@ class _NextPageState extends State<NextPage> {
   Map<String, Map<String, dynamic>> himaActivitiesMap = {};
   late Future<Map<String, Map<String, dynamic>>> _futureHimaActivities;
 
+  late String snackBarInfo;
+
   @override
   void initState() {
     super.initState();
@@ -479,19 +481,46 @@ class _NextPageState extends State<NextPage> {
                                                       onPressed: () async {
                                                         if (newActivity
                                                             .isNotEmpty) {
-                                                          await FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  "users")
-                                                              .doc(snapshot
-                                                                  .docs[0].id)
-                                                              .collection(
-                                                                  "himaActivities")
-                                                              .add({
-                                                            'icon': 'person',
-                                                            'content':
-                                                                newActivity,
-                                                          });
+                                                          var himaActivitiesCount =
+                                                              himaActivities
+                                                                  .docs.length;
+                                                          if (himaActivitiesCount <=
+                                                              10) {
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    "users")
+                                                                .doc(snapshot
+                                                                    .docs[0].id)
+                                                                .collection(
+                                                                    "himaActivities")
+                                                                .add({
+                                                              'icon': 'person',
+                                                              'content':
+                                                                  newActivity,
+                                                            });
+                                                            snackBarInfo =
+                                                                'ひまアクティビティを登録しました';
+                                                            setState(() {
+                                                              _futureHimaActivities =
+                                                                  fetchHimaActivities();
+                                                            });
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          } else {
+                                                            snackBarInfo =
+                                                                'ひまアクティビティは10個まで登録可能です';
+                                                          }
+                                                          final snackBar =
+                                                              SnackBar(
+                                                            content: Text(
+                                                                snackBarInfo),
+                                                          );
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                                  snackBar);
                                                           setState(() {
                                                             _futureHimaActivities =
                                                                 fetchHimaActivities();
@@ -545,11 +574,20 @@ class _NextPageState extends State<NextPage> {
                                                         Map<String, dynamic>>
                                                     himaActivitiesMap =
                                                     snapshot.data!;
-                                                return ListView(
+                                                return ListView.builder(
                                                   shrinkWrap: true,
-                                                  children: himaActivitiesMap
-                                                      .keys
-                                                      .map((String key) {
+                                                  itemCount:
+                                                      himaActivitiesMap.length >
+                                                              10
+                                                          ? 10
+                                                          : himaActivitiesMap
+                                                              .length,
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int index) {
+                                                    String key =
+                                                        himaActivitiesMap.keys
+                                                            .elementAt(index);
                                                     return StatefulBuilder(
                                                       builder:
                                                           (BuildContext context,
@@ -576,7 +614,7 @@ class _NextPageState extends State<NextPage> {
                                                         );
                                                       },
                                                     );
-                                                  }).toList(),
+                                                  },
                                                 );
                                               }
                                             },
