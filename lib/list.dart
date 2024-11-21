@@ -26,6 +26,8 @@ class _NextPageState extends State<NextPage> {
   bool _isHima = false;
   String myperson = "";
 
+  DateTime inputDeadline = DateTime.now();
+
   Widget _getCountdownString(DateTime deadline) {
     final now = DateTime.now();
     final difference = deadline.difference(now);
@@ -178,6 +180,27 @@ class _NextPageState extends State<NextPage> {
       };
     }
     return himaActivitiesMap;
+  }
+
+  Future<void> _selectTime(BuildContext context) async {
+    final DateTime? picked = await DatePicker.showTimePicker(
+      context,
+      showTitleActions: true,
+      showSecondsColumn: false,
+      currentTime: inputDeadline,
+      locale: LocaleType.jp,
+      onConfirm: (time) {
+        setState(() {
+          inputDeadline = time;
+        });
+      },
+    );
+
+    if (picked != null) {
+      setState(() {
+        inputDeadline = picked;
+      });
+    }
   }
 
   @override
@@ -424,22 +447,14 @@ class _NextPageState extends State<NextPage> {
                                       children: <Widget>[
                                         TextButton(
                                           onPressed: () {
-                                            DatePicker.showTimePicker(
-                                              context,
-                                              showTitleActions: true,
-                                              showSecondsColumn: false,
-                                              onChanged: (date) {},
-                                              onConfirm: (date) {
-                                                setState(() {});
-                                              },
-                                              currentTime: DateTime.now(),
-                                              locale: LocaleType.jp,
-                                            );
+                                            _selectTime(context);
                                           },
-                                          child: const Text(
-                                            '日付を選択',
-                                            style:
-                                                TextStyle(color: Colors.blue),
+                                          child: Text(
+                                            inputDeadline == DateTime.now()
+                                                ? '期限を設定'
+                                                : '${inputDeadline.hour}:${inputDeadline.minute}',
+                                            style: const TextStyle(
+                                                color: Colors.blue),
                                           ),
                                         ),
                                         OutlinedButton(
