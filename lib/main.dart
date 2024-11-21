@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(
           widget.title,
-          style: TextStyle(
+          style: const TextStyle(
             fontFamily: 'pupupu-free', // 正しいフォントファミリー名を指定
             fontSize: 60,
           ),
