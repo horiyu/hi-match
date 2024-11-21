@@ -1,21 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_web_app/list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'package:my_web_app/login_page.dart';
-// class LoginSample extends StatelessWidget {
-//   const LoginSample({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const MaterialApp(
-//       title: 'Login Sample',
-//       // home: const MyHomePage(title: 'Login Sample'),
-//       home: LoginPage(),
-//     );
-//   }
-// }
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

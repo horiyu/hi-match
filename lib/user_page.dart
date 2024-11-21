@@ -1,13 +1,7 @@
-import 'dart:ui';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:my_web_app/main.dart';
 import 'package:my_web_app/model/himapeople.dart';
-import 'package:my_web_app/firebase/firestore.dart';
-import 'package:my_web_app/name_reg.dart';
 import 'package:my_web_app/list.dart'; // Add this line
-import 'package:toggle_switch/toggle_switch.dart';
 
 class UserPage extends StatefulWidget {
   UserPage(this.person);
@@ -66,35 +60,35 @@ class _UserPageState extends State<UserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Page'),
+        title: const Text('User Page'),
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : widget.person == null
-              ? Center(child: Text('No user signed in'))
+              ? const Center(child: Text('No user signed in'))
               : Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.person, size: 100),
+                      const Icon(Icons.person, size: 100),
                       Text('名前: ${widget.person.name ?? 'Anonymous'}'),
-                      Text('${widget.person.name} さんは、現在' +
-                          (widget.person.isHima ? 'ヒマです' : '忙しい')),
-                      SizedBox(height: 8),
+                      Text(
+                          '${widget.person.name} さんは、現在${widget.person.isHima ? 'ヒマです' : '忙しい'}'),
+                      const SizedBox(height: 8),
                       // Text('Email: ${_user!.email ?? 'No email'}'),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       ElevatedButton(
                         onPressed: () async {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => NextPage(),
+                                builder: (context) => const NextPage(),
                                 settings:
                                     const RouteSettings(name: '/next_page')),
                           );
                         },
-                        child: Text('フォロー'),
+                        child: const Text('フォロー'),
                       ),
                     ],
                   ),

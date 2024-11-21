@@ -1,14 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:my_web_app/firebase/firestore.dart';
 import 'package:my_web_app/list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:my_web_app/model/himapeople.dart';
-import 'package:my_web_app/signup_page.dart';
-import 'firebase_options.dart';
-import 'package:my_web_app/login_page.dart';
 
 class NameReg extends StatefulWidget {
   const NameReg({super.key});
@@ -114,9 +109,6 @@ class _NameRegState extends State<NameReg> {
                   );
                   await addHimaPerson(newPerson);
                 } else {
-                  // snapshot.docs[0].data()の中身のisHimaを取得
-                  bool isHima = snapshot.docs[0].data()['isHima'];
-
                   // snapshot.docs[0]のisHimaを反転
                   await FirebaseFirestore.instance
                       .collection("users")
