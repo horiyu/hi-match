@@ -217,7 +217,30 @@ class _NextPageState extends State<NextPage> {
         title: const Text('暇な人リスト'),
         leading: Row(
           children: [
-            const Icon(Icons.person),
+            Expanded(
+              child: IconButton(
+                icon: const Icon(Icons.person),
+                onPressed: () {
+                  var myPerson = himaPeople.firstWhere(
+                      (person) =>
+                          person.id == FirebaseAuth.instance.currentUser?.uid,
+                      orElse: () => HimaPeople(
+                            id: '',
+                            mail: '',
+                            isHima: false,
+                            name: 'No Name',
+                            deadline: null,
+                            place: '',
+                          ));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UserPage(myPerson),
+                        settings: const RouteSettings(name: '/user_page'),
+                      ));
+                },
+              ),
+            ),
             Container(
               height: 20,
               width: 20,
@@ -297,7 +320,31 @@ class _NextPageState extends State<NextPage> {
                     Container(
                       color: Colors.yellow[100],
                       child: ListTile(
-                        leading: const Icon(Icons.person),
+                        leading: IconButton(
+                          icon: const Icon(Icons.person),
+                          onPressed: () {
+                            var myPerson = himaPeople.firstWhere(
+                                (person) =>
+                                    person.id ==
+                                    FirebaseAuth.instance.currentUser?.uid,
+                                orElse: () => HimaPeople(
+                                      id: '',
+                                      mail: '',
+                                      isHima: false,
+                                      name: 'No Name',
+                                      deadline: null,
+                                      place: '',
+                                    ));
+                            // ボタンが押された際の動作を記述する
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => UserPage(myPerson),
+                                  settings:
+                                      const RouteSettings(name: '/user_page'),
+                                ));
+                          },
+                        ),
                         title: Table(
                           children: <TableRow>[
                             TableRow(
