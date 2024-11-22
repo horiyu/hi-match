@@ -1,21 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_web_app/list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'package:my_web_app/login_page.dart';
-// class LoginSample extends StatelessWidget {
-//   const LoginSample({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const MaterialApp(
-//       title: 'Login Sample',
-//       // home: const MyHomePage(title: 'Login Sample'),
-//       home: LoginPage(),
-//     );
-//   }
-// }
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -70,6 +55,11 @@ class _LoginPageState extends State<LoginPage> {
                 // ログインボタン
                 child: ElevatedButton(
                   child: const Text('ログイン'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        const Color.fromARGB(255, 38, 173, 252), // foreground
+                  ),
                   onPressed: () async {
                     try {
                       // メール/パスワードでログイン
@@ -83,8 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => const NextPage(),
-                            settings:
-                                const RouteSettings(name: '/next_page'),
+                            settings: const RouteSettings(name: '/next_page'),
                           ));
                     } catch (e) {
                       // ユーザー登録に失敗した場合
@@ -103,6 +92,11 @@ class _LoginPageState extends State<LoginPage> {
                 // ログアウトボタン
                 child: ElevatedButton(
                   child: const Text('ログアウト'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        const Color.fromARGB(255, 177, 190, 197), // foreground
+                  ),
                   onPressed: () async {
                     try {
                       // ログアウト
@@ -126,6 +120,11 @@ class _LoginPageState extends State<LoginPage> {
                 // 戻る
                 child: ElevatedButton(
                   child: const Text('戻る'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        const Color.fromARGB(255, 177, 190, 197), // foreground
+                  ),
                   onPressed: () async {
                     Navigator.of(context).pop();
                   },

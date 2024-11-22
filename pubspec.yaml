@@ -40,6 +40,7 @@ dependencies:
   toggle_switch: ^2.3.0
   firebase_analytics: ^11.3.5
   hooks_riverpod: ^2.6.1
+  flutter_datetime_picker_plus: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +66,7 @@ flutter:
 
   assets:
   - images/
+  - images/ひマッチ@4x.png
 
   fonts:
     - family: pupupu-free  # フォントファミリー名（自由に設定可能）

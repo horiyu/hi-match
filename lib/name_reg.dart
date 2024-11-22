@@ -1,14 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:my_web_app/firebase/firestore.dart';
 import 'package:my_web_app/list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:my_web_app/model/himapeople.dart';
-import 'package:my_web_app/signup_page.dart';
-import 'firebase_options.dart';
-import 'package:my_web_app/login_page.dart';
 
 class NameReg extends StatefulWidget {
   const NameReg({super.key});
@@ -64,80 +59,90 @@ class _NameRegState extends State<NameReg> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('名前登録!!'),
+        title: Center(
+          child: Text('名前登録!!'),
+        ),
       ),
       body: SizedBox(
         width: double.infinity,
-        child: Column(
-          children: [
-            TextField(
-              decoration: const InputDecoration(
-                hintText: '名前',
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                decoration: const InputDecoration(
+                  hintText: '名前',
+                ),
+                onChanged: (String value) {
+                  setState(() {
+                    name = value;
+                  });
+                },
               ),
-              onChanged: (String value) {
-                setState(() {
-                  name = value;
-                });
-              },
-            ),
-            ElevatedButton(
-              child: const Text('登録'),
-              onPressed: () async {
-                final user = FirebaseAuth.instance.currentUser;
-                final uid = user?.uid;
-                final email = user?.email;
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor:
+                      const Color.fromARGB(255, 38, 173, 252), // foreground
+                ),
+                child: const Text('登録'),
+                onPressed: () async {
+                  final user = FirebaseAuth.instance.currentUser;
+                  final uid = user?.uid;
+                  final email = user?.email;
 
-                // ログインできているか確認
-                bool isLogin = FirebaseAuth.instance.currentUser != null;
+                  // ログインできているか確認
+                  bool isLogin = FirebaseAuth.instance.currentUser != null;
 
-                // ログインしていなければログイン画面に遷移
-                if (!isLogin) {
-                  Navigator.pop(context);
-                }
+                  // ログインしていなければログイン画面に遷移
+                  if (!isLogin) {
+                    Navigator.pop(context);
+                  }
 
-                // FirebaseFirestore.instance.collection("users").where("id", isEqualTo: uid).get()に該当するドキュメントがあるか否か判定
-                final snapshot = await FirebaseFirestore.instance
-                    .collection("users")
-                    .where("id", isEqualTo: uid)
-                    .get();
-
-                HimaPeople newPerson;
-
-                if (snapshot.docs.isEmpty) {
-                  newPerson = HimaPeople(
-                    id: '$uid',
-                    mail: '$email',
-                    isHima: true,
-                    name: name,
-                    deadline: null,
-                    place: "",
-                  );
-                  await addHimaPerson(newPerson);
-                } else {
-                  // snapshot.docs[0].data()の中身のisHimaを取得
-                  bool isHima = snapshot.docs[0].data()['isHima'];
-
-                  // snapshot.docs[0]のisHimaを反転
-                  await FirebaseFirestore.instance
+                  // FirebaseFirestore.instance.collection("users").where("id", isEqualTo: uid).get()に該当するドキュメントがあるか否か判定
+                  final snapshot = await FirebaseFirestore.instance
                       .collection("users")
-                      .doc(snapshot.docs[0].id)
-                      .update({'name': name});
-                }
+                      .where("id", isEqualTo: uid)
+                      .get();
 
-                // Firestoreにデータを追加
+                  HimaPeople newPerson;
 
-                // getHimaPeople();
-                get();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const NextPage(),
-                        settings: const RouteSettings(name: '/next_page')));
+                  if (snapshot.docs.isEmpty) {
+                    newPerson = HimaPeople(
+                      id: '$uid',
+                      mail: '$email',
+                      isHima: true,
+                      name: name,
+                      deadline: null,
+                      place: "",
+                    );
+                    await addHimaPerson(newPerson);
+                  } else {
+                    // snapshot.docs[0].data()の中身のisHimaを取得
+                    bool isHima = snapshot.docs[0].data()['isHima'];
+
+                    // snapshot.docs[0]のisHimaを反転
+                    await FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(snapshot.docs[0].id)
+                        .update({'name': name});
+                  }
+
+                  // Firestoreにデータを追加
+
+                  // getHimaPeople();
+                  get();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const NextPage(),
+                          settings: const RouteSettings(name: '/next_page')));
 // await Firestore.instance
-                // TODO: 新規登録
-              },
-            ),
-          ],
+                  // TODO: 新規登録
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

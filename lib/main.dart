@@ -1,14 +1,13 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:my_web_app/firebase/analytics_repository.dart';
 import 'package:my_web_app/list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:my_web_app/name_reg.dart';
 import 'package:my_web_app/signup_page.dart';
 import 'firebase_options.dart';
 import 'package:my_web_app/login_page.dart';
-import 'package:my_web_app/user_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,12 +53,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
   void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+    setState(() {});
   }
 
   @override
@@ -69,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(
           widget.title,
-          style: TextStyle(
+          style: const TextStyle(
             fontFamily: 'pupupu-free', // 正しいフォントファミリー名を指定
             fontSize: 60,
           ),
@@ -95,8 +90,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         ));
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[300],
-                    foregroundColor: Colors.lightBlue,
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        const Color.fromARGB(255, 38, 173, 252), // foreground
                   ),
                   child: const Text('ログイン'),
                 ),
@@ -113,8 +109,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         ));
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[300],
-                    foregroundColor: Colors.lightBlue,
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        const Color.fromARGB(255, 38, 173, 252), // foreground
                   ),
                   child: const Text('新規登録'),
                 ),
@@ -123,8 +120,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[300],
-                    foregroundColor: Colors.lightBlue,
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        const Color.fromARGB(255, 38, 173, 252), // foreground
                   ),
                   child: const Text('ログアウト'),
                   onPressed: () async {
@@ -135,11 +133,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.of(context).pop();
                     } catch (e) {
                       // ユーザー登録に失敗した場合
-                      setState(() {
-                        var infoText = "ログアウトに失敗しました：${e.toString()}";
-                      });
+                      setState(() {});
                     }
                   },
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const NameReg(),
+                          settings: const RouteSettings(name: '/namereg'),
+                        ));
+                  },
+                  child: null,
                 ),
               ],
             )
