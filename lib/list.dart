@@ -140,12 +140,14 @@ class _NextPageState extends State<NextPage> {
     bool isHima = true;
     if (snapshot.docs.isEmpty) {
       newPerson = HimaPeople(
-          id: '$uid',
-          mail: '$email',
-          isHima: true,
-          name: name,
-          deadline: null,
-          place: "春日");
+        id: '$uid',
+        mail: '$email',
+        isHima: true,
+        name: name,
+        deadline: null,
+        place: "春日",
+        himaActivitiesIds: [],
+      );
       await addHimaPerson(newPerson);
     } else {
       isHima = snapshot.docs[0].data()['isHima'];
@@ -296,6 +298,7 @@ class _NextPageState extends State<NextPage> {
                                                 name: 'No Name',
                                                 deadline: null,
                                                 place: '',
+                                                himaActivitiesIds: [],
                                               ))
                                       .name ??
                                   "No Name",
@@ -336,6 +339,7 @@ class _NextPageState extends State<NextPage> {
                                                 name: 'No Name',
                                                 deadline: null,
                                                 place: '',
+                                                himaActivitiesIds: [],
                                               ))
                                       .place ??
                                   "Nowhere",
