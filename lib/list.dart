@@ -22,10 +22,60 @@ class _NextPageState extends State<NextPage> {
   bool isLoading = false;
   late String name;
 
+  Map<String, bool> values = {
+    'ご飯食べ行こ': false,
+    '昼寝しよう': false,
+    '散歩しよう': false,
+  };
+
   bool _isHima = false;
   String myperson = "";
 
   bool _switchValue = false; // トグルの状態を保持する変数
+
+  String _getCountdownString(DateTime deadline) {
+    final now = DateTime.now();
+    final difference = deadline.difference(now);
+
+    if (difference.isNegative) {
+      return "Time's up!";
+    }
+
+    final hours = difference.inHours;
+    final minutes = difference.inMinutes % 60;
+    final seconds = difference.inSeconds % 60;
+
+    return '$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+  }
+
+  DateTime? _parseDateTime(String? dateTimeString) {
+    if (dateTimeString == null) return null;
+    final parts = dateTimeString.split('/');
+    if (parts.length == 4) {
+      final year = int.tryParse(parts[0]);
+      final month = int.tryParse(parts[1]);
+      final day = int.tryParse(parts[2]);
+      final timeParts = parts[3].split(':');
+      if (timeParts.length == 2) {
+        final hour = int.tryParse(timeParts[0]);
+        final minute = int.tryParse(timeParts[1]);
+        print(year);
+        print(month);
+        print(day);
+        print(hour);
+        print(minute);
+
+        if (year != null &&
+            month != null &&
+            day != null &&
+            hour != null &&
+            minute != null) {
+          print(DateTime(year, month, day, hour, minute));
+          return DateTime(year, month, day, hour, minute);
+        }
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -273,8 +323,7 @@ class _NextPageState extends State<NextPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        UserPage(person)));
+                                    builder: (context) => UserPage(person)));
                           },
                         ),
                         title: Row(
@@ -327,6 +376,147 @@ class _NextPageState extends State<NextPage> {
             labels: ['忙', '暇'],
             onToggle: (index) {
               _toggleHimaStatus(index!);
+              if (!_isHima) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      // title: const Text('暇ステータスを変更しました'),
+                      content: Navigator(
+                        onGenerateRoute: (settings) {
+                          return MaterialPageRoute(
+                            builder: (context) {
+                              return Scaffold(
+                                appBar: AppBar(
+                                  title: const Text('暇ステータスを変更しました'),
+                                ),
+                                body: Center(
+                                  child: Column(
+                                    children: <Widget>[
+                                      SizedBox(
+                                        // height: 500,
+                                        child: ListView(
+                                          shrinkWrap: true,
+                                          children:
+                                              values.keys.map((String key) {
+                                            return CheckboxListTile(
+                                              title: Text(key),
+                                              value: values[key],
+                                              onChanged: (bool? value) {
+                                                setState(() {
+                                                  values[key] = value!;
+                                                });
+                                              },
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  title: const Text('2のページ'),
+                                                  content: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: <Widget>[
+                                                      TextField(
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          labelText:
+                                                              'Year/Month/Day Hour:Minute',
+                                                          hintText:
+                                                              '2023/10/31 14:30',
+                                                        ),
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .datetime,
+                                                        onChanged: (value) {
+                                                          // Handle the input value
+                                                        },
+                                                      ),
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          // Handle the button press
+                                                        },
+                                                        child: const Text(
+                                                            'Submit'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  actions: <Widget>[
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: const Text('戻る'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            ),
+                                          );
+                                        },
+                                        child: const Text('2のページに進む'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                      // actions: <Widget>[
+                      //   SizedBox(
+                      //     height: 500, // Set a fixed height for the ListView
+                      //     width: 500,
+                      //     child: ListView(
+                      //       shrinkWrap: true,
+                      //       children: values.keys.map((String key) {
+                      //         return CheckboxListTile(
+                      //           title: Text(key),
+                      //           value: values[key],
+                      //           onChanged: (bool? value) {
+                      //             setState(() {
+                      //               values[key] = value!;
+                      //             });
+                      //           },
+                      //         );
+                      //       }).toList(),
+                      //     ),
+                      //   ),
+                      //   ElevatedButton(
+                      //     onPressed: () {
+                      //       Navigator.of(context).push(
+                      //         MaterialPageRoute(
+                      //           builder: (context) {
+                      //             return AlertDialog(
+                      //               title: const Text('2のページ'),
+                      //               content: const Text('2のページに遷移しました'),
+                      //               actions: <Widget>[
+                      //                 ElevatedButton(
+                      //                   onPressed: () {
+                      //                     Navigator.of(context).pop();
+                      //                   },
+                      //                   child: const Text('閉じる'),
+                      //                 ),
+                      //               ],
+                      //             );
+                      //           },
+                      //         ),
+                      //       );
+                      //     },
+                      //     child: const Text('2のページに進む'),
+                      //   ),
+                      // ],
+                    );
+                  },
+                );
+              }
             },
           ),
         ),
