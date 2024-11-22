@@ -29,7 +29,6 @@ class _NextPageState extends State<NextPage> {
   DateTime inputDeadline = DateTime.now();
   bool _switchValue = false; // トグルの状態を保持する変数
 
-
   Widget _getCountdownString(DateTime deadline) {
     final now = DateTime.now();
     final difference = deadline.difference(now);
@@ -44,9 +43,10 @@ class _NextPageState extends State<NextPage> {
     if (difference.inHours >= 1) {
       return Text('残り $hours 時間');
     } else if (difference.inMinutes >= 30) {
-      return Text('残り $minutes 分');
+      return Text('残り ${minutes + 1} 分');
     } else {
-      return Text('残り $minutes 分', style: const TextStyle(color: Colors.red));
+      return Text('残り ${minutes + 1} 分',
+          style: const TextStyle(color: Colors.red));
     }
   }
 
@@ -414,8 +414,8 @@ class _NextPageState extends State<NextPage> {
                                   ),
                                   Column(
                                     children: [
-                                        _getCountdownString(
-                                            person.deadline ?? DateTime.now()),
+                                      _getCountdownString(
+                                          person.deadline ?? DateTime.now()),
                                     ],
                                   ),
                                   Column(
