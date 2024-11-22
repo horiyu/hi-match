@@ -1,22 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_web_app/list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:my_web_app/name_reg.dart';
-import 'firebase_options.dart';
-import 'package:my_web_app/login_page.dart';
-// class LoginSample extends StatelessWidget {
-//   const LoginSample({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const MaterialApp(
-//       title: 'Login Sample',
-//       // home: const MyHomePage(title: 'Login Sample'),
-//       home: SignupPage(),
-//     );
-//   }
-// }
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -26,8 +10,6 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  @override
-  // TODO: implement build
   // メッセージ表示用
   String infoText = '';
   // 入力したメールアドレス・パスワード

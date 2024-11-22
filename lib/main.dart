@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:my_web_app/firebase/analytics_repository.dart';
@@ -9,7 +8,6 @@ import 'package:my_web_app/name_reg.dart';
 import 'package:my_web_app/signup_page.dart';
 import 'firebase_options.dart';
 import 'package:my_web_app/login_page.dart';
-import 'package:my_web_app/user_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,12 +53,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
   void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+    setState(() {});
   }
 
   @override
@@ -70,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(
           widget.title,
-          style: TextStyle(
+          style: const TextStyle(
             fontFamily: 'pupupu-free', // 正しいフォントファミリー名を指定
             fontSize: 60,
           ),
@@ -139,9 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.of(context).pop();
                     } catch (e) {
                       // ユーザー登録に失敗した場合
-                      setState(() {
-                        var infoText = "ログアウトに失敗しました：${e.toString()}";
-                      });
+                      setState(() {});
                     }
                   },
                 ),
