@@ -70,6 +70,11 @@ class _LoginPageState extends State<LoginPage> {
                 // ログインボタン
                 child: ElevatedButton(
                   child: const Text('ログイン'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        const Color.fromARGB(255, 38, 173, 252), // foreground
+                  ),
                   onPressed: () async {
                     try {
                       // メール/パスワードでログイン
@@ -83,8 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => const NextPage(),
-                            settings:
-                                const RouteSettings(name: '/next_page'),
+                            settings: const RouteSettings(name: '/next_page'),
                           ));
                     } catch (e) {
                       // ユーザー登録に失敗した場合
@@ -103,6 +107,11 @@ class _LoginPageState extends State<LoginPage> {
                 // ログアウトボタン
                 child: ElevatedButton(
                   child: const Text('ログアウト'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        const Color.fromARGB(255, 177, 190, 197), // foreground
+                  ),
                   onPressed: () async {
                     try {
                       // ログアウト
@@ -126,6 +135,11 @@ class _LoginPageState extends State<LoginPage> {
                 // 戻る
                 child: ElevatedButton(
                   child: const Text('戻る'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        const Color.fromARGB(255, 177, 190, 197), // foreground
+                  ),
                   onPressed: () async {
                     Navigator.of(context).pop();
                   },

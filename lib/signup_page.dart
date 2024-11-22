@@ -84,6 +84,11 @@ class _SignupPageState extends State<SignupPage> {
                 // ユーザー登録ボタン
                 child: ElevatedButton(
                   child: const Text('新規登録'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        const Color.fromARGB(255, 38, 173, 252), // foreground
+                  ),
                   onPressed: () async {
                     try {
                       // メール/パスワードでユーザー登録
@@ -126,6 +131,11 @@ class _SignupPageState extends State<SignupPage> {
                 // 戻る
                 child: ElevatedButton(
                   child: const Text('戻る'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        const Color.fromARGB(255, 177, 190, 197), // foreground
+                  ),
                   onPressed: () async {
                     Navigator.of(context).pop();
                   },

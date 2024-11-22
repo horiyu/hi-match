@@ -5,6 +5,7 @@ import 'package:my_web_app/firebase/analytics_repository.dart';
 import 'package:my_web_app/list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:my_web_app/name_reg.dart';
 import 'package:my_web_app/signup_page.dart';
 import 'firebase_options.dart';
 import 'package:my_web_app/login_page.dart';
@@ -95,8 +96,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         ));
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[300],
-                    foregroundColor: Colors.lightBlue,
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        const Color.fromARGB(255, 38, 173, 252), // foreground
                   ),
                   child: const Text('ログイン'),
                 ),
@@ -113,8 +115,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         ));
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[300],
-                    foregroundColor: Colors.lightBlue,
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        const Color.fromARGB(255, 38, 173, 252), // foreground
                   ),
                   child: const Text('新規登録'),
                 ),
@@ -123,8 +126,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[300],
-                    foregroundColor: Colors.lightBlue,
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        const Color.fromARGB(255, 38, 173, 252), // foreground
                   ),
                   child: const Text('ログアウト'),
                   onPressed: () async {
@@ -140,6 +144,17 @@ class _MyHomePageState extends State<MyHomePage> {
                       });
                     }
                   },
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const NameReg(),
+                          settings: const RouteSettings(name: '/namereg'),
+                        ));
+                  },
+                  child: null,
                 ),
               ],
             )
