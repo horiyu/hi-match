@@ -146,7 +146,7 @@ class _NextPageState extends State<NextPage> {
         name: name,
         deadline: null,
         place: "春日",
-        himaActivitiesIds: [],
+        // himaActivitiesIds: [],
       );
       await addHimaPerson(newPerson);
     } else {
@@ -298,7 +298,7 @@ class _NextPageState extends State<NextPage> {
                                                 name: 'No Name',
                                                 deadline: null,
                                                 place: '',
-                                                himaActivitiesIds: [],
+                                                // himaActivitiesIds: [],
                                               ))
                                       .name ??
                                   "No Name",
@@ -339,7 +339,7 @@ class _NextPageState extends State<NextPage> {
                                                 name: 'No Name',
                                                 deadline: null,
                                                 place: '',
-                                                himaActivitiesIds: [],
+                                                // himaActivitiesIds: [],
                                               ))
                                       .place ??
                                   "Nowhere",

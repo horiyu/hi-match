@@ -13,7 +13,7 @@ class UserPage extends StatefulWidget {
     name: '',
     deadline: null,
     place: '',
-    himaActivitiesIds: [],
+    // himaActivitiesIds: [],
   );
 
   @override
