@@ -78,7 +78,7 @@ class _UserPageState extends State<UserPage> {
                             const CircleAvatar(
                               radius: 50,
                               backgroundImage:
-                                  AssetImage('images/user-icon.jpg'),
+                                  AssetImage('images/user-icon.png'),
                             ),
                             Positioned(
                               right: 0,
@@ -120,7 +120,10 @@ class _UserPageState extends State<UserPage> {
                             backgroundColor:
                                 Colors.black, // Set the button color to black
                           ),
-                          child: const Text('フレンド申請する'),
+                          child: Text(widget.person.id ==
+                                  FirebaseAuth.instance.currentUser?.uid
+                              ? 'プロフィールを編集する'
+                              : 'フレンド申請する'),
                         ),
                       ],
                     ),
