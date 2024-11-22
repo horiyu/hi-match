@@ -246,14 +246,29 @@ class _NextPageState extends State<NextPage> {
             child: ListView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 children: [
-                  const ListTile(
-                    leading: Icon(Icons.person),
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Text('Name'),
-                        Text('Deadline'),
-                        Text('Place'),
+                  ListTile(
+                    leading: const Icon(Icons.person),
+                    title: Table(
+                      children: <TableRow>[
+                        TableRow(
+                          children: <Widget>[
+                            Column(
+                              children: [
+                                Text('Name'),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text('Deadline'),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text('Place'),
+                              ],
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -262,68 +277,84 @@ class _NextPageState extends State<NextPage> {
                       color: Colors.yellow[100],
                       child: ListTile(
                         leading: const Icon(Icons.person),
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Text(
-                              himaPeople
-                                      .firstWhere(
-                                          (person) =>
-                                              person.id ==
-                                              FirebaseAuth
-                                                  .instance.currentUser?.uid,
-                                          orElse: () => HimaPeople(
-                                                id: '',
-                                                mail: '',
-                                                isHima: false,
-                                                name: 'No Name',
-                                                deadline: null,
-                                                place: '',
-                                              ))
-                                      .name ??
-                                  "No Name",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            // Text(
-                            //   himaPeople
-                            //           .firstWhere(
-                            //               (person) =>
-                            //                   person.id ==
-                            //                   FirebaseAuth
-                            //                       .instance.currentUser?.uid,
-                            //               orElse: () => HimaPeople(
-                            //                     id: '',
-                            //                     mail: '',
-                            //                     isHima: false,
-                            //                     name: 'No Name',
-                            //                     deadline: null,
-                            //                     place: '',
-                            //                   ))
-                            //           .deadline ??
-                            //       null,
-                            //   maxLines: 1,
-                            //   overflow: TextOverflow.ellipsis,
-                            // ),
-                            Text(
-                              himaPeople
-                                      .firstWhere(
-                                          (person) =>
-                                              person.id ==
-                                              FirebaseAuth
-                                                  .instance.currentUser?.uid,
-                                          orElse: () => HimaPeople(
-                                                id: '',
-                                                mail: '',
-                                                isHima: false,
-                                                name: 'No Name',
-                                                deadline: null,
-                                                place: '',
-                                              ))
-                                      .place ??
-                                  "Nowhere",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                        title: Table(
+                          children: <TableRow>[
+                            TableRow(
+                              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Column(
+                                  children: [
+                                    Text(
+                                      himaPeople
+                                              .firstWhere(
+                                                  (person) =>
+                                                      person.id ==
+                                                      FirebaseAuth.instance
+                                                          .currentUser?.uid,
+                                                  orElse: () => HimaPeople(
+                                                        id: '',
+                                                        mail: '',
+                                                        isHima: false,
+                                                        name: 'No Name',
+                                                        deadline: null,
+                                                        place: '',
+                                                      ))
+                                              .name ??
+                                          "No Name",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [],
+                                ),
+
+                                // Text(
+                                //   himaPeople
+                                //           .firstWhere(
+                                //               (person) =>
+                                //                   person.id ==
+                                //                   FirebaseAuth
+                                //                       .instance.currentUser?.uid,
+                                //               orElse: () => HimaPeople(
+                                //                     id: '',
+                                //                     mail: '',
+                                //                     isHima: false,
+                                //                     name: 'No Name',
+                                //                     deadline: null,
+                                //                     place: '',
+                                //                   ))
+                                //           .deadline ??
+                                //       null,
+                                //   maxLines: 1,
+                                //   overflow: TextOverflow.ellipsis,
+                                // ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      himaPeople
+                                              .firstWhere(
+                                                  (person) =>
+                                                      person.id ==
+                                                      FirebaseAuth.instance
+                                                          .currentUser?.uid,
+                                                  orElse: () => HimaPeople(
+                                                        id: '',
+                                                        mail: '',
+                                                        isHima: false,
+                                                        name: 'No Name',
+                                                        deadline: null,
+                                                        place: '',
+                                                      ))
+                                              .place ??
+                                          "Nowhere",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -333,20 +364,59 @@ class _NextPageState extends State<NextPage> {
                     if (person.isHima &&
                         person.id != FirebaseAuth.instance.currentUser?.uid)
                       ListTile(
-                        leading: IconButton(
-                          icon: const Icon(Icons.person),
-                          onPressed: () {
-                            // ボタンが押された際の動作を記述する
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => UserPage(person),
-                                  settings:
-                                      const RouteSettings(name: '/user_page'),
-                                ));
-                          },
-                        ),
-                        title: Row(
+                          leading: IconButton(
+                            icon: const Icon(Icons.person),
+                            onPressed: () {
+                              // ボタンが押された際の動作を記述する
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UserPage(person),
+                                    settings:
+                                        const RouteSettings(name: '/user_page'),
+                                  ));
+                            },
+                          ),
+                          title: Table(
+                            children: <TableRow>[
+                              TableRow(
+                                children: <Widget>[
+                                  Column(
+                                    children: [
+                                      Text(
+                                        person.name ?? "No Name",
+                                        maxLines: 1, // 表示する最大行数を1行に制限
+                                        overflow: TextOverflow
+                                            .ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        _getCountdownString(
+                                            person.deadline ?? DateTime.now()),
+                                        maxLines: 1, // 表示する最大行数を1行に制限
+                                        overflow: TextOverflow
+                                            .ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        person.place ?? "Nowhere",
+                                        maxLines: 1, // 表示する最大行数を1行に制限
+                                        overflow: TextOverflow
+                                            .ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )
+                            ],
+                          )
+                          /*Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             Text(
@@ -369,8 +439,8 @@ class _NextPageState extends State<NextPage> {
                                   .ellipsis, // テキストが制限を超えた場合に省略記号を表示
                             ),
                           ],
-                        ),
-                      ),
+                        ),*/
+                          ),
                 ]),
           ),
         ),
