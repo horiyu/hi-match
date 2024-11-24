@@ -84,13 +84,18 @@ class _UserPageState extends State<UserPage> {
                               right: 0,
                               bottom: 0,
                               child: Tooltip(
-                                message:
-                                    widget.person.isHima ? 'ひま〜' : 'ひまじゃない',
+                                message: widget.person.isHima &&
+                                        (widget.person.deadline!
+                                            .isAfter(DateTime.now()))
+                                    ? 'ひま〜'
+                                    : 'ひまじゃない',
                                 child: Container(
                                   height: 30,
                                   width: 30,
                                   decoration: BoxDecoration(
-                                    color: widget.person.isHima
+                                    color: widget.person.isHima &&
+                                            (widget.person.deadline!
+                                                .isAfter(DateTime.now()))
                                         ? Colors.green
                                         : Colors.grey,
                                     shape: BoxShape.circle,

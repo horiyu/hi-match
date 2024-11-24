@@ -21,7 +21,7 @@ class HimaPeople {
 
   factory HimaPeople.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data()!;
-    var deadline = DateTime.now();
+    var deadline = DateTime.now().subtract(const Duration(minutes: 30));
     if (data['deadline'] != null) {
       deadline = (data['deadline'] as Timestamp).toDate();
     }
