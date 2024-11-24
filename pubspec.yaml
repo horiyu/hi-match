@@ -67,6 +67,7 @@ flutter:
   assets:
   - images/
   - images/ひマッチ@4x.png
+  - images/user-icon.png
 
   fonts:
     - family: pupupu-free  # フォントファミリー名（自由に設定可能）

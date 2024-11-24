@@ -29,7 +29,6 @@ class _NextPageState extends State<NextPage> {
   DateTime inputDeadline = DateTime.now();
   bool _switchValue = false; // トグルの状態を保持する変数
 
-
   Widget _getCountdownString(DateTime deadline) {
     final now = DateTime.now();
     final difference = deadline.difference(now);
@@ -44,9 +43,10 @@ class _NextPageState extends State<NextPage> {
     if (difference.inHours >= 1) {
       return Text('残り $hours 時間');
     } else if (difference.inMinutes >= 30) {
-      return Text('残り $minutes 分');
+      return Text('残り ${minutes + 1} 分');
     } else {
-      return Text('残り $minutes 分', style: const TextStyle(color: Colors.red));
+      return Text('残り ${minutes + 1} 分',
+          style: const TextStyle(color: Colors.red));
     }
   }
 
@@ -217,7 +217,30 @@ class _NextPageState extends State<NextPage> {
         title: const Text('暇な人リスト'),
         leading: Row(
           children: [
-            const Icon(Icons.person),
+            Expanded(
+              child: IconButton(
+                icon: const Icon(Icons.person),
+                onPressed: () {
+                  var myPerson = himaPeople.firstWhere(
+                      (person) =>
+                          person.id == FirebaseAuth.instance.currentUser?.uid,
+                      orElse: () => HimaPeople(
+                            id: '',
+                            mail: '',
+                            isHima: false,
+                            name: 'No Name',
+                            deadline: null,
+                            place: '',
+                          ));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UserPage(myPerson),
+                        settings: const RouteSettings(name: '/user_page'),
+                      ));
+                },
+              ),
+            ),
             Container(
               height: 20,
               width: 20,
@@ -297,7 +320,31 @@ class _NextPageState extends State<NextPage> {
                     Container(
                       color: Colors.yellow[100],
                       child: ListTile(
-                        leading: const Icon(Icons.person),
+                        leading: IconButton(
+                          icon: const Icon(Icons.person),
+                          onPressed: () {
+                            var myPerson = himaPeople.firstWhere(
+                                (person) =>
+                                    person.id ==
+                                    FirebaseAuth.instance.currentUser?.uid,
+                                orElse: () => HimaPeople(
+                                      id: '',
+                                      mail: '',
+                                      isHima: false,
+                                      name: 'No Name',
+                                      deadline: null,
+                                      place: '',
+                                    ));
+                            // ボタンが押された際の動作を記述する
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => UserPage(myPerson),
+                                  settings:
+                                      const RouteSettings(name: '/user_page'),
+                                ));
+                          },
+                        ),
                         title: Table(
                           children: <TableRow>[
                             TableRow(
@@ -414,8 +461,8 @@ class _NextPageState extends State<NextPage> {
                                   ),
                                   Column(
                                     children: [
-                                        _getCountdownString(
-                                            person.deadline ?? DateTime.now()),
+                                      _getCountdownString(
+                                          person.deadline ?? DateTime.now()),
                                     ],
                                   ),
                                   Column(
