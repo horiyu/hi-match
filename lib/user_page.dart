@@ -61,37 +61,77 @@ class _UserPageState extends State<UserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Page'),
-      ),
+          // title: const Text('User Page'),
+          ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : widget.person == null
               ? const Center(child: Text('No user signed in'))
               : Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Icon(Icons.person, size: 100),
-                      Text('名前: ${widget.person.name ?? 'Anonymous'}'),
-                      Text(
-                          '${widget.person.name} さんは、現在${widget.person.isHima ? 'ヒマです' : '忙しい'}'),
-                      const SizedBox(height: 8),
-                      // Text('Email: ${_user!.email ?? 'No email'}'),
-                      const SizedBox(height: 8),
-                      ElevatedButton(
-                        onPressed: () async {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const NextPage(),
-                                settings:
-                                    const RouteSettings(name: '/next_page')),
-                          );
-                        },
-                        child: const Text('フォロー'),
-                      ),
-                    ],
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Stack(
+                          children: [
+                            const CircleAvatar(
+                              radius: 50,
+                              backgroundImage:
+                                  AssetImage('images/user-icon.png'),
+                            ),
+                            Positioned(
+                              right: 0,
+                              bottom: 0,
+                              child: Tooltip(
+                                message: widget.person.isHima &&
+                                        (widget.person.deadline!
+                                            .isAfter(DateTime.now()))
+                                    ? 'ひま〜'
+                                    : 'ひまじゃない',
+                                child: Container(
+                                  height: 30,
+                                  width: 30,
+                                  decoration: BoxDecoration(
+                                    color: widget.person.isHima &&
+                                            (widget.person.deadline!
+                                                .isAfter(DateTime.now()))
+                                        ? Colors.green
+                                        : Colors.grey,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Text('${widget.person.name ?? 'Anonymous'}',
+                            style: const TextStyle(fontSize: 24)),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //       builder: (context) => const NextPage(),
+                            //       settings:
+                            //           const RouteSettings(name: '/next_page')),
+                            // );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            foregroundColor: Colors.white,
+                            backgroundColor:
+                                Colors.black, // Set the button color to black
+                          ),
+                          child: Text(widget.person.id ==
+                                  FirebaseAuth.instance.currentUser?.uid
+                              ? 'プロフィールを編集する'
+                              : 'フレンド申請する'),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
     );
