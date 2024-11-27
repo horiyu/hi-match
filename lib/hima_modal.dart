@@ -26,7 +26,56 @@ class _HimaModalState extends State<HimaModal> {
       child: Column(
         children: [
           const Text('BottomSheet Content1'),
-          ElevatedButton(
+          const SizedBox(height: 20),
+          OutlinedButton(
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(Colors.white),
+              minimumSize: WidgetStateProperty.all(const Size(300, 50)),
+              maximumSize: WidgetStateProperty.all(const Size(300, 50)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('ひまな時間'),
+                Row(
+                  children: [
+                    if (selectedDate == null)
+                      const Text('時間を選択')
+                    else
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            '〜 ${selectedDate!.hour.toString().padLeft(2, '0')}:${selectedDate!.minute.toString().padLeft(2, '0')}',
+                          ),
+                          Builder(
+                            builder: (context) {
+                              final now = DateTime.now();
+                              final difference = selectedDate!.isBefore(now)
+                                  ? selectedDate!
+                                      .add(const Duration(days: 1))
+                                      .difference(now)
+                                  : selectedDate!.difference(now);
+                              final differenceText = difference.inMinutes >= 60
+                                  ? '${difference.inHours}時間 ${difference.inMinutes.remainder(60).toString().padLeft(2, '0')}分'
+                                  : '${difference.inMinutes.toString().padLeft(2, '0')}分間';
+                              return Text(
+                                differenceText,
+                                style: const TextStyle(
+                                    fontSize: 10, color: Colors.grey),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    const SizedBox(width: 10),
+                    const Icon(
+                      Icons.chevron_right,
+                    ),
+                  ],
+                ),
+              ],
+            ),
             onPressed: () async {
               await showCustomTimePicker(
                 sheetHeight: 500,
@@ -41,11 +90,6 @@ class _HimaModalState extends State<HimaModal> {
                 context: context,
               );
             },
-            child: Text(
-              selectedDate == null
-                  ? '時間を選択'
-                  : '${selectedDate!.hour.toString().padLeft(2, '0')}:${selectedDate!.minute.toString().padLeft(2, '0')}',
-            ),
           ),
           Expanded(child: Container()),
           Padding(
@@ -53,23 +97,23 @@ class _HimaModalState extends State<HimaModal> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(Colors.grey),
-                    minimumSize: WidgetStateProperty.all(const Size(150, 45)),
-                  ),
-                  child: const Text(
-                    '閉じる',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-                const SizedBox(width: 30),
+                // ElevatedButton(
+                //   style: ButtonStyle(
+                //     backgroundColor: WidgetStateProperty.all(Colors.grey),
+                //     minimumSize: WidgetStateProperty.all(const Size(150, 45)),
+                //   ),
+                //   child: const Text(
+                //     '閉じる',
+                //     style: TextStyle(color: Colors.white),
+                //   ),
+                //   onPressed: () => Navigator.of(context).pop(),
+                // ),
+                // const SizedBox(width: 30),
                 ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
                         WidgetStateProperty.all(Colors.deepOrangeAccent),
-                    minimumSize: WidgetStateProperty.all(const Size(150, 45)),
+                    minimumSize: WidgetStateProperty.all(const Size(300, 50)),
                   ),
                   child: const Text(
                     'ひま',
