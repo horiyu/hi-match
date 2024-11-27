@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_web_app/components/hima_activity_list.dart';
 import 'components/custom_time_picker.dart';
 
 class HimaModal extends StatefulWidget {
@@ -91,7 +92,15 @@ class _HimaModalState extends State<HimaModal> {
               );
             },
           ),
-          Expanded(child: Container()),
+          const SizedBox(height: 10),
+          const Expanded(
+            child: SingleChildScrollView(
+              child: SizedBox(
+                width: 300,
+                child: HimaActivityList(),
+              ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(bottom: 30),
             child: Row(
