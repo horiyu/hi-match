@@ -14,8 +14,8 @@ class HimaModal extends StatelessWidget {
       decoration: const BoxDecoration(
         color: Colors.amber,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20.0),
-          topRight: Radius.circular(20.0),
+          topLeft: Radius.circular(15.0),
+          topRight: Radius.circular(15.0),
         ),
       ),
       child: Column(
