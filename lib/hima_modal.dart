@@ -43,6 +43,7 @@ class _HimaModalState extends State<HimaModal> {
                       const Text('時間を選択')
                     else
                       Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
