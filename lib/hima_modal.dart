@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
-
 import 'components/custom_time_picker.dart';
 
 class HimaModal extends StatelessWidget {
-  const HimaModal({Key? key}) : super(key: key);
+  const HimaModal({super.key});
 
   @override
   Widget build(BuildContext context) {
