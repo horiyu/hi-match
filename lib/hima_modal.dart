@@ -58,7 +58,7 @@ class _HimaModalState extends State<HimaModal> {
                                   : selectedDate!.difference(now);
                               final differenceText = difference.inMinutes >= 60
                                   ? '${difference.inHours}時間 ${difference.inMinutes.remainder(60).toString().padLeft(2, '0')}分'
-                                  : '${difference.inMinutes.toString().padLeft(2, '0')}分間';
+                                  : '${difference.inMinutes}分間';
                               return Text(
                                 differenceText,
                                 style: const TextStyle(
