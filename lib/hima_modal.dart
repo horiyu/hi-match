@@ -25,8 +25,7 @@ class _HimaModalState extends State<HimaModal> {
       ),
       child: Column(
         children: [
-          const Text('BottomSheet Content1'),
-          const SizedBox(height: 20),
+          const SizedBox(height: 50),
           OutlinedButton(
             style: ButtonStyle(
               backgroundColor: WidgetStateProperty.all(Colors.white),
@@ -36,7 +35,7 @@ class _HimaModalState extends State<HimaModal> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('ひまな時間'),
+                const Text('ひま時間'),
                 Row(
                   children: [
                     if (selectedDate == null)
