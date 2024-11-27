@@ -36,8 +36,42 @@ class HimaModal extends StatelessWidget {
               );
             },
             child: const Text('Pick Date and Time'),
-          )
-          // _selectTime(context),
+          ),
+          Expanded(child: Container()),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 30),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(Colors.grey),
+                    minimumSize: WidgetStateProperty.all(const Size(150, 45)),
+                  ),
+                  child: const Text(
+                    '閉じる',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                const SizedBox(width: 30),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        WidgetStateProperty.all(Colors.deepOrangeAccent),
+                    minimumSize: WidgetStateProperty.all(const Size(150, 45)),
+                  ),
+                  child: const Text(
+                    'ひま',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
