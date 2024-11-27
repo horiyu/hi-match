@@ -20,7 +20,9 @@ Future<void> showCustomTimePicker({
       DateTime.now().year - 16; // 何歳から登録できるかの制限値　適宜修正する（この例では16歳）
   final int startYear = currentYear - 110; // 125歳まで登録できることを想定
   final int totalYears = currentYear - startYear + 1;
-  int scrollHintIndex = currentHour; // 「上下にスクロール」の初期位置 適宜修正する
+
+  int selectedHour = currentHour;
+  int selectedMinute = currentMinute;
 
   final FixedExtentScrollController hourController =
       FixedExtentScrollController(initialItem: currentHour);
@@ -31,8 +33,14 @@ Future<void> showCustomTimePicker({
     context: context,
     builder: (context) {
       return Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15.0),
+            topRight: Radius.circular(15.0),
+          ),
+        ),
         height: sheetHeight,
-        color: Colors.white,
         child: Stack(
           children: [
             Center(
@@ -81,6 +89,8 @@ Future<void> showCustomTimePicker({
                                 DateTime.now().add(const Duration(minutes: 30));
                             hourController.jumpToItem(newTime.hour);
                             minuteController.jumpToItem(newTime.minute);
+                            selectedHour = newTime.hour;
+                            selectedMinute = newTime.minute;
                             handler(date: newTime);
                           },
                           child: const Text('30分後'),
@@ -97,7 +107,7 @@ Future<void> showCustomTimePicker({
                         child: ListWheelScrollView.useDelegate(
                           itemExtent: itemHeight,
                           onSelectedItemChanged: (int index) {
-                            scrollHintIndex = index;
+                            selectedHour = (startHour + index) % totalHours;
                           },
                           physics: const FixedExtentScrollPhysics(),
                           childDelegate: ListWheelChildBuilderDelegate(
@@ -120,7 +130,8 @@ Future<void> showCustomTimePicker({
                         child: ListWheelScrollView.useDelegate(
                           itemExtent: itemHeight,
                           onSelectedItemChanged: (int index) {
-                            scrollHintIndex = index;
+                            selectedMinute =
+                                (startMinute + index * 5) % totalMinutes;
                           },
                           physics: const FixedExtentScrollPhysics(),
                           childDelegate: ListWheelChildBuilderDelegate(
@@ -178,8 +189,8 @@ Future<void> showCustomTimePicker({
                               DateTime.now().year,
                               DateTime.now().month,
                               DateTime.now().day,
-                              (startHour + scrollHintIndex) % totalHours,
-                              (startMinute + scrollHintIndex) % totalMinutes,
+                              selectedHour,
+                              selectedMinute,
                             ),
                           );
                           Navigator.of(context).pop();

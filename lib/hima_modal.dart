@@ -12,7 +12,7 @@ class HimaModal extends StatelessWidget {
       height: 500.0,
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
-        color: Colors.amber,
+        color: Colors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(15.0),
           topRight: Radius.circular(15.0),
