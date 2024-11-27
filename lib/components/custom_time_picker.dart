@@ -11,6 +11,8 @@ Future<void> showCustomTimePicker({
 }) async {
   final int currentHour = DateTime.now().hour;
   final int currentMinute = DateTime.now().minute;
+  final int roundedMinute =
+      ((currentMinute + 4) ~/ 5) * 5; // Round up to nearest multiple of 5
   final int startHour = 0;
   final int totalHours = 24;
   final int startMinute = 0;
@@ -22,24 +24,23 @@ Future<void> showCustomTimePicker({
   final int totalYears = currentYear - startYear + 1;
 
   int selectedHour = currentHour;
-  int selectedMinute = currentMinute;
+  int selectedMinute = roundedMinute;
 
   final FixedExtentScrollController hourController =
       FixedExtentScrollController(initialItem: currentHour);
   final FixedExtentScrollController minuteController =
-      FixedExtentScrollController(initialItem: currentMinute);
+      FixedExtentScrollController(initialItem: roundedMinute ~/ 5);
 
   await showModalBottomSheet(
     context: context,
     builder: (context) {
       return Container(
         decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15.0),
-            topRight: Radius.circular(15.0),
-          ),
-        ),
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15.0),
+              topRight: Radius.circular(15.0),
+            )),
         height: sheetHeight,
         child: Stack(
           children: [
@@ -83,17 +84,101 @@ Future<void> showCustomTimePicker({
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        TextButton(
-                          onPressed: () {
-                            final DateTime newTime =
-                                DateTime.now().add(const Duration(minutes: 30));
-                            hourController.jumpToItem(newTime.hour);
-                            minuteController.jumpToItem(newTime.minute);
-                            selectedHour = newTime.hour;
-                            selectedMinute = newTime.minute;
-                            handler(date: newTime);
-                          },
-                          child: const Text('30分後'),
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              elevation: WidgetStateProperty.all(0),
+                              backgroundColor:
+                                  WidgetStateProperty.all(Colors.white),
+                              shape: WidgetStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0),
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+                              final DateTime now = DateTime.now();
+                              final DateTime roundedNow = DateTime(
+                                now.year,
+                                now.month,
+                                now.day,
+                                now.hour,
+                                roundedMinute,
+                              );
+                              final DateTime newTime =
+                                  roundedNow.add(const Duration(minutes: 30));
+                              hourController.jumpToItem(newTime.hour);
+                              minuteController.jumpToItem(newTime.minute ~/ 5);
+                              selectedHour = newTime.hour;
+                              selectedMinute = newTime.minute;
+                              handler(date: newTime);
+                            },
+                            child: const Text('30分'),
+                          ),
+                        ),
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              elevation: WidgetStateProperty.all(0),
+                              backgroundColor:
+                                  WidgetStateProperty.all(Colors.white),
+                              shape: WidgetStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0),
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+                              final DateTime now = DateTime.now();
+                              final DateTime roundedNow = DateTime(
+                                now.year,
+                                now.month,
+                                now.day,
+                                now.hour,
+                                roundedMinute,
+                              );
+                              final DateTime newTime =
+                                  roundedNow.add(const Duration(hours: 1));
+                              hourController.jumpToItem(newTime.hour);
+                              minuteController.jumpToItem(newTime.minute ~/ 5);
+                              selectedHour = newTime.hour;
+                              selectedMinute = newTime.minute;
+                              handler(date: newTime);
+                            },
+                            child: const Text('1時間'),
+                          ),
+                        ),
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              elevation: WidgetStateProperty.all(0),
+                              backgroundColor:
+                                  WidgetStateProperty.all(Colors.white),
+                              shape: WidgetStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0),
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+                              final DateTime now = DateTime.now();
+                              final DateTime roundedNow = DateTime(
+                                now.year,
+                                now.month,
+                                now.day,
+                                now.hour,
+                                roundedMinute,
+                              );
+                              final DateTime newTime =
+                                  roundedNow.add(const Duration(hours: 2));
+                              hourController.jumpToItem(newTime.hour);
+                              minuteController.jumpToItem(newTime.minute ~/ 5);
+                              selectedHour = newTime.hour;
+                              selectedMinute = newTime.minute;
+                              handler(date: newTime);
+                            },
+                            child: const Text('2時間'),
+                          ),
                         ),
                       ],
                     ),
@@ -145,7 +230,7 @@ Future<void> showCustomTimePicker({
                                 ),
                               );
                             },
-                            childCount: totalMinutes,
+                            childCount: totalMinutes ~/ 5,
                           ),
                           controller: minuteController,
                         ),
