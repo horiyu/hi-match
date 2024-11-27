@@ -26,10 +26,17 @@ Future<void> showCustomTimePicker({
   int selectedHour = currentHour;
   int selectedMinute = roundedMinute;
 
+  int adjustedHour = currentHour;
+  int adjustedMinute = roundedMinute;
+  if (roundedMinute == 60) {
+    adjustedMinute = 0;
+    adjustedHour = (currentHour + 1) % 24;
+  }
+
   final FixedExtentScrollController hourController =
-      FixedExtentScrollController(initialItem: currentHour);
+      FixedExtentScrollController(initialItem: adjustedHour);
   final FixedExtentScrollController minuteController =
-      FixedExtentScrollController(initialItem: roundedMinute ~/ 5);
+      FixedExtentScrollController(initialItem: adjustedMinute ~/ 5);
 
   await showModalBottomSheet(
     context: context,
