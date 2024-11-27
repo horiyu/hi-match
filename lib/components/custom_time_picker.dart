@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 typedef Fn = Function({required DateTime date});
@@ -8,6 +10,7 @@ Future<void> showCustomTimePicker({
   required double textSize,
   required Fn handler,
   required BuildContext context,
+  DateTime? selectedTime,
 }) async {
   final int currentHour = DateTime.now().hour;
   final int currentMinute = DateTime.now().minute;
@@ -28,9 +31,14 @@ Future<void> showCustomTimePicker({
 
   int adjustedHour = currentHour;
   int adjustedMinute = roundedMinute;
-  if (roundedMinute == 60) {
-    adjustedMinute = 0;
+  if (selectedTime != null) {
+    selectedMinute = selectedTime.minute;
+    selectedHour = selectedTime.hour;
+    adjustedHour = selectedTime.hour;
+    adjustedMinute = selectedTime.minute;
+  } else if (roundedMinute == 60) {
     adjustedHour = (currentHour + 1) % 24;
+    adjustedMinute = 0;
   }
 
   final FixedExtentScrollController hourController =

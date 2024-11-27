@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'components/custom_time_picker.dart';
 
-class HimaModal extends StatelessWidget {
+class HimaModal extends StatefulWidget {
   const HimaModal({super.key});
+
+  @override
+  _HimaModalState createState() => _HimaModalState();
+}
+
+class _HimaModalState extends State<HimaModal> {
+  DateTime? selectedDate;
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +32,20 @@ class HimaModal extends StatelessWidget {
                 sheetHeight: 500,
                 itemHeight: 35,
                 textSize: 20,
+                selectedTime: selectedDate,
                 handler: ({required DateTime date}) {
-                  // setState(() {
-                  //   selectedDate = date;
-                  // });
+                  setState(() {
+                    selectedDate = date;
+                  });
                 },
                 context: context,
               );
             },
-            child: const Text('Pick Date and Time'),
+            child: Text(
+              selectedDate == null
+                  ? '時間を選択'
+                  : '${selectedDate!.hour.toString().padLeft(2, '0')}:${selectedDate!.minute.toString().padLeft(2, '0')}',
+            ),
           ),
           Expanded(child: Container()),
           Padding(
