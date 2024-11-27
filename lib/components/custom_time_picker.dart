@@ -22,6 +22,11 @@ Future<void> showCustomTimePicker({
   final int totalYears = currentYear - startYear + 1;
   int scrollHintIndex = currentHour; // 「上下にスクロール」の初期位置 適宜修正する
 
+  final FixedExtentScrollController hourController =
+      FixedExtentScrollController(initialItem: currentHour);
+  final FixedExtentScrollController minuteController =
+      FixedExtentScrollController(initialItem: currentMinute);
+
   await showModalBottomSheet(
     context: context,
     builder: (context) {
@@ -30,24 +35,64 @@ Future<void> showCustomTimePicker({
         color: Colors.white,
         child: Stack(
           children: [
+            Center(
+              child: Container(
+                height: itemHeight,
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.1),
+                ),
+              ),
+            ),
+            const Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(width: 90), // Adjust the width to position correctly
+                  Text(
+                    '時',
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  SizedBox(
+                      width: 100), // Adjust the width to position correctly
+                  Text(
+                    '分',
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  SizedBox(width: 35), // Add some padding to the right
+                ],
+              ),
+            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: 30, top: 10),
                   child: Center(
-                    child: Text(
-                      '時間を入力',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: textSize,
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            final DateTime newTime =
+                                DateTime.now().add(const Duration(minutes: 30));
+                            hourController.jumpToItem(newTime.hour);
+                            minuteController.jumpToItem(newTime.minute);
+                            handler(date: newTime);
+                          },
+                          child: const Text('30分後'),
+                        ),
+                      ],
                     ),
                   ),
                 ),
                 Expanded(
                   child: Row(
                     children: [
+                      const SizedBox(width: 20),
                       Expanded(
                         child: ListWheelScrollView.useDelegate(
                           itemExtent: itemHeight,
@@ -68,9 +113,7 @@ Future<void> showCustomTimePicker({
                             },
                             childCount: totalHours,
                           ),
-                          controller: FixedExtentScrollController(
-                            initialItem: currentHour,
-                          ),
+                          controller: hourController,
                         ),
                       ),
                       Expanded(
@@ -86,18 +129,17 @@ Future<void> showCustomTimePicker({
                                 alignment: Alignment.center,
                                 height: itemHeight,
                                 child: Text(
-                                  '${(startMinute + index) % totalMinutes}',
+                                  '${(startMinute + index * 5) % totalMinutes}',
                                   style: const TextStyle(color: Colors.black),
                                 ),
                               );
                             },
                             childCount: totalMinutes,
                           ),
-                          controller: FixedExtentScrollController(
-                            initialItem: currentMinute,
-                          ),
+                          controller: minuteController,
                         ),
                       ),
+                      const SizedBox(width: 20),
                     ],
                   ),
                 ),
@@ -112,7 +154,10 @@ Future<void> showCustomTimePicker({
                           minimumSize:
                               WidgetStateProperty.all(const Size(150, 45)),
                         ),
-                        child: const Text('閉じる'),
+                        child: const Text(
+                          '閉じる',
+                          style: TextStyle(color: Colors.white),
+                        ),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                       const SizedBox(width: 30),
@@ -123,7 +168,10 @@ Future<void> showCustomTimePicker({
                           minimumSize:
                               WidgetStateProperty.all(const Size(150, 45)),
                         ),
-                        child: const Text('決定'),
+                        child: const Text(
+                          '決定',
+                          style: TextStyle(color: Colors.white),
+                        ),
                         onPressed: () {
                           handler(
                             date: DateTime(
@@ -141,14 +189,6 @@ Future<void> showCustomTimePicker({
                   ),
                 ),
               ],
-            ),
-            Center(
-              child: Container(
-                height: itemHeight,
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.1),
-                ),
-              ),
             ),
           ],
         ),
