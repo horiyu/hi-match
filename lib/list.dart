@@ -350,29 +350,35 @@ class _NextPageState extends State<NextPage> {
                             TableRow(
                               //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
-                                Column(
-                                  children: [
-                                    Text(
-                                      himaPeople
-                                              .firstWhere(
-                                                  (person) =>
-                                                      person.id ==
-                                                      FirebaseAuth.instance
-                                                          .currentUser?.uid,
-                                                  orElse: () => HimaPeople(
-                                                        id: '',
-                                                        mail: '',
-                                                        isHima: false,
-                                                        name: 'No Name',
-                                                        deadline: null,
-                                                        place: '',
-                                                      ))
-                                              .name ??
-                                          "No Name",
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
+                                GestureDetector(
+                                  onTap: () {
+                                    print('tapped_my');
+                                    // ログインユーザーがタップされたときの処理をここに記述
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        himaPeople
+                                                .firstWhere(
+                                                    (person) =>
+                                                        person.id ==
+                                                        FirebaseAuth.instance
+                                                            .currentUser?.uid,
+                                                    orElse: () => HimaPeople(
+                                                          id: '',
+                                                          mail: '',
+                                                          isHima: false,
+                                                          name: 'No Name',
+                                                          deadline: null,
+                                                          place: '',
+                                                        ))
+                                                .name ??
+                                            "No Name",
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 Column(
                                   children: [],
@@ -398,6 +404,7 @@ class _NextPageState extends State<NextPage> {
                                 //   maxLines: 1,
                                 //   overflow: TextOverflow.ellipsis,
                                 // ),
+
                                 Column(
                                   children: [
                                     Text(
@@ -449,31 +456,49 @@ class _NextPageState extends State<NextPage> {
                             children: <TableRow>[
                               TableRow(
                                 children: <Widget>[
-                                  Column(
-                                    children: [
-                                      Text(
-                                        person.name ?? "No Name",
-                                        maxLines: 1, // 表示する最大行数を1行に制限
-                                        overflow: TextOverflow
-                                            .ellipsis, // テキストが制限を超えた場合に省略記号を表示
-                                      ),
-                                    ],
+                                  GestureDetector(
+                                    onTap: () {
+                                      print('tapped1');
+                                      // タップされたときの処理をここに記述
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          person.name ?? "No Name",
+                                          maxLines: 1, // 表示する最大行数を1行に制限
+                                          overflow: TextOverflow
+                                              .ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  Column(
-                                    children: [
-                                      _getCountdownString(
-                                          person.deadline ?? DateTime.now()),
-                                    ],
+                                  GestureDetector(
+                                    onTap: () {
+                                      print('tapped2');
+                                      // タップされたときの処理をここに記述
+                                    },
+                                    child: Column(
+                                      children: [
+                                        _getCountdownString(
+                                            person.deadline ?? DateTime.now()),
+                                      ],
+                                    ),
                                   ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                        person.place ?? "Nowhere",
-                                        maxLines: 1, // 表示する最大行数を1行に制限
-                                        overflow: TextOverflow
-                                            .ellipsis, // テキストが制限を超えた場合に省略記号を表示
-                                      ),
-                                    ],
+                                  GestureDetector(
+                                    onTap: () {
+                                      print('tapped3');
+                                      // タップされたときの処理をここに記述
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          person.place ?? "Nowhere",
+                                          maxLines: 1, // 表示する最大行数を1行に制限
+                                          overflow: TextOverflow
+                                              .ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               )
