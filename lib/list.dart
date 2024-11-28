@@ -291,7 +291,6 @@ class _NextPageState extends State<NextPage> {
               physics: const AlwaysScrollableScrollPhysics(),
               children: [
                 ListTile(
-                  leading: const Icon(Icons.person),
                   title: DataTable(
                     showCheckboxColumn: false,
                     columns: const <DataColumn>[
