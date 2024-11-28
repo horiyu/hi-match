@@ -550,8 +550,10 @@ class _NextPageState extends State<NextPage> {
                     'content': doc.data()['content'],
                     'selected': false,
                   };
-                };
+                }
+                ;
                 showModalBottomSheet(
+                  // isScrollControlled: true,
                   context: context,
                   builder: (context) => HimaModal(),
                 );
