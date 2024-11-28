@@ -386,22 +386,27 @@ class _NextPageState extends State<NextPage> {
                               //ここで各ひまユーザーをタップしたときの処理を書く
                             },
                             cells: [
-                              DataCell(Icon(Icons.person)),
-                              DataCell(GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              UserPage(person),
-                                          settings: const RouteSettings(
-                                              name: '/user_page')));
-                                },
-                                child: Text(
-                                  person.name ?? "No Name",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                              DataCell(
+                                GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  UserPage(person),
+                                              settings: const RouteSettings(
+                                                  name: '/user_page')));
+                                    },
+                                    child: Icon(Icons.person) //Text(
+                                    // person.name ?? "No Name",
+                                    // maxLines: 1,
+                                    // overflow: TextOverflow.ellipsis,
+                                    ),
+                              ),
+                              DataCell(Text(
+                                person.name ?? "No Name",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               )),
                               DataCell(Text(
                                 _getCountdownString(
