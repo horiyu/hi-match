@@ -162,6 +162,33 @@ class _HimaModalState extends State<HimaModal> {
               //   ),
               // ),
               const SizedBox(height: 10),
+              OutlinedButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(Colors.white),
+                  minimumSize: WidgetStateProperty.all(const Size(300, 50)),
+                  maximumSize: WidgetStateProperty.all(const Size(300, 50)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('公開範囲を設定する'),
+                    Row(
+                      children: [
+                        if (selectedDate == null)
+                          const Text('選択')
+                        else
+                          const Text('選択'),
+                        const SizedBox(width: 10),
+                        const Icon(
+                          Icons.chevron_right,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                onPressed: () {},
+              ),
+              const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.only(bottom: 30),
                 child: Row(
