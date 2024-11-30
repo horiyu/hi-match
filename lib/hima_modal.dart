@@ -61,7 +61,8 @@ class _HimaModalState extends State<HimaModal> {
                                           .add(const Duration(days: 1))
                                           .difference(now)
                                       : selectedDate!.difference(now);
-                                  final differenceText = difference.inMinutes >= 60
+                                  final differenceText = difference.inMinutes >=
+                                          60
                                       ? '残り ${difference.inHours}時間 ${difference.inMinutes.remainder(60).toString().padLeft(2, '0')}分'
                                       : '残り ${difference.inMinutes}分';
                                   return Text(
@@ -97,15 +98,70 @@ class _HimaModalState extends State<HimaModal> {
                 },
               ),
               const SizedBox(height: 10),
-              Expanded(
-                child: SingleChildScrollView(
-                  controller: scrollController,
-                  child: const SizedBox(
-                    width: 300,
-                    child: HimaActivityList(),
-                  ),
+              OutlinedButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(Colors.white),
+                  minimumSize: WidgetStateProperty.all(const Size(300, 50)),
+                  maximumSize: WidgetStateProperty.all(const Size(300, 50)),
                 ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('何したい？'),
+                    Row(
+                      children: [
+                        if (selectedDate == null)
+                          const Text('選択')
+                        else
+                          const Text('選択'),
+                        // Column(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   crossAxisAlignment: CrossAxisAlignment.end,
+                        //   children: [
+                        //     Text(
+                        //       '〜 ${selectedDate!.hour.toString().padLeft(2, '0')}:${selectedDate!.minute.toString().padLeft(2, '0')}',
+                        //     ),
+                        //     Builder(
+                        //       builder: (context) {
+                        //         final now = DateTime.now();
+                        //         final difference = selectedDate!.isBefore(now)
+                        //             ? selectedDate!
+                        //                 .add(const Duration(days: 1))
+                        //                 .difference(now)
+                        //             : selectedDate!.difference(now);
+                        //         final differenceText = difference.inMinutes >=
+                        //                 60
+                        //             ? '残り ${difference.inHours}時間 ${difference.inMinutes.remainder(60).toString().padLeft(2, '0')}分'
+                        //             : '残り ${difference.inMinutes}分';
+                        //         return Text(
+                        //           differenceText,
+                        //           style: const TextStyle(
+                        //               fontSize: 10, color: Colors.grey),
+                        //         );
+                        //       },
+                        //     ),
+                        //   ],
+                        // ),
+                        const SizedBox(width: 10),
+                        const Icon(
+                          Icons.chevron_right,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                onPressed: () {},
               ),
+              // Expanded(
+              //   child: SingleChildScrollView(
+              //     controller: scrollController,
+              //     child: const SizedBox(
+              //       width: 300,
+              //       child: HimaActivityList(),
+              //     ),
+              //   ),
+              // ),
+              const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.only(bottom: 30),
                 child: Row(
@@ -115,7 +171,8 @@ class _HimaModalState extends State<HimaModal> {
                       style: ButtonStyle(
                         backgroundColor:
                             WidgetStateProperty.all(Colors.deepOrangeAccent),
-                        minimumSize: WidgetStateProperty.all(const Size(300, 50)),
+                        minimumSize:
+                            WidgetStateProperty.all(const Size(300, 50)),
                       ),
                       child: const Text(
                         'ひま',
