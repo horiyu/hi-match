@@ -15,8 +15,8 @@ class _HimaModalState extends State<HimaModal> {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.5, // 初期の高さ
-      minChildSize: 0.5, // 最小の高さ
+      initialChildSize: 1.0, // 初期の高さ
+      minChildSize: 1.0, // 最小の高さ
       maxChildSize: 1.0, // 最大の高さ
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
