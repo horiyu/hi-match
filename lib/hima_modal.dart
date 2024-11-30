@@ -188,7 +188,10 @@ class _HimaModalState extends State<HimaModal> {
                 ),
                 onPressed: () {},
               ),
-              const SizedBox(height: 20),
+              // const SizedBox(height: 20),
+              const Expanded(
+                child: SizedBox(height: 20),
+              ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 30),
                 child: Row(
