@@ -107,7 +107,7 @@ class _HimaModalState extends State<HimaModal> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('何したい？'),
+                    const Text('ひまつぶしを設定する'),
                     Row(
                       children: [
                         if (selectedDate == null)
