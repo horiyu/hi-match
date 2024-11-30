@@ -551,7 +551,6 @@ class _NextPageState extends State<NextPage> {
                     'selected': false,
                   };
                 }
-                ;
                 showModalBottomSheet(
                   // isScrollControlled: true,
                   context: context,
