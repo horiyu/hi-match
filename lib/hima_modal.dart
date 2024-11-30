@@ -97,7 +97,7 @@ class _HimaModalState extends State<HimaModal> {
                   );
                 },
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               OutlinedButton(
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.all(Colors.white),
@@ -161,7 +161,7 @@ class _HimaModalState extends State<HimaModal> {
               //     ),
               //   ),
               // ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               OutlinedButton(
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.all(Colors.white),
@@ -188,7 +188,7 @@ class _HimaModalState extends State<HimaModal> {
                 ),
                 onPressed: () {},
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.only(bottom: 30),
                 child: Row(
