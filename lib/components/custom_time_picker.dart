@@ -216,7 +216,7 @@ Future<void> showCustomTimePicker({
                                 alignment: Alignment.center,
                                 height: itemHeight,
                                 child: Text(
-                                  '${(startHour + index) % totalHours}',
+                                    '${(startHour + index) % totalHours}'.padLeft(2, '0'),
                                   style: const TextStyle(color: Colors.black),
                                 ),
                               );
@@ -240,7 +240,7 @@ Future<void> showCustomTimePicker({
                                 alignment: Alignment.center,
                                 height: itemHeight,
                                 child: Text(
-                                  '${(startMinute + index * 5) % totalMinutes}',
+                                    ((startMinute + index * 5) % totalMinutes).toString().padLeft(2, '0'),
                                   style: const TextStyle(color: Colors.black),
                                 ),
                               );
