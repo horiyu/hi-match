@@ -175,7 +175,7 @@ class _HimaModalState extends State<HimaModal> {
                     Row(
                       children: [
                         if (selectedDate == null)
-                          const Text('選択')
+                          const Text('全員')
                         else
                           const Text('選択'),
                         const SizedBox(width: 10),
