@@ -523,6 +523,7 @@ class _NextPageState extends State<NextPage> {
                           ),
                         ],
                       ),
+                      trailing: Text("time"),
                     ),
                 //         Column(
                 //           children: [
