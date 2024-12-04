@@ -291,32 +291,6 @@ class _NextPageState extends State<NextPage> {
             child: ListView(
               physics: const AlwaysScrollableScrollPhysics(),
               children: [
-                ListTile(
-                  leading: const Icon(Icons.person),
-                  title: Table(
-                    children: <TableRow>[
-                      TableRow(
-                        children: <Widget>[
-                          Column(
-                            children: [
-                              Text('Name'),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text('Deadline'),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text('Place'),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
                 if (_isHima)
                   Container(
                     color: Colors.yellow[100],
@@ -523,14 +497,19 @@ class _NextPageState extends State<NextPage> {
                           ),
                         ],
                       ),
-                      trailing: Text("time"),
+                      trailing: Column(
+                        children: [
+                          _getCountdownString(
+                              person.deadline ?? DateTime.now()),
+                        ],
+                      ),
                     ),
-                //         Column(
-                //           children: [
-                //             _getCountdownString(
-                //                 person.deadline ?? DateTime.now()),
-                //           ],
-                //         ),
+                // Column(
+                //   children: [
+                //     _getCountdownString(
+                //         person.deadline ?? DateTime.now()),
+                //   ],
+                // ),
                 //         Column(
                 //           children: [
                 //             Text(
