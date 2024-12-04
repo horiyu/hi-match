@@ -120,7 +120,7 @@ class _NextPageState extends State<NextPage> {
     );
   }
 
-  void _toggleHimaStatus(int index) async {
+  void _toggleHimaStatus() async {
     final user = FirebaseAuth.instance.currentUser;
     final uid = user?.uid;
     final email = user?.email;
@@ -148,7 +148,6 @@ class _NextPageState extends State<NextPage> {
         name: name,
         deadline: null,
         place: "春日",
-        // himaActivitiesIds: [],
       );
       await addHimaPerson(newPerson);
     } else {
@@ -350,35 +349,29 @@ class _NextPageState extends State<NextPage> {
                             TableRow(
                               //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
-                                GestureDetector(
-                                  onTap: () {
-                                    print('tapped_my');
-                                    // ログインユーザーがタップされたときの処理をここに記述
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        himaPeople
-                                                .firstWhere(
-                                                    (person) =>
-                                                        person.id ==
-                                                        FirebaseAuth.instance
-                                                            .currentUser?.uid,
-                                                    orElse: () => HimaPeople(
-                                                          id: '',
-                                                          mail: '',
-                                                          isHima: false,
-                                                          name: 'No Name',
-                                                          deadline: null,
-                                                          place: '',
-                                                        ))
-                                                .name ??
-                                            "No Name",
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
-                                  ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      himaPeople
+                                              .firstWhere(
+                                                  (person) =>
+                                                      person.id ==
+                                                      FirebaseAuth.instance
+                                                          .currentUser?.uid,
+                                                  orElse: () => HimaPeople(
+                                                        id: '',
+                                                        mail: '',
+                                                        isHima: false,
+                                                        name: 'No Name',
+                                                        deadline: null,
+                                                        place: '',
+                                                      ))
+                                              .name ??
+                                          "No Name",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
                                 ),
                                 Column(
                                   children: [],
@@ -404,7 +397,6 @@ class _NextPageState extends State<NextPage> {
                                 //   maxLines: 1,
                                 //   overflow: TextOverflow.ellipsis,
                                 // ),
-
                                 Column(
                                   children: [
                                     Text(
@@ -456,49 +448,31 @@ class _NextPageState extends State<NextPage> {
                             children: <TableRow>[
                               TableRow(
                                 children: <Widget>[
-                                  GestureDetector(
-                                    onTap: () {
-                                      print('tapped1');
-                                      // タップされたときの処理をここに記述
-                                    },
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          person.name ?? "No Name",
-                                          maxLines: 1, // 表示する最大行数を1行に制限
-                                          overflow: TextOverflow
-                                              .ellipsis, // テキストが制限を超えた場合に省略記号を表示
-                                        ),
-                                      ],
-                                    ),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        person.name ?? "No Name",
+                                        maxLines: 1, // 表示する最大行数を1行に制限
+                                        overflow: TextOverflow
+                                            .ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                                      ),
+                                    ],
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      print('tapped2');
-                                      // タップされたときの処理をここに記述
-                                    },
-                                    child: Column(
-                                      children: [
-                                        _getCountdownString(
-                                            person.deadline ?? DateTime.now()),
-                                      ],
-                                    ),
+                                  Column(
+                                    children: [
+                                      _getCountdownString(
+                                          person.deadline ?? DateTime.now()),
+                                    ],
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      print('tapped3');
-                                      // タップされたときの処理をここに記述
-                                    },
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          person.place ?? "Nowhere",
-                                          maxLines: 1, // 表示する最大行数を1行に制限
-                                          overflow: TextOverflow
-                                              .ellipsis, // テキストが制限を超えた場合に省略記号を表示
-                                        ),
-                                      ],
-                                    ),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        person.place ?? "Nowhere",
+                                        maxLines: 1, // 表示する最大行数を1行に制限
+                                        overflow: TextOverflow
+                                            .ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                                      ),
+                                    ],
                                   ),
                                 ],
                               )
@@ -533,253 +507,280 @@ class _NextPageState extends State<NextPage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Center(
-          child: ToggleSwitch(
-            minWidth: 130.0,
-            minHeight: 90.0,
-            cornerRadius: 50.0,
-            activeFgColor: Colors.white,
-            inactiveBgColor: Colors.grey,
-            inactiveFgColor: Colors.white,
-            activeBgColors: const [
-              [Colors.black45, Colors.black26],
-              [Color.fromARGB(255, 75, 159, 78), Colors.green]
-            ],
-            animate:
-                true, // with just animate set to true, default curve = Curves.easeIn
-            curve: Curves
-                .bounceInOut, // animate must be set to true when using custom curve
-            initialLabelIndex: _isHima ? 1 : 0,
-            totalSwitches: 2,
-            labels: const ['忙', '暇'],
-            onToggle: (index) async {
-              _toggleHimaStatus(index!);
-              if (!_isHima) {
-                final user = FirebaseAuth.instance.currentUser;
-                final uid = user?.uid;
-                final snapshot = await FirebaseFirestore.instance
-                    .collection("users")
-                    .where("id", isEqualTo: uid)
-                    .get();
-                var himaActivities = await FirebaseFirestore.instance
-                    .collection("users")
-                    .doc(snapshot.docs[0].id)
-                    .collection("himaActivities")
-                    .get();
-                Map<String, Map<String, dynamic>> himaActivitiesMap = {};
-                for (var doc in himaActivities.docs) {
-                  himaActivitiesMap[doc.id] = {
-                    'icon': doc.data()['icon'],
-                    'content': doc.data()['content'],
-                    'selected': false,
-                  };
-                }
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      // title: const Text('暇ステータスを変更しました'),
-                      content: SizedBox(
-                        width: 500,
-                        child: Navigator(
-                          onGenerateRoute: (settings) {
-                            return MaterialPageRoute(
-                              builder: (context) {
-                                return Scaffold(
-                                  appBar: AppBar(
-                                    title: const Text('暇ステータスを変更しました'),
-                                  ),
-                                  body: Center(
-                                    child: Column(
-                                      children: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            _selectTime(context);
-                                          },
-                                          child: Text(
-                                            inputDeadline == DateTime.now()
-                                                ? '期限を設定'
-                                                : '${inputDeadline.hour}:${inputDeadline.minute}',
-                                            style: const TextStyle(
-                                                color: Colors.blue),
-                                          ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: SizedBox(
+        width: 100,
+        height: 100,
+        child: FloatingActionButton(
+          onPressed: () async {
+            _toggleHimaStatus();
+            if (!_isHima) {
+              final user = FirebaseAuth.instance.currentUser;
+              final uid = user?.uid;
+              final snapshot = await FirebaseFirestore.instance
+                  .collection("users")
+                  .where("id", isEqualTo: uid)
+                  .get();
+              var himaActivities = await FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(snapshot.docs[0].id)
+                  .collection("himaActivities")
+                  .get();
+              Map<String, Map<String, dynamic>> himaActivitiesMap = {};
+              for (var doc in himaActivities.docs) {
+                himaActivitiesMap[doc.id] = {
+                  'icon': doc.data()['icon'],
+                  'content': doc.data()['content'],
+                  'selected': false,
+                };
+              }
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    // title: const Text('暇ステータスを変更しました'),
+                    content: SizedBox(
+                      width: 500,
+                      child: Navigator(
+                        onGenerateRoute: (settings) {
+                          return MaterialPageRoute(
+                            builder: (context) {
+                              return Scaffold(
+                                appBar: AppBar(
+                                  title: const Text('暇ステータスを変更しました'),
+                                ),
+                                body: Center(
+                                  child: Column(
+                                    children: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          _selectTime(context);
+                                        },
+                                        child: Text(
+                                          inputDeadline == DateTime.now()
+                                              ? '期限を設定'
+                                              : '${inputDeadline.hour}:${inputDeadline.minute}',
+                                          style: const TextStyle(
+                                              color: Colors.blue),
                                         ),
-                                        OutlinedButton(
-                                          onPressed: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                String newActivity = '';
-                                                return AlertDialog(
-                                                  title: const Text('新規入力'),
-                                                  content: TextField(
-                                                    onChanged: (value) {
-                                                      newActivity = value;
-                                                    },
-                                                    decoration:
-                                                        const InputDecoration(
-                                                      hintText: "新しいアクティビティを入力",
-                                                    ),
+                                      ),
+                                      OutlinedButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              String newActivity = '';
+                                              return AlertDialog(
+                                                title: const Text('新規入力'),
+                                                content: TextField(
+                                                  onChanged: (value) {
+                                                    newActivity = value;
+                                                  },
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    hintText: "新しいアクティビティを入力",
                                                   ),
-                                                  actions: <Widget>[
-                                                    ElevatedButton(
-                                                      onPressed: () async {
-                                                        if (newActivity
-                                                            .isNotEmpty) {
-                                                          var himaActivitiesCount =
-                                                              himaActivities
-                                                                  .docs.length;
-                                                          if (himaActivitiesCount <=
-                                                              10) {
-                                                            await FirebaseFirestore
-                                                                .instance
-                                                                .collection(
-                                                                    "users")
-                                                                .doc(snapshot
-                                                                    .docs[0].id)
-                                                                .collection(
-                                                                    "himaActivities")
-                                                                .add({
-                                                              'icon': 'person',
-                                                              'content':
-                                                                  newActivity,
-                                                            });
-                                                            snackBarInfo =
-                                                                'ひまアクティビティを登録しました';
-                                                            setState(() {
-                                                              _futureHimaActivities =
-                                                                  fetchHimaActivities();
-                                                            });
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                          } else {
-                                                            snackBarInfo =
-                                                                'ひまアクティビティは10個まで登録可能です';
-                                                          }
-                                                          final snackBar =
-                                                              SnackBar(
-                                                            content: Text(
-                                                                snackBarInfo),
-                                                          );
-                                                          ScaffoldMessenger.of(
-                                                                  context)
-                                                              .showSnackBar(
-                                                                  snackBar);
+                                                ),
+                                                actions: <Widget>[
+                                                  ElevatedButton(
+                                                    onPressed: () async {
+                                                      if (newActivity
+                                                          .isNotEmpty) {
+                                                        var himaActivitiesCount =
+                                                            himaActivities
+                                                                .docs.length;
+                                                        if (himaActivitiesCount <=
+                                                            10) {
+                                                          await FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  "users")
+                                                              .doc(snapshot
+                                                                  .docs[0].id)
+                                                              .collection(
+                                                                  "himaActivities")
+                                                              .add({
+                                                            'icon': 'person',
+                                                            'content':
+                                                                newActivity,
+                                                          });
+                                                          snackBarInfo =
+                                                              'ひまアクティビティを登録しました';
                                                           setState(() {
                                                             _futureHimaActivities =
                                                                 fetchHimaActivities();
                                                           });
                                                           Navigator.of(context)
                                                               .pop();
+                                                        } else {
+                                                          snackBarInfo =
+                                                              'ひまアクティビティは10個まで登録可能です';
                                                         }
-                                                      },
-                                                      child: const Text('追加'),
-                                                    ),
-                                                    ElevatedButton(
-                                                      onPressed: () {
+                                                        final snackBar =
+                                                            SnackBar(
+                                                          content: Text(
+                                                              snackBarInfo),
+                                                        );
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                                snackBar);
+                                                        setState(() {
+                                                          _futureHimaActivities =
+                                                              fetchHimaActivities();
+                                                        });
                                                         Navigator.of(context)
                                                             .pop();
-                                                      },
-                                                      child:
-                                                          const Text('キャンセル'),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
-                                          child: const Text('新規入力'),
-                                        ),
-                                        SizedBox(
-                                          // height: 500,
-                                          child: FutureBuilder<
-                                              Map<String,
-                                                  Map<String, dynamic>>>(
-                                            future: _futureHimaActivities,
-                                            builder: (BuildContext context,
-                                                AsyncSnapshot<
-                                                        Map<
-                                                            String,
-                                                            Map<String,
-                                                                dynamic>>>
-                                                    snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return const CircularProgressIndicator();
-                                              } else if (snapshot.hasError) {
-                                                return Text(
-                                                    'Error: ${snapshot.error}');
-                                              } else if (!snapshot.hasData ||
-                                                  snapshot.data!.isEmpty) {
-                                                return const Text(
-                                                    'No activities found');
-                                              } else {
-                                                Map<String,
-                                                        Map<String, dynamic>>
-                                                    himaActivitiesMap =
-                                                    snapshot.data!;
-                                                return ListView.builder(
-                                                  shrinkWrap: true,
-                                                  itemCount:
-                                                      himaActivitiesMap.length >
-                                                              10
-                                                          ? 10
-                                                          : himaActivitiesMap
-                                                              .length,
-                                                  itemBuilder:
-                                                      (BuildContext context,
-                                                          int index) {
-                                                    String key =
-                                                        himaActivitiesMap.keys
-                                                            .elementAt(index);
-                                                    return StatefulBuilder(
-                                                      builder:
-                                                          (BuildContext context,
-                                                              StateSetter
-                                                                  setState) {
-                                                        return CheckboxListTile(
-                                                          title: Text(
-                                                              himaActivitiesMap[
-                                                                      key]![
-                                                                  'content']),
-                                                          value:
-                                                              himaActivitiesMap[
-                                                                      key]![
-                                                                  'selected'],
-                                                          onChanged:
-                                                              (bool? value) {
-                                                            setState(() {
-                                                              himaActivitiesMap[
-                                                                          key]![
-                                                                      'selected'] =
-                                                                  value!;
-                                                            });
-                                                          },
-                                                        );
-                                                      },
-                                                    );
-                                                  },
-                                                );
-                                              }
+                                                      }
+                                                    },
+                                                    child: const Text('追加'),
+                                                  ),
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: const Text('キャンセル'),
+                                                  ),
+                                                ],
+                                              );
                                             },
-                                          ),
+                                          );
+                                        },
+                                        child: const Text('新規入力'),
+                                      ),
+                                      SizedBox(
+                                        // height: 500,
+                                        child: FutureBuilder<
+                                            Map<String, Map<String, dynamic>>>(
+                                          future: _futureHimaActivities,
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<
+                                                      Map<String,
+                                                          Map<String, dynamic>>>
+                                                  snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return const CircularProgressIndicator();
+                                            } else if (snapshot.hasError) {
+                                              return Text(
+                                                  'Error: ${snapshot.error}');
+                                            } else if (!snapshot.hasData ||
+                                                snapshot.data!.isEmpty) {
+                                              return const Text(
+                                                  'No activities found');
+                                            } else {
+                                              Map<String, Map<String, dynamic>>
+                                                  himaActivitiesMap =
+                                                  snapshot.data!;
+                                              return ListView.builder(
+                                                shrinkWrap: true,
+                                                itemCount: himaActivitiesMap
+                                                            .length >
+                                                        10
+                                                    ? 10
+                                                    : himaActivitiesMap.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  String key = himaActivitiesMap
+                                                      .keys
+                                                      .elementAt(index);
+                                                  return StatefulBuilder(
+                                                    builder: (BuildContext
+                                                            context,
+                                                        StateSetter setState) {
+                                                      return CheckboxListTile(
+                                                        title: Text(
+                                                            himaActivitiesMap[
+                                                                    key]![
+                                                                'content']),
+                                                        value:
+                                                            himaActivitiesMap[
+                                                                    key]![
+                                                                'selected'],
+                                                        onChanged:
+                                                            (bool? value) {
+                                                          setState(() {
+                                                            himaActivitiesMap[
+                                                                        key]![
+                                                                    'selected'] =
+                                                                value!;
+                                                          });
+                                                        },
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                              );
+                                            }
+                                          },
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                );
-                              },
-                            );
-                          },
-                        ),
+                                ),
+                              );
+                            },
+                          );
+                        },
                       ),
-                    );
-                  },
-                );
-              }
-            },
+                    ),
+                  );
+                },
+              );
+            }
+            // Add your onPressed code here!
+          },
+          backgroundColor: Colors.blue[200],
+          child: const Icon(Icons.add),
+          shape: const CircleBorder(),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: const Color.fromARGB(255, 23, 63, 122),
+        notchMargin: 11.0,
+        shape: AutomaticNotchedShape(
+          RoundedRectangleBorder(),
+          StadiumBorder(
+            side: BorderSide(),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: new Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle, // 丸い背景
+                  // color: Colors.blue[200], // 背景色
+                ),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.person_outline,
+                    color: Colors.white,
+                    size: 32.0,
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle, // 丸い背景
+                  // color: Colors.blue[200], // 背景色
+                ),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.search,
+                    color: Colors.white,
+                    size: 32.0,
+                  ),
+                  onPressed: () {},
+                ),
+              )
+            ],
           ),
         ),
       ),
