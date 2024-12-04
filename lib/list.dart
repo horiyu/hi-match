@@ -81,11 +81,11 @@ class _NextPageState extends State<NextPage> {
         .where("id", isEqualTo: uid)
         .get();
 
-    bool isHima = snapshot.docs[0].data()['isHima'];
+    // bool isHima = snapshot.docs[0].data()['isHima'];
 
-    setState(() {
-      _isHima = isHima;
-    });
+    // setState(() {
+    //   _isHima = isHima;
+    // });
   }
 
   Future getHimaPeople() async {
@@ -154,10 +154,10 @@ class _NextPageState extends State<NextPage> {
       await addHimaPerson(newPerson);
     } else {
       isHima = snapshot.docs[0].data()['isHima'];
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(snapshot.docs[0].id)
-          .update({'isHima': !isHima});
+      // await FirebaseFirestore.instance
+      //     .collection("users")
+      //     .doc(snapshot.docs[0].id)
+      //     .update({'isHima': !isHima});
     }
     setState(() {
       _isHima = !isHima;
@@ -552,10 +552,14 @@ class _NextPageState extends State<NextPage> {
                   };
                 }
                 showModalBottomSheet(
-                  // isScrollControlled: true,
                   context: context,
                   builder: (context) => HimaModal(uid),
-                );
+                ).then((_) {
+                  setState(() {
+                    _isHima = true;
+                  });
+                });
+                // TODO: ここ多分エラー出る（今だけこれで）
                 // showDialog(
                 //   context: context,
                 //   builder: (BuildContext context) {

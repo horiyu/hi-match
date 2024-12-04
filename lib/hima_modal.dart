@@ -153,7 +153,16 @@ class _HimaModalState extends State<HimaModal> {
                     ),
                   ],
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  await himaActivityList(
+                    handler: ({required DateTime date}) {
+                      setState(() {
+                        // himaActivity = date;
+                      });
+                    },
+                    context: context,
+                  );
+                },
               ),
               // Expanded(
               //   child: SingleChildScrollView(
@@ -222,6 +231,15 @@ class _HimaModalState extends State<HimaModal> {
                                   .update({
                                 'deadline': Timestamp.fromDate(selectedDate!)
                               });
+                              bool isHima = snapshot.docs[0].data()['isHima'];
+                              await FirebaseFirestore.instance
+                                  .collection("users")
+                                  .doc(snapshot.docs[0].id)
+                                  .update({'isHima': !isHima});
+                              Navigator.of(context).pop();
+                              // setState(() {
+                              //   _isHima = isHima;
+                              // });
                             },
                       child: const Text(
                         'ひま',
