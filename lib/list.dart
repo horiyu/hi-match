@@ -554,7 +554,7 @@ class _NextPageState extends State<NextPage> {
                 showModalBottomSheet(
                   // isScrollControlled: true,
                   context: context,
-                  builder: (context) => HimaModal(),
+                  builder: (context) => HimaModal(uid),
                 );
                 // showDialog(
                 //   context: context,

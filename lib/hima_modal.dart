@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_web_app/components/hima_activity_list.dart';
 import 'components/custom_time_picker.dart';
 
 class HimaModal extends StatefulWidget {
-  const HimaModal({super.key});
+  final String? uid;
+
+  const HimaModal(this.uid, {super.key});
 
   @override
   _HimaModalState createState() => _HimaModalState();
@@ -199,18 +202,31 @@ class _HimaModalState extends State<HimaModal> {
                   children: [
                     ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor:
-                            WidgetStateProperty.all(Colors.deepOrangeAccent),
+                        backgroundColor: WidgetStateProperty.all(
+                            selectedDate == null
+                                ? Colors.deepOrangeAccent.withOpacity(0.5)
+                                : Colors.deepOrangeAccent),
                         minimumSize:
                             WidgetStateProperty.all(const Size(300, 50)),
                       ),
+                      onPressed: selectedDate == null
+                          ? null
+                          : () async {
+                              final snapshot = await FirebaseFirestore.instance
+                                  .collection("users")
+                                  .where("id", isEqualTo: widget.uid)
+                                  .get();
+                              await FirebaseFirestore.instance
+                                  .collection("users")
+                                  .doc(snapshot.docs[0].id)
+                                  .update({
+                                'deadline': Timestamp.fromDate(selectedDate!)
+                              });
+                            },
                       child: const Text(
                         'ひま',
                         style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
                     ),
                   ],
                 ),
