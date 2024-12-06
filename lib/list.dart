@@ -220,6 +220,7 @@ class _NextPageState extends State<NextPage> {
           children: [
             Expanded(
               child: IconButton(
+                iconSize: 32,
                 icon: const Icon(Icons.person),
                 onPressed: () {
                   var myPerson = himaPeople.firstWhere(
@@ -258,17 +259,17 @@ class _NextPageState extends State<NextPage> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.grey[300],
               foregroundColor: Colors.lightBlue,
+              minimumSize: Size(20, 40),
             ),
-            child: const Text('ログアウト'),
+            child: const Text(
+                style: TextStyle(
+                  fontSize: 10,
+                ),
+                'ログアウト'),
             onPressed: () async {
               try {
                 await FirebaseAuth.instance.signOut();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MyApp(),
-                      settings: const RouteSettings(name: '/my_app'),
-                    ));
+                Navigator.popUntil(context, (route) => route.isFirst);
               } catch (e) {
                 setState(() {});
               }
@@ -810,11 +811,13 @@ class _NextPageState extends State<NextPage> {
                 ),
                 child: IconButton(
                   icon: Icon(
-                    Icons.person_outline,
+                    Icons.home,
                     color: Colors.white,
                     size: 32.0,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.popUntil(context, (route) => route.isFirst);
+                  },
                 ),
               ),
               Container(
@@ -824,7 +827,7 @@ class _NextPageState extends State<NextPage> {
                 ),
                 child: IconButton(
                   icon: Icon(
-                    Icons.search,
+                    Icons.person_add,
                     color: Colors.white,
                     size: 32.0,
                   ),
