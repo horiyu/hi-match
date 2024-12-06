@@ -32,7 +32,6 @@ Future<void> himaActivityList({
                     child: Column(
                       children: [
                         TextField(
-                          // controller: hourController,
                           decoration: const InputDecoration(
                             labelText: '何したい？',
                           ),
@@ -40,24 +39,29 @@ Future<void> himaActivityList({
                             newHimaActivity = value;
                           },
                         ),
-                        ElevatedButton(
-                          onPressed: newHimaActivity == ""
-                              ? null
-                              : () async {
-                                  final snapshot = await FirebaseFirestore
-                                      .instance
-                                      .collection("users")
-                                      .where("id", isEqualTo: uid)
-                                      .get();
-                                  await FirebaseFirestore.instance
-                                      .collection("users")
-                                      .doc(snapshot.docs[0].id)
-                                      .collection("himaActivities")
-                                      .add({
-                                    'content': newHimaActivity,
-                                  });
-                                },
-                          child: Text('選択肢に追加'),
+                        ValueListenableBuilder(
+                          valueListenable: ValueNotifier(newHimaActivity),
+                          builder: (context, value, child) {
+                            return ElevatedButton(
+                              onPressed: newHimaActivity.isEmpty
+                                  ? null
+                                  : () async {
+                                      final snapshot = await FirebaseFirestore
+                                          .instance
+                                          .collection("users")
+                                          .where("id", isEqualTo: uid)
+                                          .get();
+                                      await FirebaseFirestore.instance
+                                          .collection("users")
+                                          .doc(snapshot.docs[0].id)
+                                          .collection("himaActivities")
+                                          .add({
+                                        'content': newHimaActivity,
+                                      });
+                                    },
+                              child: const Text('選択肢に追加'),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -98,10 +102,6 @@ Future<void> himaActivityList({
                     onPressed: () {
                       handler(himaActivities: newHimaActivity);
                       Navigator.of(context).pop();
-                      
-                      
-                      
-                      
                     },
                   ),
                 ],
