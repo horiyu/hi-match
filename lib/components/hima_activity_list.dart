@@ -1,31 +1,91 @@
 import 'package:flutter/material.dart';
 
-class HimaActivityList extends StatelessWidget {
-  const HimaActivityList({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: 10, // Adjust the number of buttons as needed
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 10),
-          child: OutlinedButton(
-            style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(Colors.white),
-              minimumSize: WidgetStateProperty.all(const Size(300, 50)),
-              maximumSize: WidgetStateProperty.all(const Size(300, 50)),
-              alignment: Alignment.centerLeft,
+Future<void> himaActivityList({
+  required BuildContext context,
+  required Null Function({required DateTime date}) handler,
+}) async {
+  String newHimaActivity = "";
+  await showModalBottomSheet(
+    context: context,
+    builder: (context) {
+      return Container(
+        decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15.0),
+              topRight: Radius.circular(15.0),
+            )),
+        height: 50,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: TextField(
+                      // controller: hourController,
+                      decoration: const InputDecoration(
+                        labelText: '何したい？',
+                      ),
+                      onChanged: (value) {
+                        newHimaActivity = value;
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                ],
+              ),
             ),
-            onPressed: () {
-              // Define the button action here
-            },
-            child: Text('Button $index'),
-          ),
-        );
-      },
-    );
-  }
+            Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.grey),
+                      minimumSize:
+                          MaterialStateProperty.all(const Size(150, 45)),
+                    ),
+                    child: const Text(
+                      '閉じる',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  const SizedBox(width: 30),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.deepOrangeAccent),
+                      minimumSize:
+                          MaterialStateProperty.all(const Size(150, 45)),
+                    ),
+                    child: const Text(
+                      '決定',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      // handler(
+                      //   date: DateTime(
+                      //     DateTime.now().year,
+                      //     DateTime.now().month,
+                      //     DateTime.now().day,
+                      //     selectedHour,
+                      //     selectedMinute,
+                      //   ),
+                      // );
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }

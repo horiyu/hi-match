@@ -54,7 +54,6 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 // ログインボタン
                 child: ElevatedButton(
-                  child: const Text('ログイン'),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor:
@@ -82,6 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                       });
                     }
                   },
+                  child: const Text('ログイン'),
                 ),
               ),
               const SizedBox(
@@ -91,7 +91,6 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 // ログアウトボタン
                 child: ElevatedButton(
-                  child: const Text('ログアウト'),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor:
@@ -110,6 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                       });
                     }
                   },
+                  child: const Text('ログアウト'),
                 ),
               ),
               const SizedBox(
@@ -119,7 +119,6 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 // 戻る
                 child: ElevatedButton(
-                  child: const Text('戻る'),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor:
@@ -128,6 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () async {
                     Navigator.of(context).pop();
                   },
+                  child: const Text('戻る'),
                 ),
               ),
             ],
