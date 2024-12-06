@@ -374,57 +374,60 @@ class _NextPageState extends State<NextPage> {
                 for (var person in himaPeople)
                   if (person.isHima &&
                       person.id != FirebaseAuth.instance.currentUser?.uid)
-                    ListTile(
-                      leading: IconButton(
-                          iconSize: 32,
-                          icon: const Icon(Icons.person),
-                          onPressed: () {
-                            // ボタンが押された際の動作を記述する
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => UserPage(person),
-                                  settings:
-                                      const RouteSettings(name: '/user_page'),
-                                ));
-                          },
-                          style: IconButton.styleFrom(
-                            backgroundColor: Colors.blue[100],
-                          )),
-                      title: Text(
-                        person.name ?? "No Name",
-                        maxLines: 1, // 表示する最大行数を1行に制限
-                        overflow:
-                            TextOverflow.ellipsis, // テキストが制限を超えた場合に省略記号を表示
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
+                    if (person.deadline!
+                        .isAfter(DateTime.now())) //deadlineが0になった時
+                      ListTile(
+                        leading: IconButton(
+                            iconSize: 32,
+                            icon: const Icon(Icons.person),
+                            onPressed: () {
+                              // ボタンが押された際の動作を記述する
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UserPage(person),
+                                    settings:
+                                        const RouteSettings(name: '/user_page'),
+                                  ));
+                            },
+                            style: IconButton.styleFrom(
+                              backgroundColor: Colors.blue[100],
+                            )),
+                        title: Text(
+                          person.name ?? "No Name",
+                          maxLines: 1, // 表示する最大行数を1行に制限
+                          overflow:
+                              TextOverflow.ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Table(
+                          children: <TableRow>[
+                            TableRow(
+                              children: [
+                                Text(
+                                  person.place ?? "Nowhere",
+                                  maxLines: 1, // 表示する最大行数を1行に制限
+                                  overflow: TextOverflow
+                                      .ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        trailing: Column(
+                          children: [
+                            _getCountdownString(
+                              person.deadline ?? DateTime.now(),
+                            ),
+                          ],
                         ),
                       ),
-                      subtitle: Table(
-                        children: <TableRow>[
-                          TableRow(
-                            children: [
-                              Text(
-                                person.place ?? "Nowhere",
-                                maxLines: 1, // 表示する最大行数を1行に制限
-                                overflow: TextOverflow
-                                    .ellipsis, // テキストが制限を超えた場合に省略記号を表示
-                                style: const TextStyle(
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      trailing: Column(
-                        children: [
-                          _getCountdownString(
-                              person.deadline ?? DateTime.now()),
-                        ],
-                      ),
-                    ),
                 // Column(
                 //   children: [
                 //     _getCountdownString(
