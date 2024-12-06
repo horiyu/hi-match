@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+typedef Fn = Function({required String himaActivities});
 
 Future<void> himaActivityList({
   required BuildContext context,
-  required Null Function({required DateTime date}) handler,
+  // required Null Function({required DateTime date}) handler,
+  final String? uid,
+  required Fn handler,
 }) async {
   String newHimaActivity = "";
   await showModalBottomSheet(
@@ -15,7 +20,7 @@ Future<void> himaActivityList({
               topLeft: Radius.circular(15.0),
               topRight: Radius.circular(15.0),
             )),
-        height: 50,
+        height: 500,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
@@ -24,14 +29,41 @@ Future<void> himaActivityList({
                 children: [
                   const SizedBox(width: 20),
                   Expanded(
-                    child: TextField(
-                      // controller: hourController,
-                      decoration: const InputDecoration(
-                        labelText: '何したい？',
-                      ),
-                      onChanged: (value) {
-                        newHimaActivity = value;
-                      },
+                    child: Column(
+                      children: [
+                        TextField(
+                          decoration: const InputDecoration(
+                            labelText: '何したい？',
+                          ),
+                          onChanged: (value) {
+                            newHimaActivity = value;
+                          },
+                        ),
+                        ValueListenableBuilder(
+                          valueListenable: ValueNotifier(newHimaActivity),
+                          builder: (context, value, child) {
+                            return ElevatedButton(
+                              onPressed: newHimaActivity.isEmpty
+                                  ? null
+                                  : () async {
+                                      final snapshot = await FirebaseFirestore
+                                          .instance
+                                          .collection("users")
+                                          .where("id", isEqualTo: uid)
+                                          .get();
+                                      await FirebaseFirestore.instance
+                                          .collection("users")
+                                          .doc(snapshot.docs[0].id)
+                                          .collection("himaActivities")
+                                          .add({
+                                        'content': newHimaActivity,
+                                      });
+                                    },
+                              child: const Text('選択肢に追加'),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -68,15 +100,7 @@ Future<void> himaActivityList({
                       style: TextStyle(color: Colors.white),
                     ),
                     onPressed: () {
-                      // handler(
-                      //   date: DateTime(
-                      //     DateTime.now().year,
-                      //     DateTime.now().month,
-                      //     DateTime.now().day,
-                      //     selectedHour,
-                      //     selectedMinute,
-                      //   ),
-                      // );
+                      handler(himaActivities: newHimaActivity);
                       Navigator.of(context).pop();
                     },
                   ),
