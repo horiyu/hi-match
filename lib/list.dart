@@ -220,6 +220,7 @@ class _NextPageState extends State<NextPage> {
           children: [
             Expanded(
               child: IconButton(
+                iconSize: 32,
                 icon: const Icon(Icons.person),
                 onPressed: () {
                   var myPerson = himaPeople.firstWhere(
@@ -258,17 +259,17 @@ class _NextPageState extends State<NextPage> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.grey[300],
               foregroundColor: Colors.lightBlue,
+              minimumSize: Size(20, 40),
             ),
-            child: const Text('ログアウト'),
+            child: const Text(
+                style: TextStyle(
+                  fontSize: 10,
+                ),
+                'ログアウト'),
             onPressed: () async {
               try {
                 await FirebaseAuth.instance.signOut();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MyApp(),
-                      settings: const RouteSettings(name: '/my_app'),
-                    ));
+                Navigator.popUntil(context, (route) => route.isFirst);
               } catch (e) {
                 setState(() {});
               }
@@ -291,32 +292,6 @@ class _NextPageState extends State<NextPage> {
             child: ListView(
               physics: const AlwaysScrollableScrollPhysics(),
               children: [
-                ListTile(
-                  leading: const Icon(Icons.person),
-                  title: Table(
-                    children: <TableRow>[
-                      const TableRow(
-                        children: <Widget>[
-                          Column(
-                            children: [
-                              Text('Name'),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text('Deadline'),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text('Place'),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
                 if (_isHima)
                   Container(
                     color: Colors.yellow[100],
@@ -443,8 +418,57 @@ class _NextPageState extends State<NextPage> {
                           ),
                         ],
                       ),
-                      trailing: const Text("time"),
+                      trailing: Column(
+                        children: [
+                          _getCountdownString(
+                              person.deadline ?? DateTime.now()),
+                        ],
+                      ),
                     ),
+                // Column(
+                //   children: [
+                //     _getCountdownString(
+                //         person.deadline ?? DateTime.now()),
+                //   ],
+                // ),
+                //         Column(
+                //           children: [
+                //             Text(
+                //               person.place ?? "Nowhere",
+                //               maxLines: 1, // 表示する最大行数を1行に制限
+                //               overflow: TextOverflow
+                //                   .ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                //             ),
+                //           ],
+                //         ),
+                //       ],
+                //     )
+                //   ],
+                // )
+                /*Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Text(
+                              person.name ?? "No Name",
+                              maxLines: 1, // 表示する最大行数を1行に制限
+                              overflow: TextOverflow
+                                  .ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                            ),
+                            Text(
+                              _getCountdownString(
+                                  person.deadline ?? DateTime.now()),
+                              maxLines: 1, // 表示する最大行数を1行に制限
+                              overflow: TextOverflow
+                                  .ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                            ),
+                            Text(
+                              person.place ?? "Nowhere",
+                              maxLines: 1, // 表示する最大行数を1行に制限
+                              overflow: TextOverflow
+                                  .ellipsis, // テキストが制限を超えた場合に省略記号を表示
+                            ),
+                          ],
+                        ),*/
               ],
             ),
           ),
@@ -515,12 +539,14 @@ class _NextPageState extends State<NextPage> {
                   // color: Colors.blue[200], // 背景色
                 ),
                 child: IconButton(
-                  icon: const Icon(
-                    Icons.person_outline,
+                  icon: Icon(
+                    Icons.home,
                     color: Colors.white,
                     size: 32.0,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.popUntil(context, (route) => route.isFirst);
+                  },
                 ),
               ),
               Container(
@@ -529,8 +555,8 @@ class _NextPageState extends State<NextPage> {
                   // color: Colors.blue[200], // 背景色
                 ),
                 child: IconButton(
-                  icon: const Icon(
-                    Icons.search,
+                  icon: Icon(
+                    Icons.person_add,
                     color: Colors.white,
                     size: 32.0,
                   ),
