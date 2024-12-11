@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:my_web_app/name_reg.dart';
 import 'package:my_web_app/signup_page.dart';
-import 'package:my_web_app/user_page.dart';
 import 'firebase_options.dart';
 import 'package:my_web_app/login_page.dart';
 
