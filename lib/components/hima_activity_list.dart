@@ -5,11 +5,32 @@ typedef Fn = Function({required String himaActivities});
 
 Future<void> himaActivityList({
   required BuildContext context,
-  // required Null Function({required DateTime date}) handler,
   final String? uid,
   required Fn handler,
 }) async {
   String newHimaActivity = "";
+  final textController = TextEditingController();
+  final isButtonEnabled = ValueNotifier<bool>(false);
+
+  final tags = [
+    'ビール',
+    'ワイン',
+    '日本酒',
+    '焼酎',
+    'ウィスキー',
+    'ジン',
+    'ウォッカ',
+    '紹興酒',
+    'マッコリ',
+    'カクテル',
+    '果実酒',
+  ];
+  var selectedTags = <String>[];
+
+  textController.addListener(() {
+    isButtonEnabled.value = textController.text.isNotEmpty;
+  });
+
   await showModalBottomSheet(
     context: context,
     builder: (context) {
@@ -25,48 +46,96 @@ Future<void> himaActivityList({
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Expanded(
-              child: Row(
+              child: Column(
                 children: [
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        TextField(
-                          decoration: const InputDecoration(
-                            labelText: '何したい？',
-                          ),
-                          onChanged: (value) {
-                            newHimaActivity = value;
-                          },
+                  Column(
+                    children: [
+                      TextField(
+                        controller: textController,
+                        decoration: const InputDecoration(
+                          labelText: '何したい？',
                         ),
-                        ValueListenableBuilder(
-                          valueListenable: ValueNotifier(newHimaActivity),
-                          builder: (context, value, child) {
-                            return ElevatedButton(
-                              onPressed: newHimaActivity.isEmpty
-                                  ? null
-                                  : () async {
-                                      final snapshot = await FirebaseFirestore
-                                          .instance
-                                          .collection("users")
-                                          .where("id", isEqualTo: uid)
-                                          .get();
-                                      await FirebaseFirestore.instance
-                                          .collection("users")
-                                          .doc(snapshot.docs[0].id)
-                                          .collection("himaActivities")
-                                          .add({
-                                        'content': newHimaActivity,
-                                      });
-                                    },
-                              child: const Text('選択肢に追加'),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
+                        onChanged: (value) {
+                          newHimaActivity = value;
+                        },
+                      ),
+                      ValueListenableBuilder<bool>(
+                        valueListenable: isButtonEnabled,
+                        builder: (context, value, child) {
+                          return ElevatedButton(
+                            onPressed: value
+                                ? () async {
+                                    final snapshot = await FirebaseFirestore
+                                        .instance
+                                        .collection("users")
+                                        .where("id", isEqualTo: uid)
+                                        .get();
+                                    await FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(snapshot.docs[0].id)
+                                        .collection("himaActivities")
+                                        .add({
+                                      'content': newHimaActivity,
+                                    });
+                                    textController.clear();
+                                  }
+                                : null,
+                            child: const Text('選択肢に追加'),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                   const SizedBox(width: 20),
+                  Wrap(
+                    runSpacing: 16,
+                    spacing: 16,
+                    children: tags.map((tag) {
+                      // selectedTags の中に自分がいるかを確かめる
+                      final isSelected = selectedTags.contains(tag);
+                      return InkWell(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(32)),
+                        onTap: () {
+                          if (isSelected) {
+                            // すでに選択されていれば取り除く
+                            selectedTags.remove(tag);
+                          } else {
+                            // 選択されていなければ追加する
+                            selectedTags.add(tag);
+                          }
+                          // setState(() {});
+                        },
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(32)),
+                            border: Border.all(
+                              width: 2,
+                              color: Colors.pink,
+                            ),
+                            color: isSelected ? Colors.pink : null,
+                          ),
+                          child: Text(
+                            tag,
+                            style: TextStyle(
+                              color: isSelected ? Colors.white : Colors.pink,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  Column(
+                    children: [
+                      Text("選択肢1"),
+                      Text("選択肢2"),
+                    ],
+                  )
                 ],
               ),
             ),
