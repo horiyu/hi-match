@@ -68,6 +68,7 @@ flutter:
   - images/
   - images/ひマッチ@4x.png
   - images/user-icon.png
+  - images/空.jpg
 
   fonts:
     - family: pupupu-free  # フォントファミリー名（自由に設定可能）
