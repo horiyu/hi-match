@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:my_web_app/custom_theme.dart';
 import 'package:my_web_app/firebase/analytics_repository.dart';
 import 'package:my_web_app/list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:my_web_app/name_reg.dart';
 import 'package:my_web_app/signup_page.dart';
-import 'package:my_web_app/user_page.dart';
 import 'firebase_options.dart';
 import 'package:my_web_app/login_page.dart';
 
@@ -28,12 +28,18 @@ class MyApp extends ConsumerWidget {
 
     analytics.logAppOpen();
 
+    // final ThemeData customTheme = ThemeData(
+    //   primaryColor: Colors.blue,
+    //   // colorScheme: ColorScheme.fromSwatch().copyWith(
+    //   //   secondary: Colors.green,
+    //   // ),
+    //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
+    //   useMaterial3: true,
+    // );
+
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
-        useMaterial3: true,
-      ),
+      title: 'ひマッチ',
+      theme: themeLight(),
       initialRoute: '/',
       routes: {
         '/': (context) => const MyHomePage(),
@@ -54,10 +60,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void _incrementCounter() {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,47 +154,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             )
           ])
-          // ログアウトボタン
-
-          // Align(
-          //   alignment: Alignment.centerRight, // 中央の右端に配置
-          //   child: Padding(
-          //     padding: const EdgeInsets.only(right: 16.0), // 右端に少し余白を追加
-          //     child: ElevatedButton(
-          //       onPressed: () {
-          //         Navigator.push(context,
-          //             MaterialPageRoute(builder: (context) => NextPage()));
-          //       },
-          //       style: ElevatedButton.styleFrom(
-          //         backgroundColor: Colors.grey[300],
-          //         foregroundColor: Colors.purple,
-          //       ),
-          //       child: const Text('Button'),
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );
   }
 }
-
-// class NextPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('【画面遷移デモ】2ページ'),
-//         backgroundColor: Colors.red,
-//       ),
-//       body: Center(
-//         child: ElevatedButton(
-//           child: Text("戻る"),
-//           onPressed: () {
-//             Navigator.pop(context);
-//           },
-//         ),
-//       ),
-//     );
-//   }
-// }
