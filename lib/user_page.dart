@@ -71,37 +71,67 @@ class _UserPageState extends State<UserPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      // Background Image
-                      Container(
-                        height: 200,
-                        child: Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            // ここで背景画像を正しく表示
-                            Image.asset(
-                              'images/ひマッチ@4x.png',
-                              fit: BoxFit.cover, // 画像をContainer全体にフィットさせる
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: <Widget>[
+                          Container(
+                            height: 200,
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                // ここで背景画像を正しく表示
+                                Image.asset(
+                                  'images/ひマッチ@4x.png',
+                                  fit: BoxFit.cover, // 画像をContainer全体にフィットさせる
+                                ),
+                                // Positioned(
+                                //   bottom: -50,
+                                //   left: 16,
+                                //   child: Container(
+                                //     decoration: BoxDecoration(
+                                //       border:
+                                //           Border.all(color: Colors.black, width: 4),
+                                //       borderRadius: BorderRadius.circular(60),
+                                //     ),
+                                //     child: CircleAvatar(
+                                //       radius: 50,
+                                //       foregroundImage:
+                                //           AssetImage('images/user-icon.png'),
+                                //     ),
+                                //   ),
+                                // ),
+                              ],
                             ),
-                            Positioned(
-                              bottom: -50,
-                              left: 16,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: Colors.black, width: 4),
-                                  borderRadius: BorderRadius.circular(60),
-                                ),
-                                child: CircleAvatar(
-                                  radius: 50,
-                                  foregroundImage:
-                                      AssetImage('images/user-icon.png'),
-                                ),
+                          ),
+                          Positioned(
+                            top: 150,
+                            child: Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Positioned(
+                                    bottom: 0,
+                                    left: 16,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.black, width: 4),
+                                        borderRadius: BorderRadius.circular(60),
+                                      ),
+                                      child: CircleAvatar(
+                                        radius: 50,
+                                        foregroundImage:
+                                            AssetImage('images/user-icon.png'),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-
+                      // Background Image
                       SizedBox(height: 60),
 
                       Padding(
