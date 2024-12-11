@@ -29,7 +29,7 @@ class MyApp extends ConsumerWidget {
     analytics.logAppOpen();
 
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'ひマッチ',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,
