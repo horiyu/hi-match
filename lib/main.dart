@@ -27,12 +27,18 @@ class MyApp extends ConsumerWidget {
 
     analytics.logAppOpen();
 
+    final ThemeData customTheme = ThemeData(
+      primaryColor: Colors.blue,
+      // colorScheme: ColorScheme.fromSwatch().copyWith(
+      //   secondary: Colors.green,
+      // ),
+      colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
+      useMaterial3: true,
+    );
+
     return MaterialApp(
       title: 'ひマッチ',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
-        useMaterial3: true,
-      ),
+      theme: customTheme,
       initialRoute: '/',
       routes: {
         '/': (context) => const MyHomePage(),
@@ -53,7 +59,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
