@@ -117,34 +117,6 @@ class _HimaModalState extends State<HimaModal> {
                           const Text('選択')
                         else
                           const Text('選択'),
-                        // Column(
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   crossAxisAlignment: CrossAxisAlignment.end,
-                        //   children: [
-                        //     Text(
-                        //       '〜 ${selectedDate!.hour.toString().padLeft(2, '0')}:${selectedDate!.minute.toString().padLeft(2, '0')}',
-                        //     ),
-                        //     Builder(
-                        //       builder: (context) {
-                        //         final now = DateTime.now();
-                        //         final difference = selectedDate!.isBefore(now)
-                        //             ? selectedDate!
-                        //                 .add(const Duration(days: 1))
-                        //                 .difference(now)
-                        //             : selectedDate!.difference(now);
-                        //         final differenceText = difference.inMinutes >=
-                        //                 60
-                        //             ? '残り ${difference.inHours}時間 ${difference.inMinutes.remainder(60).toString().padLeft(2, '0')}分'
-                        //             : '残り ${difference.inMinutes}分';
-                        //         return Text(
-                        //           differenceText,
-                        //           style: const TextStyle(
-                        //               fontSize: 10, color: Colors.grey),
-                        //         );
-                        //       },
-                        //     ),
-                        //   ],
-                        // ),
                         const SizedBox(width: 10),
                         const Icon(
                           Icons.chevron_right,
@@ -155,12 +127,13 @@ class _HimaModalState extends State<HimaModal> {
                 ),
                 onPressed: () async {
                   await himaActivityList(
-                    handler: ({required DateTime date}) {
+                    handler: ({required String himaActivities}) {
                       setState(() {
-                        // himaActivity = date;
+                        //  = himaActivities;
                       });
                     },
                     context: context,
+                    uid: widget.uid,
                   );
                 },
               ),
@@ -183,7 +156,7 @@ class _HimaModalState extends State<HimaModal> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('公開範囲を設定する'),
+                    const Text('場所を入力する'),
                     Row(
                       children: [
                         if (selectedDate == null)
