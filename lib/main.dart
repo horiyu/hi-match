@@ -152,47 +152,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             )
           ])
-          // ログアウトボタン
-
-          // Align(
-          //   alignment: Alignment.centerRight, // 中央の右端に配置
-          //   child: Padding(
-          //     padding: const EdgeInsets.only(right: 16.0), // 右端に少し余白を追加
-          //     child: ElevatedButton(
-          //       onPressed: () {
-          //         Navigator.push(context,
-          //             MaterialPageRoute(builder: (context) => NextPage()));
-          //       },
-          //       style: ElevatedButton.styleFrom(
-          //         backgroundColor: Colors.grey[300],
-          //         foregroundColor: Colors.purple,
-          //       ),
-          //       child: const Text('Button'),
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );
   }
 }
-
-// class NextPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('【画面遷移デモ】2ページ'),
-//         backgroundColor: Colors.red,
-//       ),
-//       body: Center(
-//         child: ElevatedButton(
-//           child: Text("戻る"),
-//           onPressed: () {
-//             Navigator.pop(context);
-//           },
-//         ),
-//       ),
-//     );
-//   }
-// }
