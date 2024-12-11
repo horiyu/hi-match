@@ -4,7 +4,7 @@ ThemeData themeLight() {
   const primary = Color.fromARGB(255, 56, 106, 31);
   // テーマの基本設定
   final base = ThemeData(
-    fontFamily: "Noto Sans JP",
+    fontFamily: "NotoSansJP",
     useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(
       brightness: Brightness.light,

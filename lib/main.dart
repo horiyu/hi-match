@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:my_web_app/custom_theme.dart';
 import 'package:my_web_app/firebase/analytics_repository.dart';
 import 'package:my_web_app/list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,18 +28,18 @@ class MyApp extends ConsumerWidget {
 
     analytics.logAppOpen();
 
-    final ThemeData customTheme = ThemeData(
-      primaryColor: Colors.blue,
-      // colorScheme: ColorScheme.fromSwatch().copyWith(
-      //   secondary: Colors.green,
-      // ),
-      colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
-      useMaterial3: true,
-    );
+    // final ThemeData customTheme = ThemeData(
+    //   primaryColor: Colors.blue,
+    //   // colorScheme: ColorScheme.fromSwatch().copyWith(
+    //   //   secondary: Colors.green,
+    //   // ),
+    //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
+    //   useMaterial3: true,
+    // );
 
     return MaterialApp(
       title: 'ひマッチ',
-      theme: customTheme,
+      theme: themeLight(),
       initialRoute: '/',
       routes: {
         '/': (context) => const MyHomePage(),
