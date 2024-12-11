@@ -180,7 +180,8 @@ class _UserPageState extends State<UserPage> {
                               style: ElevatedButton.styleFrom(
                                 elevation: 0,
                                 foregroundColor: Colors.white,
-                                backgroundColor: Colors.black,
+                                backgroundColor:
+                                    const Color.fromARGB(255, 38, 173, 252),
                               ),
                               child: Text(widget.person.id ==
                                       FirebaseAuth.instance.currentUser?.uid
