@@ -137,6 +137,35 @@ class _UserPageState extends State<UserPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            // Action Button
+                            ElevatedButton(
+                              onPressed: () {
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (context) => const NextPage(),
+                                //       settings:
+                                //           const RouteSettings(name: '/next_page')),
+                                // );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.black,
+                              ),
+                              child: Text(widget.person.id ==
+                                      FirebaseAuth.instance.currentUser?.uid
+                                  ? 'プロフィールを編集する'
+                                  : 'フレンド申請する'),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
@@ -165,28 +194,6 @@ class _UserPageState extends State<UserPage> {
                             ),
 
                             SizedBox(height: 16),
-
-                            // Action Button
-                            ElevatedButton(
-                              onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => const NextPage(),
-                                //       settings:
-                                //           const RouteSettings(name: '/next_page')),
-                                // );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                foregroundColor: Colors.white,
-                                backgroundColor: Colors.black,
-                              ),
-                              child: Text(widget.person.id ==
-                                      FirebaseAuth.instance.currentUser?.uid
-                                  ? 'プロフィールを編集する'
-                                  : 'フレンド申請する'),
-                            ),
                           ],
                         ),
                       ),
