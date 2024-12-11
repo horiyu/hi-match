@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 ThemeData themeLight() {
-  const primary = Color.fromARGB(255, 56, 106, 31);
-  // テーマの基本設定
+  const primary = Color.fromARGB(255, 255, 120, 0);
   final base = ThemeData(
     fontFamily: "NotoSansJP",
     useMaterial3: true,
@@ -23,7 +22,7 @@ ThemeData themeLight() {
   return base.copyWith(
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.purple,
+        backgroundColor: primary,
         foregroundColor: Colors.white,
       ),
     ),
@@ -37,6 +36,6 @@ ThemeData themeLight() {
         TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
       },
     ),
-    // scaffoldBackgroundColor: Colors.green,
+    scaffoldBackgroundColor: Colors.white,
   );
 }
