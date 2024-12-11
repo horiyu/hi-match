@@ -67,72 +67,77 @@ class _UserPageState extends State<UserPage> {
           ? const Center(child: CircularProgressIndicator())
           : widget.person == null
               ? const Center(child: Text('No user signed in'))
-              : Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Stack(
-                          children: [
-                            const CircleAvatar(
-                              radius: 50,
-                              backgroundImage:
-                                  AssetImage('images/user-icon.png'),
-                            ),
-                            Positioned(
-                              right: 0,
-                              bottom: 0,
-                              child: Tooltip(
-                                message: widget.person.isHima &&
-                                        (widget.person.deadline!
-                                            .isAfter(DateTime.now()))
-                                    ? 'ひま〜'
-                                    : 'ひまじゃない',
-                                child: Container(
-                                  height: 30,
-                                  width: 30,
-                                  decoration: BoxDecoration(
-                                    color: widget.person.isHima &&
-                                            (widget.person.deadline!
-                                                .isAfter(DateTime.now()))
-                                        ? Colors.green
-                                        : Colors.grey,
-                                    shape: BoxShape.circle,
+              : Column(
+                  children: <Widget>[
+                    Center(
+                      child: Column(
+                        children: [
+                          Stack(
+                            children: [
+                              const CircleAvatar(
+                                radius: 50,
+                                backgroundImage:
+                                    AssetImage('images/user-icon.png'),
+                              ),
+                              Positioned(
+                                right: 0,
+                                bottom: 0,
+                                child: Tooltip(
+                                  message: widget.person.isHima &&
+                                          (widget.person.deadline!
+                                              .isAfter(DateTime.now()))
+                                      ? 'ひま〜'
+                                      : 'ひまじゃない',
+                                  child: Container(
+                                    height: 30,
+                                    width: 30,
+                                    decoration: BoxDecoration(
+                                      color: widget.person.isHima &&
+                                              (widget.person.deadline!
+                                                  .isAfter(DateTime.now()))
+                                          ? Colors.green
+                                          : Colors.grey,
+                                      shape: BoxShape.circle,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        Text('${widget.person.name ?? 'Anonymous'}',
-                            style: const TextStyle(fontSize: 24)),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => const NextPage(),
-                            //       settings:
-                            //           const RouteSettings(name: '/next_page')),
-                            // );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            foregroundColor: Colors.white,
-                            backgroundColor:
-                                Colors.black, // Set the button color to black
+                            ],
                           ),
-                          child: Text(widget.person.id ==
-                                  FirebaseAuth.instance.currentUser?.uid
-                              ? 'プロフィールを編集する'
-                              : 'フレンド申請する'),
-                        ),
-                      ],
+                          const SizedBox(height: 16),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text('${widget.person.name ?? 'Anonymous'}',
+                                  style: const TextStyle(fontSize: 24)),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: () {
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //       builder: (context) => const NextPage(),
+                              //       settings:
+                              //           const RouteSettings(name: '/next_page')),
+                              // );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              foregroundColor: Colors.white,
+                              backgroundColor:
+                                  Colors.black, // Set the button color to black
+                            ),
+                            child: Text(widget.person.id ==
+                                    FirebaseAuth.instance.currentUser?.uid
+                                ? 'プロフィールを編集する'
+                                : 'フレンド申請する'),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
     );
   }
