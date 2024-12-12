@@ -29,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
               Image.asset('images/ひマッチ@4x.png'),
               Expanded(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextFormField(
                       decoration: InputDecoration(
