@@ -129,13 +129,29 @@ class _LoginPageState extends State<LoginPage> {
                         child: const Text('ログイン'),
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    Text(
-                      infoText,
-                      style: const TextStyle(
-                        color: Colors.red,
-                        fontSize: 12,
+                    const SizedBox(height: 5),
+                    SizedBox(
+                      height: 15,
+                      child: Text(
+                        infoText.isNotEmpty ? infoText : '',
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontSize: 12,
+                        ),
                       ),
+                    ),
+                    const SizedBox(height: 5),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const NextPage(),
+                            settings: const RouteSettings(name: '/next_page'),
+                          ),
+                        );
+                      },
+                      child: const Text('パスワードをお忘れですか？'),
                     ),
                   ],
                 ),
