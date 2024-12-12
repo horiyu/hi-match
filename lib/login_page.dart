@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                                     _isObscure = !_isObscure;
                                   });
                                   if (!_isObscure) {
-                                    Future.delayed(const Duration(seconds: 3),
+                                    Future.delayed(const Duration(seconds: 2),
                                         () {
                                       setState(() {
                                         _isObscure = true;
