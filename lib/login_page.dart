@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_web_app/list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:my_web_app/password_reset.dart';
 import 'package:my_web_app/signup_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -156,13 +157,14 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 5),
                     TextButton(
                       onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => const NextPage(),
-                        //     settings: const RouteSettings(name: '/next_page'),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PasswordResetPage(),
+                            settings:
+                                const RouteSettings(name: '/password_reset'),
+                          ),
+                        );
                       },
                       child: const Text('パスワードをお忘れですか？'),
                     ),
