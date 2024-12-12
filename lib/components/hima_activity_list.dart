@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-typedef Fn = Function({required String himaActivities});
+typedef Fn = Function({required List<Map<String, String>> himaActivities});
 
 Future<void> himaActivityList({
   required BuildContext context,
@@ -11,7 +11,7 @@ Future<void> himaActivityList({
   String newHimaActivity = "";
   final textController = TextEditingController();
   final isButtonEnabled = ValueNotifier<bool>(false);
-  var selectedTags = <String>[];
+  var selectedTags = <Map<String, String>>[];
 
   textController.addListener(() {
     isButtonEnabled.value = textController.text.isNotEmpty;
@@ -101,14 +101,28 @@ Future<void> himaActivityList({
                             return const Text('タグが見つかりません');
                           }
 
-                          final tags = snapshot.data!.docs
-                              .map((doc) => doc['content'] as String)
-                              .toList();
+                          // final tags = snapshot.data!.docs
+                          //     .map((doc) => doc['content'] as String)
+                          //     .toList();
+                          // final tagsId = snapshot.data!.docs
+                          //     .map((doc) => doc.id as String)
+                          //     .toList();
+
+                          final tagsWithIds = snapshot.data!.docs.map((doc) {
+                            return {
+                              'id': doc.id,
+                              'content': doc['content'] as String,
+                            };
+                          }).toList();
+
+                          // for (var tag in tagsWithIds) {
+                          //   print('Content: ${tag.content}, ID: ${tag.id}');
+                          // }
 
                           return Wrap(
                             runSpacing: 16,
                             spacing: 16,
-                            children: tags.map((tag) {
+                            children: tagsWithIds.map((tag) {
                               final isSelected = selectedTags.contains(tag);
                               return InkWell(
                                 borderRadius:
@@ -132,7 +146,7 @@ Future<void> himaActivityList({
                                     color: isSelected ? Colors.pink : null,
                                   ),
                                   child: Text(
-                                    tag,
+                                    tag['content']!,
                                     style: TextStyle(
                                       color: isSelected
                                           ? Colors.white
@@ -179,9 +193,7 @@ Future<void> himaActivityList({
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {
-                          handler(
-                            himaActivities: selectedTags.join(', '),
-                          );
+                          handler(himaActivities: selectedTags);
                           Navigator.of(context).pop();
                         },
                       ),
