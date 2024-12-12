@@ -115,24 +115,29 @@ Future<void> himaActivityList({
                             };
                           }).toList();
 
-                          // for (var tag in tagsWithIds) {
-                          //   print('Content: ${tag.content}, ID: ${tag.id}');
-                          // }
-
                           return Wrap(
                             runSpacing: 16,
                             spacing: 16,
                             children: tagsWithIds.map((tag) {
                               final isSelected = selectedTags.contains(tag);
+                              print("selectedTags:");
+                              print(selectedTags);
+                              print("tag:");
+                              print(tag);
+                              print("isSelected");
+                              print(isSelected);
+                              print("");
                               return InkWell(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(32)),
+                                // borderRadius:
+                                //     const BorderRadius.all(Radius.circul),
                                 onTap: () {
                                   if (isSelected) {
                                     selectedTags.remove(tag);
                                   } else {
                                     selectedTags.add(tag);
                                   }
+                                  // print(isSelected);
+                                  // print(selectedTags);
                                 },
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 200),

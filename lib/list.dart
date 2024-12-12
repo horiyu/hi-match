@@ -149,7 +149,7 @@ class _NextPageState extends State<NextPage> {
         name: name,
         deadline: null,
         place: "春日",
-        // himaActivitiesIds: [],
+        himaActivitiesIds: [],
       );
       await addHimaPerson(newPerson);
     } else {
@@ -233,6 +233,7 @@ class _NextPageState extends State<NextPage> {
                             name: 'No Name',
                             deadline: null,
                             place: '',
+                            himaActivitiesIds: [],
                           ));
                   Navigator.push(
                       context,
@@ -311,6 +312,7 @@ class _NextPageState extends State<NextPage> {
                                       name: 'No Name',
                                       deadline: null,
                                       place: '',
+                                      himaActivitiesIds: [],
                                     ));
                             // ボタンが押された際の動作を記述する
                             Navigator.push(
@@ -337,6 +339,7 @@ class _NextPageState extends State<NextPage> {
                                           name: 'No Name',
                                           deadline: null,
                                           place: '',
+                                          himaActivitiesIds: [],
                                         ))
                                 .name ??
                             "No Name",
@@ -360,6 +363,7 @@ class _NextPageState extends State<NextPage> {
                                           name: 'No Name',
                                           deadline: null,
                                           place: '',
+                                          himaActivitiesIds: [],
                                         ))
                                 .place ??
                             "Nowhere",
