@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_web_app/list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:my_web_app/signup_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,91 +22,118 @@ class _LoginPageState extends State<LoginPage> {
         child: Container(
           padding: const EdgeInsets.all(24),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Image.asset('images/ひマッチ@4x.png'),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'メールアドレス',
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                      width: 1.0,
+              Expanded(
+                child: Column(
+                  children: [
+                    TextFormField(
+                      decoration: InputDecoration(
+                        hintText: 'メールアドレス',
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(
+                            color: Colors.grey,
+                            width: 1.0,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(
+                            color: Colors.grey,
+                            width: 1.0,
+                          ),
+                        ),
+                      ),
+                      onChanged: (String value) {
+                        setState(() {
+                          email = value;
+                        });
+                      },
                     ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
-                  ),
-                ),
-                onChanged: (String value) {
-                  setState(() {
-                    email = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                // obscureText: _obscureText,
-                decoration: InputDecoration(
-                  hintText: 'パスワード',
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
-                  ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      // obscureText: _obscureText,
+                      decoration: InputDecoration(
+                        hintText: 'パスワード',
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(
+                            color: Colors.grey,
+                            width: 1.0,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(
+                            color: Colors.grey,
+                            width: 1.0,
+                          ),
+                        ),
 
-                  // suffixIcon: IconButton(
-                  //   icon: Icon(
-                  //     _obscureText ? Icons.visibility : Icons.visibility_off,
-                  //   ),
-                  //   onPressed: () {
-                  //     setState(() {
-                  //       // _obscureText = !_obscureText;
-                  //     });
-                  //   },
-                  // ),
+                        // suffixIcon: IconButton(
+                        //   icon: Icon(
+                        //     _obscureText ? Icons.visibility : Icons.visibility_off,
+                        //   ),
+                        //   onPressed: () {
+                        //     setState(() {
+                        //       // _obscureText = !_obscureText;
+                        //     });
+                        //   },
+                        // ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 40,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          try {
+                            final FirebaseAuth auth = FirebaseAuth.instance;
+                            await auth.signInWithEmailAndPassword(
+                              email: email,
+                              password: password,
+                            );
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const NextPage(),
+                                  settings:
+                                      const RouteSettings(name: '/next_page'),
+                                ));
+                          } catch (e) {
+                            setState(() {
+                              infoText = "ログインに失敗しました：${e.toString()}";
+                            });
+                          }
+                        },
+                        child: const Text('ログイン'),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 16),
-              SizedBox(
-                width: double.infinity,
-                height: 40,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    try {
-                      final FirebaseAuth auth = FirebaseAuth.instance;
-                      await auth.signInWithEmailAndPassword(
-                        email: email,
-                        password: password,
-                      );
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const NextPage(),
-                            settings: const RouteSettings(name: '/next_page'),
-                          ));
-                    } catch (e) {
-                      setState(() {
-                        infoText = "ログインに失敗しました：${e.toString()}";
-                      });
-                    }
-                  },
-                  child: const Text('ログイン'),
-                ),
-              ),
+              Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: OutlinedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SignupPage(),
+                              settings: const RouteSettings(name: '/signup'),
+                            ));
+                      },
+                      child: const Text('新規登録'),
+                    ),
+                  )
+                ],
+              )
             ],
           ),
           // child: Column(
