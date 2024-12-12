@@ -59,6 +59,8 @@ class _LoginPageState extends State<LoginPage> {
                         });
                         if (value.isNotEmpty) {
                           _isButtonAbleEmail = true;
+                        } else {
+                          _isButtonAbleEmail = false;
                         }
                       },
                     ),
@@ -108,6 +110,8 @@ class _LoginPageState extends State<LoginPage> {
                         });
                         if (value.isNotEmpty) {
                           _isButtonAblePassword = true;
+                        } else {
+                          _isButtonAblePassword = false;
                         }
                       },
                     ),
