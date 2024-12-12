@@ -15,6 +15,8 @@ class _LoginPageState extends State<LoginPage> {
   String email = '';
   String password = '';
 
+  bool _isObscure = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
-                      // obscureText: _obscureText,
+                      obscureText: true,
                       decoration: InputDecoration(
                         hintText: 'パスワード',
                         focusedBorder: OutlineInputBorder(
@@ -97,19 +99,28 @@ class _LoginPageState extends State<LoginPage> {
                               password: password,
                             );
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const NextPage(),
-                                  settings:
-                                      const RouteSettings(name: '/next_page'),
-                                ));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const NextPage(),
+                                settings:
+                                    const RouteSettings(name: '/next_page'),
+                              ),
+                            );
                           } catch (e) {
                             setState(() {
-                              infoText = "ログインに失敗しました：${e.toString()}";
+                              infoText = "ログインに失敗しました。もう一度お試しください";
                             });
                           }
                         },
                         child: const Text('ログイン'),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      infoText,
+                      style: const TextStyle(
+                        color: Colors.red,
+                        fontSize: 12,
                       ),
                     ),
                   ],
