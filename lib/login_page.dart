@@ -144,13 +144,13 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 5),
                     TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const NextPage(),
-                            settings: const RouteSettings(name: '/next_page'),
-                          ),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => const NextPage(),
+                        //     settings: const RouteSettings(name: '/next_page'),
+                        //   ),
+                        // );
                       },
                       child: const Text('パスワードをお忘れですか？'),
                     ),
