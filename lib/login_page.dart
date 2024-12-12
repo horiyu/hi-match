@@ -17,6 +17,9 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _isObscure = true;
 
+  bool _isButtonAbleEmail = false;
+  bool _isButtonAblePassword = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,6 +56,9 @@ class _LoginPageState extends State<LoginPage> {
                         setState(() {
                           email = value;
                         });
+                        if (value.isNotEmpty) {
+                          _isButtonAbleEmail = true;
+                        }
                       },
                     ),
                     const SizedBox(height: 20),
@@ -99,6 +105,9 @@ class _LoginPageState extends State<LoginPage> {
                         setState(() {
                           password = value;
                         });
+                        if (value.isNotEmpty) {
+                          _isButtonAblePassword = true;
+                        }
                       },
                     ),
                     const SizedBox(height: 20),
@@ -106,27 +115,30 @@ class _LoginPageState extends State<LoginPage> {
                       width: double.infinity,
                       height: 40,
                       child: ElevatedButton(
-                        onPressed: () async {
-                          try {
-                            final FirebaseAuth auth = FirebaseAuth.instance;
-                            await auth.signInWithEmailAndPassword(
-                              email: email,
-                              password: password,
-                            );
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const NextPage(),
-                                settings:
-                                    const RouteSettings(name: '/next_page'),
-                              ),
-                            );
-                          } catch (e) {
-                            setState(() {
-                              infoText = "ログインに失敗しました。もう一度お試しください";
-                            });
-                          }
-                        },
+                        onPressed: _isButtonAbleEmail && _isButtonAblePassword
+                            ? () async {
+                                try {
+                                  final FirebaseAuth auth =
+                                      FirebaseAuth.instance;
+                                  await auth.signInWithEmailAndPassword(
+                                    email: email,
+                                    password: password,
+                                  );
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const NextPage(),
+                                      settings: const RouteSettings(
+                                          name: '/next_page'),
+                                    ),
+                                  );
+                                } catch (e) {
+                                  setState(() {
+                                    infoText = "ログインに失敗しました。もう一度お試しください";
+                                  });
+                                }
+                              }
+                            : null,
                         child: const Text('ログイン'),
                       ),
                     ),
