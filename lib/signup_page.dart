@@ -227,7 +227,8 @@ class _SignupPageState extends State<SignupPage> {
                       },
                       child: const Text('ログイン'),
                     ),
-                  )
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ],

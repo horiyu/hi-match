@@ -107,7 +107,8 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
                       },
                       child: const Text('戻る'),
                     ),
-                  )
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ],

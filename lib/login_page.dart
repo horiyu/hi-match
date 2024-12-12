@@ -210,7 +210,8 @@ class _LoginPageState extends State<LoginPage> {
                       },
                       child: const Text('新規登録'),
                     ),
-                  )
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ],
