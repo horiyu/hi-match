@@ -22,6 +22,25 @@ class _LoginPageState extends State<LoginPage> {
   bool _isButtonAblePassword = false;
 
   @override
+  void initState() {
+    super.initState();
+    _checkLoginStatus();
+  }
+
+  Future<void> _checkLoginStatus() async {
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const NextPage(),
+          settings: const RouteSettings(name: '/next_page'),
+        ),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(

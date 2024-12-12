@@ -62,6 +62,7 @@ class _NextPageState extends State<NextPage> {
     super.initState();
     _initializeAsync();
     get();
+    _checkLoginStatus();
     _futureHimaActivities = fetchHimaActivities();
 
     // 1秒ごとに再描画するためのタイマーを設定
@@ -208,6 +209,27 @@ class _NextPageState extends State<NextPage> {
       setState(() {
         inputDeadline = picked;
       });
+    }
+  }
+
+  Future<void> _checkLoginStatus() async {
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const NextPage(),
+          settings: const RouteSettings(name: '/next_page'),
+        ),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginPage(),
+          settings: const RouteSettings(name: '/login'),
+        ),
+      );
     }
   }
 
@@ -548,9 +570,18 @@ class _NextPageState extends State<NextPage> {
                     color: Colors.white,
                     size: 32.0,
                   ),
-                  onPressed: () {
-                    Navigator.popUntil(context, (route) => route.isFirst);
-                  },
+                  onPressed: FirebaseAuth.instance.currentUser != null
+                      ? () {
+                          // Navigator.popUntil(context, (route) => route.isFirst);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginPage(),
+                              settings: const RouteSettings(name: '/login'),
+                            ),
+                          );
+                        }
+                      : null,
                 ),
               ),
               Container(
