@@ -96,6 +96,20 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
                   ],
                 ),
               ),
+              Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: OutlinedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('戻る'),
+                    ),
+                  )
+                ],
+              ),
             ],
           ),
         ),

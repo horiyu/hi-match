@@ -224,11 +224,11 @@ class _SignupPageState extends State<SignupPage> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: const Text('戻る'),
+                      child: const Text('ログイン'),
                     ),
                   )
                 ],
-              )
+              ),
             ],
           ),
         ),
