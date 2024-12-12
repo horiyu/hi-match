@@ -10,11 +10,16 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  // メッセージ表示用
   String infoText = '';
-  // 入力したメールアドレス・パスワード
   String email = '';
   String password = '';
+  String passwordConfirm = '';
+
+  bool _isObscure = true;
+  bool _isObscureConfirm = true;
+
+  bool _isButtonAbleEmail = false;
+  bool _isButtonAblePassword = false;
 
   @override
   Widget build(BuildContext context) {
@@ -23,105 +28,208 @@ class _SignupPageState extends State<SignupPage> {
         child: Container(
           padding: const EdgeInsets.all(24),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              // メールアドレス入力
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'メールアドレス'),
-                onChanged: (String value) {
-                  setState(() {
-                    email = value;
-                  });
-                },
-              ),
-              // パスワード入力
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'パスワード'),
-                obscureText: true,
-                onChanged: (String value) {
-                  setState(() {
-                    password = value;
-                  });
-                },
-              ),
-              // // 名前
-              // TextFormField(
-              //   decoration: const InputDecoration(labelText: '名前'),
-              //   obscureText: true,
-              //   onChanged: (String value) {
-              //     setState(() {
-              //       password = value;
-              //     });
-              //   },
-              // ),
-
-              Container(
-                padding: const EdgeInsets.all(8),
-                // メッセージ表示
-                child: Text(infoText),
-              ),
-
-              SizedBox(
-                width: double.infinity,
-                // ユーザー登録ボタン
-                child: ElevatedButton(
-                  child: const Text('新規登録'),
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor:
-                        const Color.fromARGB(255, 38, 173, 252), // foreground
-                  ),
-                  onPressed: () async {
-                    try {
-                      // メール/パスワードでユーザー登録
-                      final FirebaseAuth auth = FirebaseAuth.instance;
-                      await auth.createUserWithEmailAndPassword(
-                        email: email,
-                        password: password,
-                      );
-
-                      // ユーザー登録に成功した場合、現在のユーザーを取得
-                      User? user = auth.currentUser;
-
-                      if (user != null) {
-                        // メール確認用のリンクを送信
-                        await user.sendEmailVerification();
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset('images/ひマッチ@4x.png'),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextFormField(
+                      decoration: InputDecoration(
+                        hintText: 'メールアドレス',
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(
+                            color: Colors.grey,
+                            width: 1.0,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(
+                            color: Colors.grey,
+                            width: 1.0,
+                          ),
+                        ),
+                      ),
+                      onChanged: (String value) {
                         setState(() {
-                          infoText = "確認メールを送信しました。メールを確認してください。";
+                          email = value;
                         });
-                      }
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const NameReg(),
-                              settings:
-                                  const RouteSettings(name: '/name_reg')));
-                    } catch (e) {
-                      // ユーザー登録に失敗した場合
-                      setState(() {
-                        infoText = "登録に失敗しました：${e.toString()}";
-                      });
-                    }
-                  },
+                        if (value.isNotEmpty) {
+                          _isButtonAbleEmail = true;
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      obscureText: _isObscure,
+                      decoration: InputDecoration(
+                        hintText: 'パスワード',
+                        suffixIcon: password.isNotEmpty
+                            ? IconButton(
+                                icon: Icon(_isObscure
+                                    ? Icons.visibility_off
+                                    : Icons.visibility),
+                                onPressed: () {
+                                  setState(() {
+                                    _isObscure = !_isObscure;
+                                  });
+                                  if (!_isObscure) {
+                                    Future.delayed(const Duration(seconds: 2),
+                                        () {
+                                      setState(() {
+                                        _isObscure = true;
+                                      });
+                                    });
+                                  }
+                                },
+                              )
+                            : null,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(
+                            color: Colors.grey,
+                            width: 1.0,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(
+                            color: Colors.grey,
+                            width: 1.0,
+                          ),
+                        ),
+                      ),
+                      onChanged: (String value) {
+                        setState(() {
+                          password = value;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      obscureText: _isObscureConfirm,
+                      decoration: InputDecoration(
+                        hintText: 'パスワード（確認）',
+                        suffixIcon: passwordConfirm.isNotEmpty
+                            ? IconButton(
+                                icon: Icon(_isObscureConfirm
+                                    ? Icons.visibility_off
+                                    : Icons.visibility),
+                                onPressed: () {
+                                  setState(() {
+                                    _isObscureConfirm = !_isObscureConfirm;
+                                  });
+                                  if (!_isObscureConfirm) {
+                                    Future.delayed(const Duration(seconds: 2),
+                                        () {
+                                      setState(() {
+                                        _isObscureConfirm = true;
+                                      });
+                                    });
+                                  }
+                                },
+                              )
+                            : null,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(
+                            color: Colors.grey,
+                            width: 1.0,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(
+                            color: Colors.grey,
+                            width: 1.0,
+                          ),
+                        ),
+                      ),
+                      onChanged: (String value) {
+                        setState(() {
+                          passwordConfirm = value;
+                          if (value != password) {
+                            infoText = 'パスワードが一致しません';
+                            _isButtonAblePassword = false;
+                          } else {
+                            infoText = '';
+                            _isButtonAblePassword = true;
+                          }
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 40,
+                      child: ElevatedButton(
+                        onPressed: _isButtonAbleEmail && _isButtonAblePassword
+                            ? () async {
+                                try {
+                                  final FirebaseAuth auth =
+                                      FirebaseAuth.instance;
+                                  await auth.createUserWithEmailAndPassword(
+                                    email: email,
+                                    password: password,
+                                  );
+
+                                  User? user = auth.currentUser;
+
+                                  if (user != null) {
+                                    await user.sendEmailVerification();
+                                    setState(() {
+                                      infoText = "確認メールを送信しました。メールを確認してください";
+                                    });
+                                  }
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const NameReg(),
+                                      settings: const RouteSettings(
+                                          name: '/name_reg'),
+                                    ),
+                                  );
+                                } catch (e) {
+                                  setState(() {
+                                    infoText = "登録に失敗しました。もう一度お試しください";
+                                  });
+                                }
+                              }
+                            : null,
+                        child: const Text('新規登録'),
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    SizedBox(
+                      height: 15,
+                      child: Text(
+                        infoText.isNotEmpty ? infoText : '',
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 8,
-              ),
-              SizedBox(
-                width: double.infinity,
-                // 戻る
-                child: ElevatedButton(
-                  child: const Text('戻る'),
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor:
-                        const Color.fromARGB(255, 177, 190, 197), // foreground
+              Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: OutlinedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('ログイン'),
+                    ),
                   ),
-                  onPressed: () async {
-                    Navigator.of(context).pop();
-                  },
-                ),
+                  const SizedBox(height: 20),
+                ],
               ),
             ],
           ),

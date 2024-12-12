@@ -24,6 +24,8 @@ ThemeData themeLight() {
       style: ElevatedButton.styleFrom(
         backgroundColor: primary,
         foregroundColor: Colors.white,
+        disabledBackgroundColor: primary.withOpacity(0.5),
+        disabledForegroundColor: Colors.white,
       ),
     ),
     floatingActionButtonTheme: base.floatingActionButtonTheme.copyWith(

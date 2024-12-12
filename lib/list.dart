@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:my_web_app/login_page.dart';
 import 'package:my_web_app/main.dart';
 import 'package:my_web_app/model/himapeople.dart';
 import 'package:my_web_app/firebase/firestore.dart';
@@ -22,7 +23,7 @@ class _NextPageState extends State<NextPage> {
   List<HimaPeople> himapeopleSnapshot = [];
   List<HimaPeople> himaPeople = [];
   bool isLoading = false;
-  late String name;
+  late String name = "";
 
   bool _isHima = false;
   String myperson = "";
@@ -126,15 +127,16 @@ class _NextPageState extends State<NextPage> {
     final uid = user?.uid;
     final email = user?.email;
     bool isLogin = FirebaseAuth.instance.currentUser != null;
-    if (!isLogin) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const MyHomePage(),
-          settings: const RouteSettings(name: '/my_home_page'),
-        ),
-      );
-    }
+    // if (!isLogin) {
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => const LoginPage(),
+    //       settings: const RouteSettings(name: '/login'),
+    //     ),
+    //   );
+    //   return;
+    // }
     final snapshot = await FirebaseFirestore.instance
         .collection("users")
         .where("id", isEqualTo: uid)
@@ -172,6 +174,11 @@ class _NextPageState extends State<NextPage> {
         .collection("users")
         .where("id", isEqualTo: uid)
         .get();
+
+    if (snapshot.docs.isEmpty) {
+      return {}; // snapshot.docsが空の場合の処理を追加
+    }
+
     var himaActivities = await FirebaseFirestore.instance
         .collection("users")
         .doc(snapshot.docs[0].id)
@@ -511,9 +518,11 @@ class _NextPageState extends State<NextPage> {
                   context: context,
                   builder: (context) => HimaModal(uid),
                 ).then((_) {
-                  setState(() {
-                    _isHima = true;
-                  });
+                  if (mounted) {
+                    setState(() {
+                      _isHima = true;
+                    });
+                  }
                 });
               });
             }
