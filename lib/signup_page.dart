@@ -153,6 +153,7 @@ class _SignupPageState extends State<SignupPage> {
                           passwordConfirm = value;
                           if (value != password) {
                             infoText = 'パスワードが一致しません';
+                            _isButtonAblePassword = false;
                           } else {
                             infoText = '';
                             _isButtonAblePassword = true;
