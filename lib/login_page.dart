@@ -10,9 +10,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // メッセージ表示用
   String infoText = '';
-  // 入力したメールアドレス・パスワード
   String email = '';
   String password = '';
 
@@ -23,51 +21,76 @@ class _LoginPageState extends State<LoginPage> {
         child: Container(
           padding: const EdgeInsets.all(24),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              // メールアドレス入力
+            children: [
+              Image.asset('images/ひマッチ@4x.png'),
               TextFormField(
-                decoration: const InputDecoration(labelText: 'メールアドレス'),
+                decoration: InputDecoration(
+                  hintText: 'メールアドレス',
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+                  ),
+                ),
                 onChanged: (String value) {
                   setState(() {
                     email = value;
                   });
                 },
               ),
-              // パスワード入力
+              const SizedBox(height: 16),
               TextFormField(
-                decoration: const InputDecoration(labelText: 'パスワード'),
-                obscureText: true,
-                onChanged: (String value) {
-                  setState(() {
-                    password = value;
-                  });
-                },
-              ),
+                // obscureText: _obscureText,
+                decoration: InputDecoration(
+                  hintText: 'パスワード',
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: const BorderSide(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+                  ),
 
-              Container(
-                padding: const EdgeInsets.all(8),
-                // メッセージ表示
-                child: Text(infoText),
+                  // suffixIcon: IconButton(
+                  //   icon: Icon(
+                  //     _obscureText ? Icons.visibility : Icons.visibility_off,
+                  //   ),
+                  //   onPressed: () {
+                  //     setState(() {
+                  //       // _obscureText = !_obscureText;
+                  //     });
+                  //   },
+                  // ),
+                ),
               ),
+              const SizedBox(height: 16),
               SizedBox(
                 width: double.infinity,
-                // ログインボタン
+                height: 40,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor:
-                        const Color.fromARGB(255, 38, 173, 252), // foreground
-                  ),
                   onPressed: () async {
                     try {
-                      // メール/パスワードでログイン
                       final FirebaseAuth auth = FirebaseAuth.instance;
                       await auth.signInWithEmailAndPassword(
                         email: email,
                         password: password,
                       );
-                      // ユーザー登録に成功した場合
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -75,7 +98,6 @@ class _LoginPageState extends State<LoginPage> {
                             settings: const RouteSettings(name: '/next_page'),
                           ));
                     } catch (e) {
-                      // ユーザー登録に失敗した場合
                       setState(() {
                         infoText = "ログインに失敗しました：${e.toString()}";
                       });
@@ -84,54 +106,118 @@ class _LoginPageState extends State<LoginPage> {
                   child: const Text('ログイン'),
                 ),
               ),
-              const SizedBox(
-                height: 8,
-              ),
-              SizedBox(
-                width: double.infinity,
-                // ログアウトボタン
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor:
-                        const Color.fromARGB(255, 177, 190, 197), // foreground
-                  ),
-                  onPressed: () async {
-                    try {
-                      // ログアウト
-                      await FirebaseAuth.instance.signOut();
-                      // ユーザー登録に成功した場合
-                      Navigator.of(context).pop();
-                    } catch (e) {
-                      // ユーザー登録に失敗した場合
-                      setState(() {
-                        infoText = "ログアウトに失敗しました：${e.toString()}";
-                      });
-                    }
-                  },
-                  child: const Text('ログアウト'),
-                ),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              SizedBox(
-                width: double.infinity,
-                // 戻る
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor:
-                        const Color.fromARGB(255, 177, 190, 197), // foreground
-                  ),
-                  onPressed: () async {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('戻る'),
-                ),
-              ),
             ],
           ),
+          // child: Column(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: <Widget>[
+          //     // メールアドレス入力
+          //     TextFormField(
+          //       decoration: const InputDecoration(labelText: 'メールアドレス'),
+          //       onChanged: (String value) {
+          //         setState(() {
+          //           email = value;
+          //         });
+          //       },
+          //     ),
+          //     // パスワード入力
+          //     TextFormField(
+          //       decoration: const InputDecoration(labelText: 'パスワード'),
+          //       obscureText: true,
+          //       onChanged: (String value) {
+          //         setState(() {
+          //           password = value;
+          //         });
+          //       },
+          //     ),
+
+          //     Container(
+          //       padding: const EdgeInsets.all(8),
+          //       // メッセージ表示
+          //       child: Text(infoText),
+          //     ),
+          //     SizedBox(
+          //       width: double.infinity,
+          //       // ログインボタン
+          //       child: ElevatedButton(
+          //         style: ElevatedButton.styleFrom(
+          //           foregroundColor: Colors.white,
+          //           backgroundColor:
+          //               const Color.fromARGB(255, 38, 173, 252), // foreground
+          //         ),
+          //         onPressed: () async {
+          //           try {
+          //             // メール/パスワードでログイン
+          //             final FirebaseAuth auth = FirebaseAuth.instance;
+          //             await auth.signInWithEmailAndPassword(
+          //               email: email,
+          //               password: password,
+          //             );
+          //             // ユーザー登録に成功した場合
+          //             Navigator.push(
+          //                 context,
+          //                 MaterialPageRoute(
+          //                   builder: (context) => const NextPage(),
+          //                   settings: const RouteSettings(name: '/next_page'),
+          //                 ));
+          //           } catch (e) {
+          //             // ユーザー登録に失敗した場合
+          //             setState(() {
+          //               infoText = "ログインに失敗しました：${e.toString()}";
+          //             });
+          //           }
+          //         },
+          //         child: const Text('ログイン'),
+          //       ),
+          //     ),
+          //     const SizedBox(
+          //       height: 8,
+          //     ),
+          //     SizedBox(
+          //       width: double.infinity,
+          //       // ログアウトボタン
+          //       child: ElevatedButton(
+          //         style: ElevatedButton.styleFrom(
+          //           foregroundColor: Colors.white,
+          //           backgroundColor:
+          //               const Color.fromARGB(255, 177, 190, 197), // foreground
+          //         ),
+          //         onPressed: () async {
+          //           try {
+          //             // ログアウト
+          //             await FirebaseAuth.instance.signOut();
+          //             // ユーザー登録に成功した場合
+          //             Navigator.of(context).pop();
+          //           } catch (e) {
+          //             // ユーザー登録に失敗した場合
+          //             setState(() {
+          //               infoText = "ログアウトに失敗しました：${e.toString()}";
+          //             });
+          //           }
+          //         },
+          //         child: const Text('ログアウト'),
+          //       ),
+          //     ),
+          //     const SizedBox(
+          //       height: 8,
+          //     ),
+          //     SizedBox(
+          //       width: double.infinity,
+          //       // 戻る
+          //       child: ElevatedButton(
+          //         style: ElevatedButton.styleFrom(
+          //           foregroundColor: Colors.white,
+          //           backgroundColor:
+          //               const Color.fromARGB(255, 177, 190, 197), // foreground
+          //         ),
+          //         onPressed: () async {
+          //           Navigator.of(context).pop();
+          //         },
+          //         child: const Text('戻る'),
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ),
       ),
     );
