@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:my_web_app/login_page.dart';
 import 'package:my_web_app/main.dart';
 import 'package:my_web_app/model/himapeople.dart';
 import 'package:my_web_app/firebase/firestore.dart';
@@ -130,7 +131,7 @@ class _NextPageState extends State<NextPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const MyHomePage(),
+          builder: (context) => const LoginPage(),
           settings: const RouteSettings(name: '/my_home_page'),
         ),
       );
