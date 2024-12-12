@@ -59,16 +59,26 @@ class _LoginPageState extends State<LoginPage> {
                       obscureText: _isObscure,
                       decoration: InputDecoration(
                         hintText: 'パスワード',
-                        suffixIcon: IconButton(
-                          icon: Icon(_isObscure
-                              ? Icons.visibility_off
-                              : Icons.visibility),
-                          onPressed: () {
-                            setState(() {
-                              _isObscure = !_isObscure;
-                            });
-                          },
-                        ),
+                        suffixIcon: password.isNotEmpty
+                            ? IconButton(
+                                icon: Icon(_isObscure
+                                    ? Icons.visibility_off
+                                    : Icons.visibility),
+                                onPressed: () {
+                                  setState(() {
+                                    _isObscure = !_isObscure;
+                                  });
+                                  if (!_isObscure) {
+                                    Future.delayed(const Duration(seconds: 3),
+                                        () {
+                                      setState(() {
+                                        _isObscure = true;
+                                      });
+                                    });
+                                  }
+                                },
+                              )
+                            : null,
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
                           borderSide: const BorderSide(
@@ -83,18 +93,12 @@ class _LoginPageState extends State<LoginPage> {
                             width: 1.0,
                           ),
                         ),
-
-                        // suffixIcon: IconButton(
-                        //   icon: Icon(
-                        //     _obscureText ? Icons.visibility : Icons.visibility_off,
-                        //   ),
-                        //   onPressed: () {
-                        //     setState(() {
-                        //       // _obscureText = !_obscureText;
-                        //     });
-                        //   },
-                        // ),
                       ),
+                      onChanged: (String value) {
+                        setState(() {
+                          password = value;
+                        });
+                      },
                     ),
                     const SizedBox(height: 20),
                     SizedBox(
