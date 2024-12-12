@@ -42,7 +42,7 @@ class MyApp extends ConsumerWidget {
       theme: themeLight(),
       initialRoute: '/',
       routes: {
-        '/': (context) => const MyHomePage(),
+        '/': (context) => const LoginPage(),
         '/next_page': (context) => const NextPage(),
       },
       navigatorObservers: [analyticsObserver],
@@ -50,112 +50,112 @@ class MyApp extends ConsumerWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+// class MyHomePage extends StatefulWidget {
+//   const MyHomePage({super.key});
 
-  final String title = "ひマッチ";
+//   final String title = "ひマッチ";
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+//   @override
+//   State<MyHomePage> createState() => _MyHomePageState();
+// }
 
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(
-          widget.title,
-          style: const TextStyle(
-            fontFamily: 'pupupu-free', // 正しいフォントファミリー名を指定
-            fontSize: 60,
-          ),
-        ),
-      ),
-      body: Stack(
-        children: [
-          Container(
-            color: Colors.white, // Set background color here
-          ),
-          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Image.asset('images/ひマッチ@4x.png'),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginPage(),
-                          settings: const RouteSettings(name: '/login'),
-                        ));
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor:
-                        const Color.fromARGB(255, 38, 173, 252), // foreground
-                  ),
-                  child: const Text('ログイン'),
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SignupPage(),
-                          settings: const RouteSettings(name: '/signup'),
-                        ));
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor:
-                        const Color.fromARGB(255, 38, 173, 252), // foreground
-                  ),
-                  child: const Text('新規登録'),
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor:
-                        const Color.fromARGB(255, 38, 173, 252), // foreground
-                  ),
-                  child: const Text('ログアウト'),
-                  onPressed: () async {
-                    try {
-                      // ログアウト
-                      await FirebaseAuth.instance.signOut();
-                      // ユーザー登録に成功した場合
-                      Navigator.of(context).pop();
-                    } catch (e) {
-                      // ユーザー登録に失敗した場合
-                      setState(() {});
-                    }
-                  },
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const NameReg(),
-                          settings: const RouteSettings(name: '/namereg'),
-                        ));
-                  },
-                  child: null,
-                ),
-              ],
-            )
-          ])
-        ],
-      ),
-    );
-  }
-}
+// class _MyHomePageState extends State<MyHomePage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+//         title: Text(
+//           widget.title,
+//           style: const TextStyle(
+//             fontFamily: 'pupupu-free', // 正しいフォントファミリー名を指定
+//             fontSize: 60,
+//           ),
+//         ),
+//       ),
+//       body: Stack(
+//         children: [
+//           Container(
+//             color: Colors.white, // Set background color here
+//           ),
+//           Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+//             Image.asset('images/ひマッチ@4x.png'),
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 ElevatedButton(
+//                   onPressed: () {
+//                     Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                           builder: (context) => const LoginPage(),
+//                           settings: const RouteSettings(name: '/login'),
+//                         ));
+//                   },
+//                   style: ElevatedButton.styleFrom(
+//                     foregroundColor: Colors.white,
+//                     backgroundColor:
+//                         const Color.fromARGB(255, 38, 173, 252), // foreground
+//                   ),
+//                   child: const Text('ログイン'),
+//                 ),
+//                 const SizedBox(
+//                   width: 8,
+//                 ),
+//                 ElevatedButton(
+//                   onPressed: () {
+//                     Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                           builder: (context) => const SignupPage(),
+//                           settings: const RouteSettings(name: '/signup'),
+//                         ));
+//                   },
+//                   style: ElevatedButton.styleFrom(
+//                     foregroundColor: Colors.white,
+//                     backgroundColor:
+//                         const Color.fromARGB(255, 38, 173, 252), // foreground
+//                   ),
+//                   child: const Text('新規登録'),
+//                 ),
+//                 const SizedBox(
+//                   width: 8,
+//                 ),
+//                 ElevatedButton(
+//                   style: ElevatedButton.styleFrom(
+//                     foregroundColor: Colors.white,
+//                     backgroundColor:
+//                         const Color.fromARGB(255, 38, 173, 252), // foreground
+//                   ),
+//                   child: const Text('ログアウト'),
+//                   onPressed: () async {
+//                     try {
+//                       // ログアウト
+//                       await FirebaseAuth.instance.signOut();
+//                       // ユーザー登録に成功した場合
+//                       Navigator.of(context).pop();
+//                     } catch (e) {
+//                       // ユーザー登録に失敗した場合
+//                       setState(() {});
+//                     }
+//                   },
+//                 ),
+//                 ElevatedButton(
+//                   onPressed: () async {
+//                     Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                           builder: (context) => const NameReg(),
+//                           settings: const RouteSettings(name: '/namereg'),
+//                         ));
+//                   },
+//                   child: null,
+//                 ),
+//               ],
+//             )
+//           ])
+//         ],
+//       ),
+//     );
+//   }
+// }
