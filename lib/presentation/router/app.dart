@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:my_web_app/firebase/analytics_repository.dart';
-import 'package:my_web_app/login_page.dart';
 import 'package:my_web_app/presentation/pages/hima_list.dart';
 import 'package:my_web_app/presentation/theme/fonts.dart';
 
@@ -22,6 +21,7 @@ class App extends ConsumerWidget {
       ),
       initialRoute: '/',
       navigatorObservers: [analyticsObserver],
+      home: const HimaListPage(), // ここにホームページウィジェットを指定
     );
   }
 }
