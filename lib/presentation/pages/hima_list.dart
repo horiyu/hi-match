@@ -33,7 +33,7 @@ class _HimaListPageState extends State<HimaListPage> {
     {
       'name': 'Zoff',
       'message': '[MAX50%OFF] 冬セールスタート！',
-      'time': '2023-12-05 12:30:00',
+      'time': '2024-12-05 12:30:00',
       'icon': Icons.shopping_bag
     },
     {
@@ -88,6 +88,8 @@ class _HimaListPageState extends State<HimaListPage> {
       body: ListView.builder(
         itemCount: chats.length,
         itemBuilder: (context, index) {
+          chats.sort((a, b) =>
+              DateTime.parse(b['time']).compareTo(DateTime.parse(a['time'])));
           final chat = chats[index];
           return ListTile(
             leading: Icon(chat['icon'], size: 40),
