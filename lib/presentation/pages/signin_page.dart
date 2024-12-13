@@ -7,14 +7,14 @@ import 'package:my_web_app/presentation/widgets/pill_outlined_button.dart';
 import 'package:my_web_app/presentation/widgets/rounded_form_field.dart';
 import 'package:my_web_app/signup_page.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignInPage> createState() => _SignInPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignInPageState extends State<SignInPage> {
   String infoText = '';
   String email = '';
   String password = '';
