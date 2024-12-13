@@ -55,8 +55,12 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextFormField(
+                      style: TextStyle(fontWeight: FontWeight.bold),
                       decoration: InputDecoration(
-                        hintText: 'メールアドレス',
+                        labelText: 'メールアドレス',
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
                           borderSide: const BorderSide(
@@ -85,9 +89,13 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
+                      style: TextStyle(fontWeight: FontWeight.bold),
                       obscureText: _isObscure,
                       decoration: InputDecoration(
-                        hintText: 'パスワード',
+                        labelText: 'パスワード',
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                        ),
                         suffixIcon: password.isNotEmpty
                             ? IconButton(
                                 icon: Icon(_isObscure
@@ -163,7 +171,11 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                               }
                             : null,
-                        child: const Text('ログイン'),
+                        child: const Text(
+                          'ログイン',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 5),
