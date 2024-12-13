@@ -24,6 +24,7 @@ class _NextPageState extends State<NextPage> {
   List<HimaPeople> himaPeople = [];
   bool isLoading = false;
   late String name = "";
+  List<String> tags = [];
 
   bool _isHima = false;
   String myperson = "";
@@ -151,7 +152,7 @@ class _NextPageState extends State<NextPage> {
         name: name,
         deadline: null,
         place: "春日",
-        // himaActivitiesIds: [],
+        himaActivitiesIds: [],
       );
       await addHimaPerson(newPerson);
     } else {
@@ -217,6 +218,25 @@ class _NextPageState extends State<NextPage> {
     }
   }
 
+//tagの表示
+  Future<List<String>> fetchHimaTags(String userId, userHimaIds) async {
+    // userHimaIds が空の場合にデフォルト値を設定
+    if (userHimaIds.isEmpty) {
+      userHimaIds = ["defaultId"]; // 適当なデフォルトIDを設定
+    }
+
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .collection("himaActivities")
+        .get();
+
+    return querySnapshot.docs
+        .where((doc) => userHimaIds.contains(doc.id))
+        .map((doc) => doc['content'] as String)
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -240,6 +260,7 @@ class _NextPageState extends State<NextPage> {
                             name: 'No Name',
                             deadline: null,
                             place: '',
+                            himaActivitiesIds: [],
                           ));
                   Navigator.push(
                       context,
@@ -318,6 +339,7 @@ class _NextPageState extends State<NextPage> {
                                       name: 'No Name',
                                       deadline: null,
                                       place: '',
+                                      himaActivitiesIds: [],
                                     ));
                             // ボタンが押された際の動作を記述する
                             Navigator.push(
@@ -344,6 +366,7 @@ class _NextPageState extends State<NextPage> {
                                           name: 'No Name',
                                           deadline: null,
                                           place: '',
+                                          himaActivitiesIds: [],
                                         ))
                                 .name ??
                             "No Name",
@@ -367,6 +390,7 @@ class _NextPageState extends State<NextPage> {
                                           name: 'No Name',
                                           deadline: null,
                                           place: '',
+                                          himaActivitiesIds: [],
                                         ))
                                 .place ??
                             "Nowhere",
@@ -410,22 +434,29 @@ class _NextPageState extends State<NextPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        subtitle: Table(
-                          children: <TableRow>[
-                            TableRow(
-                              children: [
-                                Text(
-                                  person.place ?? "Nowhere",
-                                  maxLines: 1, // 表示する最大行数を1行に制限
-                                  overflow: TextOverflow
-                                      .ellipsis, // テキストが制限を超えた場合に省略記号を表示
-                                  style: const TextStyle(
-                                    fontSize: 10,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                        subtitle: FutureBuilder<List<String>>(
+                          future: fetchHimaTags(
+                              person.id, person.himaActivitiesIds),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator();
+                            }
+                            if (snapshot.hasError) {
+                              return const Text('エラーが発生しました');
+                            }
+                            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                              return const Text('タグが見つかりません');
+                            }
+
+                            final tags = snapshot.data!;
+                            return Wrap(
+                              spacing: 8.0,
+                              children: tags
+                                  .map((tag) => Chip(label: Text(tag)))
+                                  .toList(),
+                            );
+                          },
                         ),
                         trailing: Column(
                           children: [
