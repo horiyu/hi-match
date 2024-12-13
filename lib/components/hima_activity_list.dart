@@ -12,6 +12,7 @@ Future<void> himaActivityList({
   final textController = TextEditingController();
   final isButtonEnabled = ValueNotifier<bool>(false);
   var selectedTags = <Map<String, String>>[];
+  final selectedTagsNotifier = ValueNotifier<List<Map<String, String>>>([]);
 
   textController.addListener(() {
     isButtonEnabled.value = textController.text.isNotEmpty;
@@ -115,54 +116,68 @@ Future<void> himaActivityList({
                             };
                           }).toList();
 
-                          return Wrap(
-                            runSpacing: 16,
-                            spacing: 16,
-                            children: tagsWithIds.map((tag) {
-                              final isSelected = selectedTags.contains(tag);
-                              print("selectedTags:");
-                              print(selectedTags);
-                              print("tag:");
-                              print(tag);
-                              print("isSelected");
-                              print(isSelected);
-                              print("");
-                              return InkWell(
-                                // borderRadius:
-                                //     const BorderRadius.all(Radius.circul),
-                                onTap: () {
-                                  if (isSelected) {
-                                    selectedTags.remove(tag);
-                                  } else {
-                                    selectedTags.add(tag);
-                                  }
-                                  // print(isSelected);
-                                  // print(selectedTags);
-                                },
-                                child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 200),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 8),
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(32)),
-                                    border: Border.all(
-                                        width: 2, color: Colors.pink),
-                                    color: isSelected ? Colors.pink : null,
-                                  ),
-                                  child: Text(
-                                    tag['content']!,
-                                    style: TextStyle(
-                                      color: isSelected
-                                          ? Colors.white
-                                          : Colors.pink,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }).toList(),
-                          );
+                          //                return ValueListenableBuilder<List<Map<String, String>>>(
+                          // valueListenable: selectedTagsNotifier,
+                          // builder: (context, selectedTags, child) {
+                          return ValueListenableBuilder<
+                                  List<Map<String, String>>>(
+                              valueListenable: selectedTagsNotifier,
+                              builder: (context, selectedTags, child) {
+                                return Wrap(
+                                  runSpacing: 16,
+                                  spacing: 16,
+                                  children: tagsWithIds.map((tag) {
+                                    final isSelected = false;
+                                    return InkWell(
+                                      // borderRadius:
+                                      //     const BorderRadius.all(Radius.circul),
+                                      onTap: () {
+                                        final isSelected = selectedTags.any(
+                                            (map) =>
+                                                map.containsValue(tag['id']));
+                                        print(isSelected);
+                                        print(tag['id']);
+                                        print(tag['content']);
+                                        print(tag);
+                                        print(selectedTags);
+                                        if (isSelected) {
+                                          selectedTags.remove(tag);
+                                        } else {
+                                          selectedTags.add(tag);
+                                          // selectedTagsList
+                                          //     .add(tag['id']?.toString() ?? "");
+                                        }
+                                        // print((tag['id']?.toString() ?? ""));
+                                        // print(isSelected);
+                                        // print(selectedTags);
+                                      },
+                                      child: AnimatedContainer(
+                                        duration:
+                                            const Duration(milliseconds: 200),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 8),
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(32)),
+                                          border: Border.all(
+                                              width: 2, color: Colors.pink),
+                                          color:
+                                              isSelected ? Colors.pink : null,
+                                        ),
+                                        child: Text(
+                                          tag['content']!,
+                                          style: TextStyle(
+                                            color: isSelected
+                                                ? Colors.white
+                                                : Colors.pink,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                );
+                              });
                         },
                       ),
                     ],
@@ -213,3 +228,15 @@ Future<void> himaActivityList({
     },
   );
 }
+
+// void main() {
+//   List<Map<String, String>> list = [
+//     {'key1': 'value1', 'key2': 'value2'},
+//     {'keyA': 'valueA', 'keyB': 'valueB'}
+//   ];
+
+//   // 'key1'を含むMapが存在するか
+//   bool hasKey = list.any((map) => map.containsKey('key1'));
+//   print(hasKey); // true
+// }
+
