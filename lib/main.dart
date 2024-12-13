@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 import 'package:my_web_app/presentation/router/app.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  ).catchError((error) {
+    print('Firebase initialization error: $error');
+    throw error;
+  });
+
   runApp(
     const ProviderScope(
       child: App(),
