@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class BrandColor {
-  static const bananaYellow = Color(0xFFF4B400);
+class BrandColors {
+  static const primary = Color(0xFFFF8800);
   static const grey = Color(0xFFAAAAAA);
   static const lightGrey = Color(0xFFEEEEEE);
   static const darkGrey = Color(0xFF777777);
