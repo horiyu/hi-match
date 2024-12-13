@@ -1,0 +1,6 @@
+{
+  "ios.simulator": "08385752-AED3-4DFC-915B-75C36D6B3257",
+  "ios.device": "XXXX-IOS-DEVICE-ID-XXXX",
+  "android.emulator": "XXXX-ANDROID-EMULATOR-ID-XXXX",
+  "android.device": "XXXX-ANDROID-DEVICE-ID-XXXX",
+}
