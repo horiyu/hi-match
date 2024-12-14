@@ -19,6 +19,7 @@ mixin _$User {
   String get uid => throw _privateConstructorUsedError;
   String get handle => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String get email => throw _privateConstructorUsedError;
   String? get avatar => throw _privateConstructorUsedError;
   String? get bio => throw _privateConstructorUsedError;
   List<String>? get friends => throw _privateConstructorUsedError;
@@ -44,6 +45,7 @@ abstract class $UserCopyWith<$Res> {
       {String uid,
       String handle,
       String name,
+      String email,
       String? avatar,
       String? bio,
       List<String>? friends,
@@ -73,6 +75,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? uid = null,
     Object? handle = null,
     Object? name = null,
+    Object? email = null,
     Object? avatar = freezed,
     Object? bio = freezed,
     Object? friends = freezed,
@@ -95,6 +98,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String,
       avatar: freezed == avatar
           ? _value.avatar
@@ -147,6 +154,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       {String uid,
       String handle,
       String name,
+      String email,
       String? avatar,
       String? bio,
       List<String>? friends,
@@ -173,6 +181,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? uid = null,
     Object? handle = null,
     Object? name = null,
+    Object? email = null,
     Object? avatar = freezed,
     Object? bio = freezed,
     Object? friends = freezed,
@@ -195,6 +204,10 @@ class __$$UserImplCopyWithImpl<$Res>
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String,
       avatar: freezed == avatar
           ? _value.avatar
@@ -243,6 +256,7 @@ class _$UserImpl implements _User {
       {required this.uid,
       required this.handle,
       required this.name,
+      required this.email,
       this.avatar,
       this.bio,
       final List<String>? friends,
@@ -261,6 +275,8 @@ class _$UserImpl implements _User {
   final String handle;
   @override
   final String name;
+  @override
+  final String email;
   @override
   final String? avatar;
   @override
@@ -298,7 +314,7 @@ class _$UserImpl implements _User {
 
   @override
   String toString() {
-    return 'User(uid: $uid, handle: $handle, name: $name, avatar: $avatar, bio: $bio, friends: $friends, isHima: $isHima, himaActivityIds: $himaActivityIds, deadline: $deadline, createdAt: $createdAt, updatedAt: $updatedAt, isDeleted: $isDeleted)';
+    return 'User(uid: $uid, handle: $handle, name: $name, email: $email, avatar: $avatar, bio: $bio, friends: $friends, isHima: $isHima, himaActivityIds: $himaActivityIds, deadline: $deadline, createdAt: $createdAt, updatedAt: $updatedAt, isDeleted: $isDeleted)';
   }
 
   @override
@@ -309,6 +325,7 @@ class _$UserImpl implements _User {
             (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.handle, handle) || other.handle == handle) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.email, email) || other.email == email) &&
             (identical(other.avatar, avatar) || other.avatar == avatar) &&
             (identical(other.bio, bio) || other.bio == bio) &&
             const DeepCollectionEquality().equals(other._friends, _friends) &&
@@ -331,6 +348,7 @@ class _$UserImpl implements _User {
       uid,
       handle,
       name,
+      email,
       avatar,
       bio,
       const DeepCollectionEquality().hash(_friends),
@@ -355,6 +373,7 @@ abstract class _User implements User {
       {required final String uid,
       required final String handle,
       required final String name,
+      required final String email,
       final String? avatar,
       final String? bio,
       final List<String>? friends,
@@ -371,6 +390,8 @@ abstract class _User implements User {
   String get handle;
   @override
   String get name;
+  @override
+  String get email;
   @override
   String? get avatar;
   @override

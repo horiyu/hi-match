@@ -8,6 +8,7 @@ class User with _$User {
     required String uid,
     required String handle,
     required String name,
+    required String email,
     String? avatar,
     String? bio,
     List<String>? friends,
