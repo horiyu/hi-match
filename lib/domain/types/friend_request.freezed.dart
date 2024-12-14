@@ -15,39 +15,39 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$friendRequest {
+mixin _$FriendRequest {
   String get from => throw _privateConstructorUsedError;
   String get to => throw _privateConstructorUsedError;
   DateTime get sentAt => throw _privateConstructorUsedError;
   int get status => throw _privateConstructorUsedError;
 
-  /// Create a copy of friendRequest
+  /// Create a copy of FriendRequest
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $friendRequestCopyWith<friendRequest> get copyWith =>
+  $FriendRequestCopyWith<FriendRequest> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $friendRequestCopyWith<$Res> {
-  factory $friendRequestCopyWith(
-          friendRequest value, $Res Function(friendRequest) then) =
-      _$friendRequestCopyWithImpl<$Res, friendRequest>;
+abstract class $FriendRequestCopyWith<$Res> {
+  factory $FriendRequestCopyWith(
+          FriendRequest value, $Res Function(FriendRequest) then) =
+      _$FriendRequestCopyWithImpl<$Res, FriendRequest>;
   @useResult
   $Res call({String from, String to, DateTime sentAt, int status});
 }
 
 /// @nodoc
-class _$friendRequestCopyWithImpl<$Res, $Val extends friendRequest>
-    implements $friendRequestCopyWith<$Res> {
-  _$friendRequestCopyWithImpl(this._value, this._then);
+class _$FriendRequestCopyWithImpl<$Res, $Val extends FriendRequest>
+    implements $FriendRequestCopyWith<$Res> {
+  _$FriendRequestCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of friendRequest
+  /// Create a copy of FriendRequest
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -79,25 +79,25 @@ class _$friendRequestCopyWithImpl<$Res, $Val extends friendRequest>
 }
 
 /// @nodoc
-abstract class _$$friendRequestImplCopyWith<$Res>
-    implements $friendRequestCopyWith<$Res> {
-  factory _$$friendRequestImplCopyWith(
-          _$friendRequestImpl value, $Res Function(_$friendRequestImpl) then) =
-      __$$friendRequestImplCopyWithImpl<$Res>;
+abstract class _$$FriendRequestImplCopyWith<$Res>
+    implements $FriendRequestCopyWith<$Res> {
+  factory _$$FriendRequestImplCopyWith(
+          _$FriendRequestImpl value, $Res Function(_$FriendRequestImpl) then) =
+      __$$FriendRequestImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String from, String to, DateTime sentAt, int status});
 }
 
 /// @nodoc
-class __$$friendRequestImplCopyWithImpl<$Res>
-    extends _$friendRequestCopyWithImpl<$Res, _$friendRequestImpl>
-    implements _$$friendRequestImplCopyWith<$Res> {
-  __$$friendRequestImplCopyWithImpl(
-      _$friendRequestImpl _value, $Res Function(_$friendRequestImpl) _then)
+class __$$FriendRequestImplCopyWithImpl<$Res>
+    extends _$FriendRequestCopyWithImpl<$Res, _$FriendRequestImpl>
+    implements _$$FriendRequestImplCopyWith<$Res> {
+  __$$FriendRequestImplCopyWithImpl(
+      _$FriendRequestImpl _value, $Res Function(_$FriendRequestImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of friendRequest
+  /// Create a copy of FriendRequest
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -107,7 +107,7 @@ class __$$friendRequestImplCopyWithImpl<$Res>
     Object? sentAt = null,
     Object? status = null,
   }) {
-    return _then(_$friendRequestImpl(
+    return _then(_$FriendRequestImpl(
       from: null == from
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
@@ -130,8 +130,8 @@ class __$$friendRequestImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$friendRequestImpl implements _friendRequest {
-  const _$friendRequestImpl(
+class _$FriendRequestImpl implements _FriendRequest {
+  const _$FriendRequestImpl(
       {required this.from,
       required this.to,
       required this.sentAt,
@@ -148,14 +148,14 @@ class _$friendRequestImpl implements _friendRequest {
 
   @override
   String toString() {
-    return 'friendRequest(from: $from, to: $to, sentAt: $sentAt, status: $status)';
+    return 'FriendRequest(from: $from, to: $to, sentAt: $sentAt, status: $status)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$friendRequestImpl &&
+            other is _$FriendRequestImpl &&
             (identical(other.from, from) || other.from == from) &&
             (identical(other.to, to) || other.to == to) &&
             (identical(other.sentAt, sentAt) || other.sentAt == sentAt) &&
@@ -165,21 +165,21 @@ class _$friendRequestImpl implements _friendRequest {
   @override
   int get hashCode => Object.hash(runtimeType, from, to, sentAt, status);
 
-  /// Create a copy of friendRequest
+  /// Create a copy of FriendRequest
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$friendRequestImplCopyWith<_$friendRequestImpl> get copyWith =>
-      __$$friendRequestImplCopyWithImpl<_$friendRequestImpl>(this, _$identity);
+  _$$FriendRequestImplCopyWith<_$FriendRequestImpl> get copyWith =>
+      __$$FriendRequestImplCopyWithImpl<_$FriendRequestImpl>(this, _$identity);
 }
 
-abstract class _friendRequest implements friendRequest {
-  const factory _friendRequest(
+abstract class _FriendRequest implements FriendRequest {
+  const factory _FriendRequest(
       {required final String from,
       required final String to,
       required final DateTime sentAt,
-      required final int status}) = _$friendRequestImpl;
+      required final int status}) = _$FriendRequestImpl;
 
   @override
   String get from;
@@ -190,10 +190,10 @@ abstract class _friendRequest implements friendRequest {
   @override
   int get status;
 
-  /// Create a copy of friendRequest
+  /// Create a copy of FriendRequest
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$friendRequestImplCopyWith<_$friendRequestImpl> get copyWith =>
+  _$$FriendRequestImplCopyWith<_$FriendRequestImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

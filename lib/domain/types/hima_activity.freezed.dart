@@ -15,24 +15,24 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$himaActivity {
+mixin _$HimaActivity {
   String get content => throw _privateConstructorUsedError;
   String get createdBy => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
 
-  /// Create a copy of himaActivity
+  /// Create a copy of HimaActivity
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $himaActivityCopyWith<himaActivity> get copyWith =>
+  $HimaActivityCopyWith<HimaActivity> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $himaActivityCopyWith<$Res> {
-  factory $himaActivityCopyWith(
-          himaActivity value, $Res Function(himaActivity) then) =
-      _$himaActivityCopyWithImpl<$Res, himaActivity>;
+abstract class $HimaActivityCopyWith<$Res> {
+  factory $HimaActivityCopyWith(
+          HimaActivity value, $Res Function(HimaActivity) then) =
+      _$HimaActivityCopyWithImpl<$Res, HimaActivity>;
   @useResult
   $Res call(
       {String content,
@@ -42,16 +42,16 @@ abstract class $himaActivityCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$himaActivityCopyWithImpl<$Res, $Val extends himaActivity>
-    implements $himaActivityCopyWith<$Res> {
-  _$himaActivityCopyWithImpl(this._value, this._then);
+class _$HimaActivityCopyWithImpl<$Res, $Val extends HimaActivity>
+    implements $HimaActivityCopyWith<$Res> {
+  _$HimaActivityCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of himaActivity
+  /// Create a copy of HimaActivity
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -83,11 +83,11 @@ class _$himaActivityCopyWithImpl<$Res, $Val extends himaActivity>
 }
 
 /// @nodoc
-abstract class _$$himaActivityImplCopyWith<$Res>
-    implements $himaActivityCopyWith<$Res> {
-  factory _$$himaActivityImplCopyWith(
-          _$himaActivityImpl value, $Res Function(_$himaActivityImpl) then) =
-      __$$himaActivityImplCopyWithImpl<$Res>;
+abstract class _$$HimaActivityImplCopyWith<$Res>
+    implements $HimaActivityCopyWith<$Res> {
+  factory _$$HimaActivityImplCopyWith(
+          _$HimaActivityImpl value, $Res Function(_$HimaActivityImpl) then) =
+      __$$HimaActivityImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -98,14 +98,14 @@ abstract class _$$himaActivityImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$himaActivityImplCopyWithImpl<$Res>
-    extends _$himaActivityCopyWithImpl<$Res, _$himaActivityImpl>
-    implements _$$himaActivityImplCopyWith<$Res> {
-  __$$himaActivityImplCopyWithImpl(
-      _$himaActivityImpl _value, $Res Function(_$himaActivityImpl) _then)
+class __$$HimaActivityImplCopyWithImpl<$Res>
+    extends _$HimaActivityCopyWithImpl<$Res, _$HimaActivityImpl>
+    implements _$$HimaActivityImplCopyWith<$Res> {
+  __$$HimaActivityImplCopyWithImpl(
+      _$HimaActivityImpl _value, $Res Function(_$HimaActivityImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of himaActivity
+  /// Create a copy of HimaActivity
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -115,7 +115,7 @@ class __$$himaActivityImplCopyWithImpl<$Res>
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
-    return _then(_$himaActivityImpl(
+    return _then(_$HimaActivityImpl(
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
@@ -138,8 +138,8 @@ class __$$himaActivityImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$himaActivityImpl implements _himaActivity {
-  const _$himaActivityImpl(
+class _$HimaActivityImpl implements _HimaActivity {
+  const _$HimaActivityImpl(
       {required this.content,
       required this.createdBy,
       required this.createdAt,
@@ -156,14 +156,14 @@ class _$himaActivityImpl implements _himaActivity {
 
   @override
   String toString() {
-    return 'himaActivity(content: $content, createdBy: $createdBy, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'HimaActivity(content: $content, createdBy: $createdBy, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$himaActivityImpl &&
+            other is _$HimaActivityImpl &&
             (identical(other.content, content) || other.content == content) &&
             (identical(other.createdBy, createdBy) ||
                 other.createdBy == createdBy) &&
@@ -177,21 +177,21 @@ class _$himaActivityImpl implements _himaActivity {
   int get hashCode =>
       Object.hash(runtimeType, content, createdBy, createdAt, updatedAt);
 
-  /// Create a copy of himaActivity
+  /// Create a copy of HimaActivity
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$himaActivityImplCopyWith<_$himaActivityImpl> get copyWith =>
-      __$$himaActivityImplCopyWithImpl<_$himaActivityImpl>(this, _$identity);
+  _$$HimaActivityImplCopyWith<_$HimaActivityImpl> get copyWith =>
+      __$$HimaActivityImplCopyWithImpl<_$HimaActivityImpl>(this, _$identity);
 }
 
-abstract class _himaActivity implements himaActivity {
-  const factory _himaActivity(
+abstract class _HimaActivity implements HimaActivity {
+  const factory _HimaActivity(
       {required final String content,
       required final String createdBy,
       required final DateTime createdAt,
-      required final DateTime updatedAt}) = _$himaActivityImpl;
+      required final DateTime updatedAt}) = _$HimaActivityImpl;
 
   @override
   String get content;
@@ -202,10 +202,10 @@ abstract class _himaActivity implements himaActivity {
   @override
   DateTime get updatedAt;
 
-  /// Create a copy of himaActivity
+  /// Create a copy of HimaActivity
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$himaActivityImplCopyWith<_$himaActivityImpl> get copyWith =>
+  _$$HimaActivityImplCopyWith<_$HimaActivityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
