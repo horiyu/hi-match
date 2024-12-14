@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 typedef Fn = Function({required DateTime date});
@@ -15,15 +14,10 @@ Future<void> showCustomTimePicker({
   final int currentMinute = DateTime.now().minute;
   final int roundedMinute =
       ((currentMinute + 4) ~/ 5) * 5; // Round up to nearest multiple of 5
-  final int startHour = 0;
-  final int totalHours = 24;
-  final int startMinute = 0;
-  final int totalMinutes = 60;
-
-  final int currentYear =
-      DateTime.now().year - 16; // 何歳から登録できるかの制限値　適宜修正する（この例では16歳）
-  final int startYear = currentYear - 110; // 125歳まで登録できることを想定
-  final int totalYears = currentYear - startYear + 1;
+  const int startHour = 0;
+  const int totalHours = 24;
+  const int startMinute = 0;
+  const int totalMinutes = 60;
 
   int selectedHour = currentHour;
   int selectedMinute = roundedMinute;
