@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$User {
   String get uid => throw _privateConstructorUsedError;
-  String? get handle => throw _privateConstructorUsedError;
+  String get handle => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String? get avatar => throw _privateConstructorUsedError;
   String? get bio => throw _privateConstructorUsedError;
@@ -42,7 +42,7 @@ abstract class $UserCopyWith<$Res> {
   @useResult
   $Res call(
       {String uid,
-      String? handle,
+      String handle,
       String name,
       String? avatar,
       String? bio,
@@ -71,7 +71,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   @override
   $Res call({
     Object? uid = null,
-    Object? handle = freezed,
+    Object? handle = null,
     Object? name = null,
     Object? avatar = freezed,
     Object? bio = freezed,
@@ -88,10 +88,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      handle: freezed == handle
+      handle: null == handle
           ? _value.handle
           : handle // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -145,7 +145,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
   @useResult
   $Res call(
       {String uid,
-      String? handle,
+      String handle,
       String name,
       String? avatar,
       String? bio,
@@ -171,7 +171,7 @@ class __$$UserImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uid = null,
-    Object? handle = freezed,
+    Object? handle = null,
     Object? name = null,
     Object? avatar = freezed,
     Object? bio = freezed,
@@ -188,10 +188,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      handle: freezed == handle
+      handle: null == handle
           ? _value.handle
           : handle // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -241,7 +241,7 @@ class __$$UserImplCopyWithImpl<$Res>
 class _$UserImpl implements _User {
   const _$UserImpl(
       {required this.uid,
-      this.handle,
+      required this.handle,
       required this.name,
       this.avatar,
       this.bio,
@@ -258,7 +258,7 @@ class _$UserImpl implements _User {
   @override
   final String uid;
   @override
-  final String? handle;
+  final String handle;
   @override
   final String name;
   @override
@@ -353,7 +353,7 @@ class _$UserImpl implements _User {
 abstract class _User implements User {
   const factory _User(
       {required final String uid,
-      final String? handle,
+      required final String handle,
       required final String name,
       final String? avatar,
       final String? bio,
@@ -368,7 +368,7 @@ abstract class _User implements User {
   @override
   String get uid;
   @override
-  String? get handle;
+  String get handle;
   @override
   String get name;
   @override
