@@ -1,30 +1,28 @@
-import '../../logic/todo/types/status.dart';
-import '../../logic/todo/types/todo.dart';
-// import '../logger.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../../domain/types/user.dart';
+
 import 'interface.dart';
 
 class ImplDev implements Firestore {
-  @override
-  Future<List<Todo>> findTodosByUserId(String userId) async {
-    // externalLogger.info('firestoreからTodoを取得します');
-    await Future.delayed(const Duration(seconds: 1));
-    // externalLogger.info('firestoreからTodoを取得しました');
-    return [
-      const Todo(
-        id: 'xxxx-example-01-xxxx',
-        status: Status.todo,
-        text: 'バナナを買う',
-      ),
-      const Todo(
-        id: 'xxxx-example-02-xxxx',
-        status: Status.doing,
-        text: 'バナナを食べる',
-      ),
-      const Todo(
-        id: 'xxxx-example-03-xxxx',
-        status: Status.done,
-        text: 'バナナを捨てる',
-      ),
-    ];
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<User> findUserByUid(String uid) async {
+    final snapshot = await _firestore.collection('users').doc(uid).get();
+    final data = snapshot.data();
+    if (data == null) {
+      throw Exception('User not found');
+    }
+    return User(
+      uid: data['uid'] as String,
+      name: data['name'] as String,
+      email: data['email'] as String,
+      handle: data['handle'] as String,
+      isHima: data['isHima'] as bool,
+      deadline: (data['deadline'] as Timestamp).toDate(),
+      createdAt: (data['createdAt'] as Timestamp).toDate(),
+      updatedAt: (data['updatedAt'] as Timestamp).toDate(),
+      isDeleted: data['isDeleted'] as bool,
+    );
   }
 }
