@@ -7,6 +7,7 @@ import 'interface.dart';
 class ImplDev implements Firestore {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  @override
   Future<User> findUserByUid(String uid) async {
     final snapshot = await _firestore.collection('users').doc(uid).get();
     final data = snapshot.data();
