@@ -7,7 +7,7 @@ import '../../domain/types/user.dart';
 
 import 'interface.dart';
 
-class ImplDev implements Firestore {
+class ImplStg implements Firestore {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
