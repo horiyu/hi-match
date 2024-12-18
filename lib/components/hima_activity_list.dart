@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-typedef Fn = Function({required String himaActivities});
+typedef Fn = Function({required List<Map<String, String>> himaActivities});
 
 Future<void> himaActivityList({
   required BuildContext context,
@@ -11,7 +11,8 @@ Future<void> himaActivityList({
   String newHimaActivity = "";
   final textController = TextEditingController();
   final isButtonEnabled = ValueNotifier<bool>(false);
-  var selectedTags = <String>[];
+  var selectedTags = <Map<String, String>>[];
+  final selectedTagsNotifier = ValueNotifier<List<Map<String, String>>>([]);
 
   textController.addListener(() {
     isButtonEnabled.value = textController.text.isNotEmpty;
@@ -59,6 +60,7 @@ Future<void> himaActivityList({
                         ),
                         onChanged: (value) {
                           newHimaActivity = value;
+                          // No need to call setState here
                         },
                       ),
                       ValueListenableBuilder<bool>(
@@ -101,49 +103,80 @@ Future<void> himaActivityList({
                             return const Text('タグが見つかりません');
                           }
 
-                          final tags = snapshot.data!.docs
-                              .map((doc) => doc['content'] as String)
-                              .toList();
+                          // final tags = snapshot.data!.docs
+                          //     .map((doc) => doc['content'] as String)
+                          //     .toList();
+                          // final tagsId = snapshot.data!.docs
+                          //     .map((doc) => doc.id as String)
+                          //     .toList();
 
-                          return Wrap(
-                            runSpacing: 16,
-                            spacing: 16,
-                            children: tags.map((tag) {
-                              final isSelected = selectedTags.contains(tag);
-                              return InkWell(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(32)),
-                                onTap: () {
-                                  if (isSelected) {
-                                    selectedTags.remove(tag);
-                                  } else {
-                                    selectedTags.add(tag);
-                                  }
-                                },
-                                child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 200),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 8),
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(32)),
-                                    border: Border.all(
-                                        width: 2, color: Colors.pink),
-                                    color: isSelected ? Colors.pink : null,
-                                  ),
-                                  child: Text(
-                                    tag,
-                                    style: TextStyle(
-                                      color: isSelected
-                                          ? Colors.white
-                                          : Colors.pink,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }).toList(),
-                          );
+                          final tagsWithIds = snapshot.data!.docs.map((doc) {
+                            return {
+                              'id': doc.id,
+                              'content': doc['content'] as String,
+                            };
+                          }).toList();
+
+                          //                return ValueListenableBuilder<List<Map<String, String>>>(
+                          // valueListenable: selectedTagsNotifier,
+                          // builder: (context, selectedTags, child) {
+                          return ValueListenableBuilder<
+                                  List<Map<String, String>>>(
+                              valueListenable: selectedTagsNotifier,
+                              builder: (context, selectedTags, child) {
+                                return Wrap(
+                                  runSpacing: 16,
+                                  spacing: 16,
+                                  children: tagsWithIds.map((tag) {
+                                    final isSelected = selectedTags.any(
+                                        (map) => map.containsValue(tag['id']));
+
+                                    return InkWell(
+                                      // borderRadius:
+                                      //     const BorderRadius.all(Radius.circul),
+                                      onTap: () {
+                                        final isSelected = selectedTags.any(
+                                            (map) =>
+                                                map.containsValue(tag['id']));
+                                        // print(isSelected);
+
+                                        // print(tag);
+                                        // print(selectedTags);
+                                        if (isSelected) {
+                                          selectedTags.removeWhere((map) => map['id'] == tag['id']);
+                                        } else {
+                                          selectedTags.add(tag);
+                                        }
+                                        selectedTagsNotifier.value = List.from(selectedTags);
+                                      },
+                                      child: AnimatedContainer(
+                                        duration:
+                                            const Duration(milliseconds: 200),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 8),
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(32)),
+                                          border: Border.all(
+                                              width: 2, color: Colors.pink),
+                                          color: isSelected
+                                              ? Colors.pink
+                                              : Colors.white,
+                                        ),
+                                        child: Text(
+                                          tag['content']!,
+                                          style: TextStyle(
+                                            color: isSelected
+                                                ? Colors.white
+                                                : Colors.pink,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                );
+                              });
                         },
                       ),
                     ],
@@ -179,9 +212,7 @@ Future<void> himaActivityList({
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {
-                          handler(
-                            himaActivities: selectedTags.join(', '),
-                          );
+                          handler(himaActivities: selectedTags);
                           Navigator.of(context).pop();
                         },
                       ),

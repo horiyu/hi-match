@@ -14,6 +14,8 @@ class HimaModal extends StatefulWidget {
 
 class _HimaModalState extends State<HimaModal> {
   DateTime? selectedDate;
+  List<String>? selectedHimaActivitiesContent;
+  List<String>? selectedHimaActivitiesID;
 
   @override
   Widget build(BuildContext context) {
@@ -127,9 +129,18 @@ class _HimaModalState extends State<HimaModal> {
                 ),
                 onPressed: () async {
                   await himaActivityList(
-                    handler: ({required String himaActivities}) {
+                    handler: (
+                        {required List<Map<String, String>> himaActivities}) {
                       setState(() {
-                        //  = himaActivities;
+                        print(himaActivities);
+                        selectedHimaActivitiesContent = himaActivities
+                            .map((e) => e['content'])
+                            .cast<String>()
+                            .toList();
+                        selectedHimaActivitiesID = himaActivities
+                            .map((e) => e['id'])
+                            .cast<String>()
+                            .toList();
                       });
                     },
                     context: context,
@@ -198,21 +209,16 @@ class _HimaModalState extends State<HimaModal> {
                                   .collection("users")
                                   .where("id", isEqualTo: widget.uid)
                                   .get();
-                              await FirebaseFirestore.instance
-                                  .collection("users")
-                                  .doc(snapshot.docs[0].id)
-                                  .update({
-                                'deadline': Timestamp.fromDate(selectedDate!)
-                              });
                               bool isHima = snapshot.docs[0].data()['isHima'];
                               await FirebaseFirestore.instance
                                   .collection("users")
                                   .doc(snapshot.docs[0].id)
-                                  .update({'isHima': !isHima});
+                                  .update({
+                                'deadline': Timestamp.fromDate(selectedDate!),
+                                'isHima': !isHima,
+                                'himaActivitiesIds': selectedHimaActivitiesID,
+                              });
                               Navigator.of(context).pop();
-                              // setState(() {
-                              //   _isHima = isHima;
-                              // });
                             },
                       child: const Text(
                         'ひま',
