@@ -471,9 +471,17 @@ class _NextPageState extends State<NextPage> {
                             final tags = snapshot.data!;
                             return Wrap(
                               spacing: 8.0,
-                              children: tags
-                                  .map((tag) => Chip(label: Text(tag)))
-                                  .toList(),
+                              children: tags.map((tag) {
+                                return Chip(
+                                  label: Text(
+                                    tag,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
                             );
                           },
                         ),
@@ -539,7 +547,7 @@ class _NextPageState extends State<NextPage> {
         width: 100,
         height: 100,
         child: FloatingActionButton(
-          backgroundColor: Colors.blue[200],
+          backgroundColor: Colors.orangeAccent,
           shape: const CircleBorder(),
           onPressed: () {
             _toggleHimaStatus();
@@ -581,7 +589,7 @@ class _NextPageState extends State<NextPage> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: const Color.fromARGB(255, 23, 63, 122),
+        color: Colors.deepOrangeAccent,
         notchMargin: 11.0,
         shape: const AutomaticNotchedShape(
           RoundedRectangleBorder(),
