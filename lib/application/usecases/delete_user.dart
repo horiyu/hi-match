@@ -9,16 +9,7 @@ class DeleteUserUsecase {
   final String uid;
   final Firestore firestore;
 
-  Future<void> deleteUser(String id, bool physucalDelete) async {
-    // firebase.sendEvent(AnalyticsEvent.deleteMemo);
-
-    final user = await firestore.findUserByUid(id);
-
-    if (physucalDelete) {
-      // user.delete();
-    } else {
-      // user.isDeleted = true;
-      // user.save();
-    }
+  Future<void> call() async {
+    await firestore.deleteUserByUid(uid);
   }
 }
