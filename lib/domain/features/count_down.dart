@@ -21,7 +21,7 @@ class Countdown {
     } else if (difference.inMinutes >= 30) {
       return '残り ${minutes + 1} 分';
     } else {
-      return '残り ${minutes + 1} 分';
+      return '残り ${minutes + 1} 分_';
     }
   }
 }
