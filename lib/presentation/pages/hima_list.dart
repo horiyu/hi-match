@@ -5,6 +5,7 @@ import 'package:my_web_app/presentation/widgets/user_icon.dart';
 
 import '../../domain/features/hima_checker.dart';
 import '../../domain/types/user.dart';
+import '../widgets/bottom_navi.dart';
 import '../widgets/count_down_widget.dart';
 
 class HimaListPage extends StatefulWidget {
@@ -109,6 +110,7 @@ class _HimaListPageState extends State<HimaListPage> {
           );
         },
       ),
+      // bottomNavigationBar: const BottomNavigationBarWidget(),
     );
   }
 }
