@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:my_web_app/infrastructure/firestore/interface.dart';
 import 'package:my_web_app/presentation/theme/colors.dart';
+import 'package:my_web_app/presentation/widgets/tag.dart';
 import 'package:my_web_app/presentation/widgets/user_icon.dart';
 
 import '../../domain/features/hima_checker.dart';
@@ -102,6 +104,13 @@ class _HimaListPageState extends State<HimaListPage> {
                     : BrandColors.black.withOpacity(0.5),
               ),
             ),
+            subtitle: isCheckedHima
+                ? Row(
+                    children: [
+                      TagWidget(text: user.name, height: 25),
+                    ],
+                  )
+                : null,
             trailing:
                 isCheckedHima ? CountdownWidget(deadline: user.deadline) : null,
             onTap: () {},
