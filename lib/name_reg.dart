@@ -112,13 +112,13 @@ class _NameRegState extends State<NameReg> {
 
                   if (snapshot.docs.isEmpty) {
                     newPerson = HimaPeople(
-                      id: '$uid',
-                      mail: '$email',
-                      isHima: true,
-                      name: name,
-                      deadline: null,
-                      place: "",
-                    );
+                        id: '$uid',
+                        mail: '$email',
+                        isHima: true,
+                        name: name,
+                        deadline: null,
+                        place: "",
+                        himaActivitiesIds: []);
                     await addHimaPerson(newPerson);
                   } else {
                     // snapshot.docs[0].data()の中身のisHimaを取得
