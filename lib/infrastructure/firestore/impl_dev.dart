@@ -9,6 +9,7 @@ import 'interface.dart';
 
 class ImplDev implements Firestore {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final noDate = DateTime(1970, 1, 1);
 
   @override
   Future<User> findUserByUid(String uid) async {
@@ -18,15 +19,15 @@ class ImplDev implements Firestore {
       throw Exception('User not found');
     }
     return User(
-      uid: data['uid'] as String,
-      name: data['name'] as String,
-      email: data['email'] as String,
-      handle: data['handle'] as String,
-      isHima: data['isHima'] as bool,
-      deadline: (data['deadline'] as Timestamp).toDate(),
-      createdAt: (data['createdAt'] as Timestamp).toDate(),
-      updatedAt: (data['updatedAt'] as Timestamp).toDate(),
-      isDeleted: data['isDeleted'] as bool,
+      uid: data['uid'] as String? ?? '',
+      name: data['name'] as String? ?? 'Unknown',
+      email: data['email'] as String? ?? 'Unknown',
+      handle: data['handle'] as String? ?? 'Unknown',
+      isHima: data['isHima'] as bool? ?? false,
+      deadline: (data['deadline'] as Timestamp?)?.toDate() ?? noDate,
+      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? noDate,
+      updatedAt: (data['updatedAt'] as Timestamp?)?.toDate() ?? noDate,
+      isDeleted: data['isDeleted'] as bool? ?? false,
     );
   }
 
@@ -109,7 +110,6 @@ class ImplDev implements Firestore {
 
       return snapshot.docs.map((doc) {
         final data = doc.data();
-        final noDate = DateTime(1970, 1, 1);
         return User(
           uid: data['uid'] as String? ?? '',
           name: data['name'] as String? ?? 'Unknown',
