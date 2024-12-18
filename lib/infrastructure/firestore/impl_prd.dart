@@ -22,12 +22,22 @@ class ImplPrd implements Firestore {
       uid: data['uid'] as String? ?? '',
       name: data['name'] as String? ?? 'Unknown',
       email: data['email'] as String? ?? 'Unknown',
+      avatar: data['avatar'] as String? ?? '',
+      bio: data['bio'] as String? ?? '',
       handle: data['handle'] as String? ?? 'Unknown',
       isHima: data['isHima'] as bool? ?? false,
       deadline: (data['deadline'] as Timestamp?)?.toDate() ?? noDate,
       createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? noDate,
       updatedAt: (data['updatedAt'] as Timestamp?)?.toDate() ?? noDate,
       isDeleted: data['isDeleted'] as bool? ?? false,
+      friends: (data['friends'] as List<dynamic>?)
+              ?.map((friend) => friend as String)
+              .toList() ??
+          [],
+      himaActivityIds: (data['himaActivityIds'] as List<dynamic>?)
+              ?.map((activityId) => activityId as String)
+              .toList() ??
+          [],
     );
   }
 
@@ -114,12 +124,22 @@ class ImplPrd implements Firestore {
           uid: data['uid'] as String? ?? '',
           name: data['name'] as String? ?? 'Unknown',
           email: data['email'] as String? ?? 'Unknown',
+          avatar: data['avatar'] as String? ?? '',
+          bio: data['bio'] as String? ?? '',
           handle: data['handle'] as String? ?? 'Unknown',
           isHima: data['isHima'] as bool? ?? false,
           deadline: (data['deadline'] as Timestamp?)?.toDate() ?? noDate,
           createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? noDate,
           updatedAt: (data['updatedAt'] as Timestamp?)?.toDate() ?? noDate,
           isDeleted: data['isDeleted'] as bool? ?? false,
+          friends: (data['friends'] as List<dynamic>?)
+                  ?.map((friend) => friend as String)
+                  .toList() ??
+              [],
+          himaActivityIds: (data['himaActivityIds'] as List<dynamic>?)
+                  ?.map((activityId) => activityId as String)
+                  .toList() ??
+              [],
         );
       }).toList();
     } catch (e) {
