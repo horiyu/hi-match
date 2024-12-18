@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import '../types/user.dart';
 
 class UserCreater {
