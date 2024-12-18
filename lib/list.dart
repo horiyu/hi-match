@@ -218,21 +218,41 @@ class _NextPageState extends State<NextPage> {
     }
   }
 
-//tagの表示
-  Future<List<String>> fetchHimaTags(String userId, userHimaIds) async {
-    // userHimaIds が空の場合にデフォルト値を設定
-    if (userHimaIds.isEmpty) {
-      userHimaIds = ["defaultId"]; // 適当なデフォルトIDを設定
-    }
-
+  Future<List<String>> fetchHimaTags(String userId) async {
+    // `users`コレクションで`id`フィールドが`userId`と一致するドキュメントを取得
     final querySnapshot = await FirebaseFirestore.instance
         .collection("users")
-        .doc(userId)
+        .where('id', isEqualTo: userId) // `id`フィールドで検索
+        .limit(1) // 一致するドキュメントが1つだけと想定
+        .get();
+
+    if (querySnapshot.docs.isEmpty) {
+      return []; // ドキュメントが見つからない場合は空リストを返す
+    }
+
+    // 一致したドキュメントを取得
+    final userDoc = querySnapshot.docs.first;
+
+    // `himaActivitiesIds`を取得
+    final userHimaIds =
+        (userDoc.data()['himaActivitiesIds'] as List<dynamic>? ?? [])
+            .map((id) => id as String)
+            .toList();
+
+    // `himaActivitiesIds`が空の場合、デフォルトの動作
+    if (userHimaIds.isEmpty) {
+      return []; // 空のリストを返す
+    }
+
+    // `himaActivities`コレクションから`content`を取得
+    final activitiesSnapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userDoc.id) // ドキュメントIDでアクセス
         .collection("himaActivities")
         .get();
 
-    return querySnapshot.docs
-        .where((doc) => userHimaIds.contains(doc.id))
+    return activitiesSnapshot.docs
+        .where((doc) => userHimaIds.contains(doc.id)) // IDでフィルタリング
         .map((doc) => doc['content'] as String)
         .toList();
   }
@@ -435,8 +455,7 @@ class _NextPageState extends State<NextPage> {
                           ),
                         ),
                         subtitle: FutureBuilder<List<String>>(
-                          future: fetchHimaTags(
-                              person.id, person.himaActivitiesIds),
+                          future: fetchHimaTags(person.id), // 修正：person.idのみ渡す
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
