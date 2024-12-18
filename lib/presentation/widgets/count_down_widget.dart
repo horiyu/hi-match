@@ -5,7 +5,7 @@ import '../../domain/features/count_down.dart';
 class CountdownWidget extends StatelessWidget {
   final DateTime deadline;
 
-  CountdownWidget({required this.deadline});
+  const CountdownWidget({super.key, required this.deadline});
 
   @override
   Widget build(BuildContext context) {
