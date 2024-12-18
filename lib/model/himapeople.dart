@@ -7,7 +7,7 @@ class HimaPeople {
   String mail;
   DateTime? deadline;
   String? place;
-  // List<String>? himaActivitiesIds;
+  List<String>? himaActivitiesIds;
 
   HimaPeople({
     required this.id,
@@ -16,7 +16,7 @@ class HimaPeople {
     required this.mail,
     required this.deadline,
     required this.place,
-    // required this.himaActivitiesIds,
+    required this.himaActivitiesIds,
   });
 
   factory HimaPeople.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
@@ -33,7 +33,10 @@ class HimaPeople {
       mail: data['mail'] ?? "",
       deadline: deadline,
       place: data['place'] ?? "",
-      // // himaActivitiesIds: data['himaActivitiesIds'] ?? [],
+      himaActivitiesIds: (data['himaActivitiesIds']
+              as List<dynamic>?) // 明示的に List<dynamic>? にキャスト
+          ?.map((item) => item as String) // 各要素を String にキャスト
+          .toList(), // List<String> に変換
     );
   }
 
@@ -45,7 +48,7 @@ class HimaPeople {
       "mail": mail,
       "deadline": deadline,
       "place": place,
-      // // "himaActivitiesIds": himaActivitiesIds,
+      "himaActivitiesIds": himaActivitiesIds,
     };
   }
 }
