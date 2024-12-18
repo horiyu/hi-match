@@ -9,6 +9,7 @@ import 'interface.dart';
 
 class ImplPrd implements Firestore {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final noDate = DateTime(1970, 1, 1);
 
   @override
   Future<User> findUserByUid(String uid) async {
@@ -18,15 +19,15 @@ class ImplPrd implements Firestore {
       throw Exception('User not found');
     }
     return User(
-      uid: data['uid'] as String,
-      name: data['name'] as String,
-      email: data['email'] as String,
-      handle: data['handle'] as String,
-      isHima: data['isHima'] as bool,
-      deadline: (data['deadline'] as Timestamp).toDate(),
-      createdAt: (data['createdAt'] as Timestamp).toDate(),
-      updatedAt: (data['updatedAt'] as Timestamp).toDate(),
-      isDeleted: data['isDeleted'] as bool,
+      uid: data['uid'] as String? ?? '',
+      name: data['name'] as String? ?? 'Unknown',
+      email: data['email'] as String? ?? 'Unknown',
+      handle: data['handle'] as String? ?? 'Unknown',
+      isHima: data['isHima'] as bool? ?? false,
+      deadline: (data['deadline'] as Timestamp?)?.toDate() ?? noDate,
+      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? noDate,
+      updatedAt: (data['updatedAt'] as Timestamp?)?.toDate() ?? noDate,
+      isDeleted: data['isDeleted'] as bool? ?? false,
     );
   }
 
@@ -88,5 +89,42 @@ class ImplPrd implements Firestore {
         .collection('users')
         .doc(updatedUser.uid)
         .update(updateData);
+  }
+
+  Future<void> deleteUserByUid(String uid,
+      {bool physicalDelete = false}) async {
+    if (physicalDelete) {
+      await _firestore.collection('users').doc(uid).delete();
+    } else {
+      await _firestore.collection('users').doc(uid).update({
+        'isDeleted': true,
+      });
+    }
+  }
+
+  @override
+  Future<List<User>> getUsers() async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> snapshot =
+          await _firestore.collection('users').get();
+
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        return User(
+          uid: data['uid'] as String? ?? '',
+          name: data['name'] as String? ?? 'Unknown',
+          email: data['email'] as String? ?? 'Unknown',
+          handle: data['handle'] as String? ?? 'Unknown',
+          isHima: data['isHima'] as bool? ?? false,
+          deadline: (data['deadline'] as Timestamp?)?.toDate() ?? noDate,
+          createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? noDate,
+          updatedAt: (data['updatedAt'] as Timestamp?)?.toDate() ?? noDate,
+          isDeleted: data['isDeleted'] as bool? ?? false,
+        );
+      }).toList();
+    } catch (e) {
+      print('Error fetching users: $e');
+      return [];
+    }
   }
 }
