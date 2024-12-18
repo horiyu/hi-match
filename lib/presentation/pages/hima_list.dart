@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:my_web_app/infrastructure/firestore/interface.dart';
+import 'package:my_web_app/presentation/theme/colors.dart';
 import 'package:my_web_app/presentation/widgets/user_icon.dart';
 
+import '../../domain/types/user.dart';
+
 class HimaListPage extends StatefulWidget {
-  const HimaListPage({super.key});
+  final Firestore firestore;
+
+  const HimaListPage({super.key, required this.firestore});
 
   @override
   State<HimaListPage> createState() => _HimaListPageState();
@@ -11,62 +17,18 @@ class HimaListPage extends StatefulWidget {
 class _HimaListPageState extends State<HimaListPage> {
   bool _isMeHima = false;
 
-  List<Map<String, dynamic>> chats = [
-    {
-      'name': 'ハイブリッドアート演習Eチーム',
-      'message': '',
-      'time': '2000-01-01 00:00:00',
-      'icon': Icons.group
-    },
-    {
-      'name': 'Horiyu',
-      'message': '英語はスライドを全翻訳',
-      'time': '2023-12-05 00:00:00',
-      'icon': Icons.person
-    },
-    {
-      'name': 'システム開発研究会',
-      'message': '中山先生おやすみ，槙井先生出張により今日の活動はお休みです',
-      'time': '2023-12-05 14:41:00',
-      'icon': Icons.work
-    },
-    {
-      'name': 'Zoff',
-      'message': '[MAX50%OFF] 冬セールスタート！',
-      'time': '2024-12-05 12:30:00',
-      'icon': Icons.shopping_bag
-    },
-    {
-      'name': 'FlutterDeveloper',
-      'message': '多分あんまり使いこなせてないんだろーな，私',
-      'time': '2023-12-05 11:02:00',
-      'icon': Icons.code
-    },
-    {
-      'name': 'NFTオープチャ',
-      'message': '当オプチャでは大きなイベントが3つあります☆イベントについてのルールもありますので，各自ルール...',
-      'time': '2023-12-05 08:00:00',
-      'icon': Icons.monetization_on
-    },
-    {
-      'name': 'キッズファーム 畑サポーターズ',
-      'message': 'おはようございます．明日の参加予定は今の所4名です．今日ランチ会の買い出しするので，参加出来る...',
-      'time': '2023-12-05 05:59:00',
-      'icon': Icons.local_florist
-    },
-    {
-      'name': 'DNG Alumni',
-      'message': '@All みなさんお疲れ様です！毎年恒例の集合写真撮影の時期がやってまいりました🎂今年はまだ...',
-      'time': '2023-12-04 23:59:00',
-      'icon': Icons.school
-    },
-    {
-      'name': 'Apple',
-      'message': 'あの人にぴったりのギフトを用意しよう．Apple Watch Studioなら思いのままです．',
-      'time': '2023-12-04 23:59:00',
-      'icon': Icons.apple
-    },
-  ];
+  List<User> users = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUsers();
+  }
+
+  Future<void> _loadUsers() async {
+    users = await widget.firestore.getUsers();
+    setState(() {});
+  }
 
   String sortBy = 'name';
 
@@ -77,7 +39,7 @@ class _HimaListPageState extends State<HimaListPage> {
           leading: Padding(
         padding: const EdgeInsets.all(8.0),
         child: UserIcon(
-          size: 100,
+          size: 50,
           isDisplayedStatus: true,
           isStatus: _isMeHima,
           // onTap: () => setState(() {
@@ -86,20 +48,43 @@ class _HimaListPageState extends State<HimaListPage> {
         ),
       )),
       body: ListView.builder(
-        itemCount: chats.length,
+        itemExtent: 70,
+        itemCount: users.length,
         itemBuilder: (context, index) {
-          chats.sort((a, b) =>
-              DateTime.parse(b['time']).compareTo(DateTime.parse(a['time'])));
-          final chat = chats[index];
+          users.sort((a, b) {
+            if (a.isHima && !b.isHima) return -1;
+            if (!a.isHima && b.isHima) return 1;
+            if (a.uid == 'S5EcL2tMsWcMWK6cNV0ugFYaqpB2') return -1;
+            if (b.uid == 'S5EcL2tMsWcMWK6cNV0ugFYaqpB2') return 1;
+            return b.deadline.compareTo(a.deadline);
+          });
+
+          final user = users[index];
+          bool isMe = user.uid == 'S5EcL2tMsWcMWK6cNV0ugFYaqpB2';
+
           return ListTile(
-            leading: Icon(chat['icon'], size: 40),
-            title: Text(chat['name'],
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text(chat['message']),
-            trailing: Text(chat['time']),
-            onTap: () {
-              // Handle chat click
-            },
+            leading: UserIcon(
+              size: 50,
+              // imageUrl: user.avatar,
+              isDisplayedStatus: true,
+              isStatus: user.isHima,
+            ),
+            title: Text(
+              user.name,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: user.isHima
+                    ? BrandColors.black
+                    : BrandColors.black.withOpacity(0.5),
+              ),
+            ),
+            trailing: user.isHima
+                ? Text(user.deadline.toString(),
+                    style: const TextStyle(color: BrandColors.black))
+                : null,
+            onTap: () {},
+            tileColor:
+                isMe ? BrandColors.primary.withOpacity(0.7) : BrandColors.white,
           );
         },
       ),
