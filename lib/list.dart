@@ -24,6 +24,7 @@ class _NextPageState extends State<NextPage> {
   List<HimaPeople> himaPeople = [];
   bool isLoading = false;
   late String name = "";
+  List<String> tags = [];
 
   bool _isHima = false;
   String myperson = "";
@@ -215,6 +216,45 @@ class _NextPageState extends State<NextPage> {
         inputDeadline = picked;
       });
     }
+  }
+
+  Future<List<String>> fetchHimaTags(String userId) async {
+    // `users`コレクションで`id`フィールドが`userId`と一致するドキュメントを取得
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .where('id', isEqualTo: userId) // `id`フィールドで検索
+        .limit(1) // 一致するドキュメントが1つだけと想定
+        .get();
+
+    if (querySnapshot.docs.isEmpty) {
+      return []; // ドキュメントが見つからない場合は空リストを返す
+    }
+
+    // 一致したドキュメントを取得
+    final userDoc = querySnapshot.docs.first;
+
+    // `himaActivitiesIds`を取得
+    final userHimaIds =
+        (userDoc.data()['himaActivitiesIds'] as List<dynamic>? ?? [])
+            .map((id) => id as String)
+            .toList();
+
+    // `himaActivitiesIds`が空の場合、デフォルトの動作
+    if (userHimaIds.isEmpty) {
+      return []; // 空のリストを返す
+    }
+
+    // `himaActivities`コレクションから`content`を取得
+    final activitiesSnapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userDoc.id) // ドキュメントIDでアクセス
+        .collection("himaActivities")
+        .get();
+
+    return activitiesSnapshot.docs
+        .where((doc) => userHimaIds.contains(doc.id)) // IDでフィルタリング
+        .map((doc) => doc['content'] as String)
+        .toList();
   }
 
   @override
@@ -414,22 +454,40 @@ class _NextPageState extends State<NextPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        subtitle: Table(
-                          children: <TableRow>[
-                            TableRow(
-                              children: [
-                                Text(
-                                  person.place ?? "Nowhere",
-                                  maxLines: 1, // 表示する最大行数を1行に制限
-                                  overflow: TextOverflow
-                                      .ellipsis, // テキストが制限を超えた場合に省略記号を表示
-                                  style: const TextStyle(
-                                    fontSize: 10,
+                        subtitle: FutureBuilder<List<String>>(
+                          future: fetchHimaTags(person.id), // 修正：person.idのみ渡す
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator();
+                            }
+                            if (snapshot.hasError) {
+                              return const Text('エラーが発生しました');
+                            }
+                            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                              return const Text('タグが見つかりません');
+                            }
+
+                            final tags = snapshot.data!;
+                            return Wrap(
+                              spacing: 15.0,
+                              children: tags.map((tag) {
+                                return Chip(
+                                  label: Text(
+                                    tag,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 8.0,
+                                      vertical: 7.0), // タグの大きさを調整
+                                );
+                              }).toList(),
+                            );
+                          },
                         ),
                         trailing: Column(
                           children: [
@@ -493,7 +551,7 @@ class _NextPageState extends State<NextPage> {
         width: 100,
         height: 100,
         child: FloatingActionButton(
-          backgroundColor: Colors.blue[200],
+          backgroundColor: Colors.orangeAccent,
           shape: const CircleBorder(),
           onPressed: () {
             _toggleHimaStatus();
@@ -535,7 +593,7 @@ class _NextPageState extends State<NextPage> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: const Color.fromARGB(255, 23, 63, 122),
+        color: Colors.deepOrangeAccent,
         notchMargin: 11.0,
         shape: const AutomaticNotchedShape(
           RoundedRectangleBorder(),

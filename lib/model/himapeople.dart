@@ -33,7 +33,10 @@ class HimaPeople {
       mail: data['mail'] ?? "",
       deadline: deadline,
       place: data['place'] ?? "",
-      himaActivitiesIds: data['himaActivitiesIds'] ?? [],
+      himaActivitiesIds: (data['himaActivitiesIds']
+              as List<dynamic>?) // 明示的に List<dynamic>? にキャスト
+          ?.map((item) => item as String) // 各要素を String にキャスト
+          .toList(), // List<String> に変換
     );
   }
 
