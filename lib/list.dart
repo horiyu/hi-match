@@ -470,7 +470,7 @@ class _NextPageState extends State<NextPage> {
 
                             final tags = snapshot.data!;
                             return Wrap(
-                              spacing: 8.0,
+                              spacing: 15.0,
                               children: tags.map((tag) {
                                 return Chip(
                                   label: Text(
@@ -478,8 +478,12 @@ class _NextPageState extends State<NextPage> {
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
+                                      fontSize: 14,
                                     ),
                                   ),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 8.0,
+                                      vertical: 7.0), // タグの大きさを調整
                                 );
                               }).toList(),
                             );
