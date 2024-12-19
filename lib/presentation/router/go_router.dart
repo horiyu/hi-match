@@ -2,8 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_web_app/presentation/pages/hima_list.dart';
 
-import '../pages/signin_page.dart';
-import '../pages/signup_page.dart';
+import '../pages/sign_in.dart';
+import '../pages/sign_up.dart';
 import 'page_path.dart';
 import 'signed_in_shell.dart';
 import 'splash_completed_shell.dart';

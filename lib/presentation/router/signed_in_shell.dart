@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:my_web_app/presentation/pages/signin_page.dart';
+import 'package:my_web_app/presentation/pages/sign_in.dart';
 import 'package:my_web_app/presentation/widgets/splash.dart';
 
 // import '../../logic/credential/types/credential.dart';
