@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_web_app/application/state/hima_list/provider.dart';
+import 'package:my_web_app/infrastructure/firestore/interface.dart';
+import 'package:my_web_app/presentation/theme/colors.dart';
+import 'package:my_web_app/presentation/widgets/tag.dart';
+import 'package:my_web_app/presentation/widgets/user_icon.dart';
 
-import '../../application/state/hima_list/provider.dart';
 import '../../domain/features/hima_checker.dart';
 import '../../domain/types/user.dart';
 import '../../infrastructure/firestore/provider.dart';
-import '../theme/colors.dart';
 import '../widgets/bottom_navi.dart';
 import '../widgets/count_down_widget.dart';
-import '../widgets/tag.dart';
-import '../widgets/user_icon.dart';
 
 class HimaListPage extends ConsumerWidget {
   HimaListPage({super.key});
 
-// class _HimaListPageState extends State<HimaListPage> {
   final bool _isMeHima = false;
-
-  // List<User> users = [];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,14 +24,15 @@ class HimaListPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-          leading: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: UserIcon(
-          size: 50,
-          isDisplayedStatus: true,
-          isStatus: _isMeHima,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: UserIcon(
+            size: 50,
+            isDisplayedStatus: true,
+            isStatus: _isMeHima,
+          ),
         ),
-      )),
+      ),
       body: usersAsyncValue.when(
         data: (users) => ListView.builder(
           itemExtent: 70,
@@ -69,7 +68,6 @@ class HimaListPage extends ConsumerWidget {
                 opacity: isCheckedHima ? 1 : 0.5,
                 child: UserIcon(
                   size: 50,
-                  // imageUrl: user.avatar,
                   isDisplayedStatus: isCheckedHima,
                   isStatus: isCheckedHima,
                 ),
@@ -100,10 +98,10 @@ class HimaListPage extends ConsumerWidget {
             );
           },
         ),
-        loading: () => Center(child: CircularProgressIndicator()),
+        loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(child: Text('Error: $error')),
       ),
-      // bottomNavigationBar: const BottomNavigationBarWidget(),
+      // bottomNavigationBar: BottomNavigationBarWidget(),
     );
   }
 }
