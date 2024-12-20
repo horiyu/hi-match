@@ -31,7 +31,7 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => HimaListPage(firestore: ImplDev()),
+          builder: (context) => HimaListPage(),
         ),
       );
     }
