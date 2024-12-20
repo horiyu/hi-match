@@ -11,6 +11,7 @@ import '../../application/state/flavor/provider.dart';
 import '../../infrastructure/console/provider.dart';
 import 'go_router.dart';
 import 'mobile_simulator_view.dart';
+import 'pageView.dart';
 
 void main() {
   runApp(const ProviderScope(child: App()));
@@ -37,7 +38,7 @@ class App extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       builder: (_, child) {
         return MobileSimulatorView(
-          child: HimaListPage() ?? const SizedBox.shrink(),
+          child: ViewPage(),
         );
       },
       localizationsDelegates:
