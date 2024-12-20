@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../external/firebase_core/provider.dart';
-import '../../external/system_locale/provider.dart';
-import '../logger.dart';
+// import '../../external/firebase_core/provider.dart';
+// import '../../external/system_locale/provider.dart';
+// import '../logger.dart';
 import 'models.dart';
 
 class SplashCompletedNotifier extends AsyncNotifier<SplashCompleted> {
@@ -13,8 +13,8 @@ class SplashCompletedNotifier extends AsyncNotifier<SplashCompleted> {
     // TODO:とりあえず3秒待つ
     await Future.delayed(const Duration(seconds: 3));
 
-    final firebaseCore = ref.read(firebaseCoreProvider);
-    await firebaseCore.init();
+    // final firebaseCore = ref.read(firebaseCoreProvider);
+    // await firebaseCore.init();
 
     // final systemLocale = ref.read(systemLocaleProvider);
     // await systemLocale.init();
