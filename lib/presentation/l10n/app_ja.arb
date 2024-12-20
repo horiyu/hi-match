@@ -1,0 +1,11 @@
+{
+  "@@locale": "ja",
+  "appTitle": "アプリタイトル",
+  "@appTitle": {
+    "description": "appTitleの説明"
+  },
+  "appText": "アプリテキスト",
+  "@appText": {
+    "description": "appTextの説明"
+  }
+}
