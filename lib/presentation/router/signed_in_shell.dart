@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:my_web_app/presentation/pages/sign_in.dart';
-import 'package:my_web_app/presentation/widgets/splash.dart';
+import '../../application/credential/provider.dart';
+import '../../domain/credential/types/credential.dart';
+import '../pages/sign_in.dart';
+import '../widgets/splash.dart';
 
 // import '../../logic/credential/types/credential.dart';
 // import '../../state/credential/provider.dart';
