@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_web_app/application/state/hima_list/provider.dart';
-import 'package:my_web_app/presentation/theme/colors.dart';
-import 'package:my_web_app/presentation/widgets/tag.dart';
-import 'package:my_web_app/presentation/widgets/user_icon.dart';
 
+import '../../application/state/hima_list/provider.dart';
 import '../../domain/features/hima_checker.dart';
+import '../theme/colors.dart';
 import '../widgets/count_down_widget.dart';
+import '../widgets/tag.dart';
+import '../widgets/user_icon.dart';
 
 class HimaListPage extends ConsumerWidget {
   HimaListPage({super.key});
