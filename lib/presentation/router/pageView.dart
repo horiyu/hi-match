@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../application/state/me/provider.dart';
 import '../../domain/types/user.dart';
 import '../pages/hima_list.dart';
+import '../pages/hima_modal.dart';
 import '../pages/notice.dart';
 import '../pages/plan.dart';
 import '../pages/profile.dart';
@@ -26,7 +27,11 @@ class _ViewPageState extends ConsumerState<ViewPage> {
     final List<Widget> widgetOptions = <Widget>[
       const HimaListPage(),
       PlanPage(),
-      const HimaListPage(),
+      meAsyncValue.when(
+        data: (me) => HimaModal(me!.uid),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => const Center(child: Text('エラーが発生しました')),
+      ),
       NoticePage(),
       meAsyncValue.when(
         data: (me) => ProfilePage(user: me as User),
