@@ -41,7 +41,6 @@ class App extends ConsumerWidget {
         return NotifiedShell(builder: (notifications) {
           return child!;
         });
-        return ViewPage();
         // return MobileSimulatorView(
         //   child: ViewPage(),
         // );
