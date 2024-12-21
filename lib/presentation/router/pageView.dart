@@ -44,6 +44,8 @@ class _ViewPageState extends State<ViewPage> {
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.amber[800],
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
           onTap: _onItemTapped,
         ),
       ),
