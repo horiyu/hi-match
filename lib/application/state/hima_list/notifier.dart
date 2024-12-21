@@ -14,7 +14,6 @@ class HimaListNotifier extends AsyncNotifier<List<User>> {
 
     // Firestore から取得
     final firestore = ref.read(firestoreProvider);
-    final user = await ref.read(userProvider.future);
     final users = await firestore.getUsers();
     return users;
   }
