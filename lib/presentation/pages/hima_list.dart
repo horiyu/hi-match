@@ -9,7 +9,7 @@ import '../widgets/tag.dart';
 import '../widgets/user_icon.dart';
 
 class HimaListPage extends ConsumerWidget {
-  HimaListPage({super.key});
+  const HimaListPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
