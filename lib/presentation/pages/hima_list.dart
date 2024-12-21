@@ -72,6 +72,8 @@ class HimaListPage extends ConsumerWidget {
                   size: 50,
                   isDisplayedStatus: isCheckedHima,
                   isStatus: isCheckedHima,
+                  isOnTap: true,
+                  user: user,
                 ),
               ),
               title: Text(
