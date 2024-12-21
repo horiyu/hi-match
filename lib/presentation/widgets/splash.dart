@@ -1,6 +1,7 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:my_web_app/presentation/theme/colors.dart';
+import 'package:my_web_app/presentation/theme/fonts.dart';
 
 class Splash extends StatelessWidget {
   const Splash({
@@ -12,17 +13,13 @@ class Splash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final icon = isLoading
-        ? const CircularProgressIndicator()
-        : const FlutterLogo(size: 100);
+    // final icon = isLoading
+    //     ? const CircularProgressIndicator()
+    //     : const FlutterLogo(size: 100);
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: BrandColors.primary,
-        title: const Text('スプラッシュ画面'),
-      ),
+    return const Scaffold(
       body: Center(
-        child: icon,
+        child: Text('ひマッチ'),
       ),
     );
   }
