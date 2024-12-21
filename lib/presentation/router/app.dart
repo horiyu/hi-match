@@ -37,9 +37,10 @@ class App extends ConsumerWidget {
       routeInformationProvider: router.routeInformationProvider, // GoRouter
       debugShowCheckedModeBanner: false,
       builder: (_, child) {
-        return MobileSimulatorView(
-          child: ViewPage(),
-        );
+        return ViewPage();
+        // return MobileSimulatorView(
+        //   child: ViewPage(),
+        // );
       },
       localizationsDelegates:
           AppLocalizations.localizationsDelegates, // localizations
