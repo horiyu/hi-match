@@ -1,58 +1,52 @@
 import 'dart:async';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../domain/credential/types/credential.dart';
 import '../../domain/credential/types/sign_in_with.dart';
 import 'interface.dart';
 
 class ImplDev implements Auth {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final streamController = StreamController<Credential?>();
 
   @override
   Stream<Credential?> watchCredential() {
-    Future.delayed(const Duration(seconds: 1)).then((_) {
-      streamController.sink.add(
-        const Credential(
-          accessToken: 'テストトークン',
-          refreshToken: 'テストリフレッシュトークン',
-          userID: 'TEST_USER_ID',
-        ),
-      );
+    _firebaseAuth.authStateChanges().listen((User? user) {
+      if (user != null) {
+        streamController.sink.add(
+          Credential(
+            accessToken: user.refreshToken ?? '',
+            refreshToken: user.refreshToken ?? '',
+            userID: user.uid,
+          ),
+        );
+      } else {
+        streamController.sink.add(null);
+      }
     });
     return streamController.stream;
   }
 
   @override
   Future<bool> isSignedIn() async {
-    Future.delayed(const Duration(seconds: 1));
-    return true;
+    final user = _firebaseAuth.currentUser;
+    return user != null;
   }
 
   @override
   Future<void> signIn(SignInWith signInWith) async {
     switch (signInWith) {
       case SignInWith.google:
-        streamController.sink.add(
-          const Credential(
-            accessToken: 'テストトークン',
-            refreshToken: 'テストリフレッシュトークン',
-            userID: 'TEST_GOOGLE_USER_ID',
-          ),
-        );
+        // Googleサインインの実装を追加
         break;
       // case SignInWith.apple:
-      //   streamController.sink.add(
-      //     const Credential(
-      //       accessToken: 'テストトークン',
-      //       refreshToken: 'テストリフレッシュトークン',
-      //       userID: 'TEST_APPLE_USER_ID',
-      //     ),
-      //   );
+      //   // Appleサインインの実装を追加
       //   break;
     }
   }
 
   @override
   Future<void> signOut() async {
+    await _firebaseAuth.signOut();
     streamController.sink.add(null);
   }
 }
