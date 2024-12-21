@@ -5,6 +5,7 @@ import 'package:my_web_app/presentation/pages/friend.dart';
 import 'package:my_web_app/presentation/pages/plan.dart';
 
 import '../../application/state/me/provider.dart';
+import '../../domain/types/user.dart';
 import '../pages/hima_list.dart';
 import '../pages/profile.dart';
 import '../router/page_path.dart';
@@ -27,7 +28,7 @@ class _ViewPageState extends ConsumerState<ViewPage> {
       const HimaListPage(),
       FriendPage(),
       meAsyncValue.when(
-        data: (user) => ProfilePage(user: user),
+        data: (me) => ProfilePage(user: me as User),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => const Center(child: Text('エラーが発生しました')),
       ),
