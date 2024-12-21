@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_web_app/domain/types/user.dart';
 
+import '../../application/state/me/provider.dart';
 import '../widgets/user_icon.dart';
 
 class ProfilePage extends StatelessWidget {
