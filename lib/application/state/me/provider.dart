@@ -3,8 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/types/user.dart';
 import 'notifier.dart';
 
-typedef _N = MeNotifier;
+typedef _Notifier = MeNotifier;
+typedef _State = User?;
 
-final meProvider = AsyncNotifierProvider<_N, User>(() {
-  return _N();
+final meProvider = AsyncNotifierProvider<_Notifier, _State>(() {
+  return _Notifier();
 });
