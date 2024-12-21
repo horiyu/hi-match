@@ -11,11 +11,17 @@ import '../widgets/user_icon.dart';
 class HimaListPage extends ConsumerWidget {
   HimaListPage({super.key});
 
-  final bool _isMeHima = false;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final usersAsyncValue = ref.watch(himaListProvider);
+
+    final bool isMeHima = usersAsyncValue.whenData((users) {
+          return HimaChecker(
+            isHima: users.first.isHima,
+            deadline: users.first.deadline,
+          ).checkHima();
+        }).value ??
+        false;
 
     return Scaffold(
       appBar: AppBar(
@@ -24,7 +30,7 @@ class HimaListPage extends ConsumerWidget {
           child: UserIcon(
             size: 50,
             isDisplayedStatus: true,
-            isStatus: _isMeHima,
+            isStatus: isMeHima,
           ),
         ),
       ),
