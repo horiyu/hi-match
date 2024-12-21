@@ -1,30 +1,49 @@
 import 'package:flutter/material.dart';
 
+import 'package:go_router/go_router.dart';
+
+import '../../domain/types/user.dart';
+import '../pages/profile.dart';
+import '../router/page_path.dart';
+
 class UserIcon extends StatelessWidget {
   final String? imageUrl;
   final double size;
   final bool? isDisplayedStatus;
   final bool? isStatus;
-  final void Function()? onTap;
+  final bool? isOnTap;
+  final User? user;
 
   const UserIcon({
     super.key,
     this.imageUrl,
     this.isDisplayedStatus,
     this.isStatus,
-    this.onTap,
+    this.isOnTap,
+    this.user,
     required this.size,
-  }) : assert(
+  })  : assert(
           isDisplayedStatus == null ||
               isDisplayedStatus == false ||
               isStatus != null,
           'isStatus must be provided when isDisplayedStatus is true',
+        ),
+        assert(
+          isOnTap == null || isOnTap == false || user != null,
+          'user must be provided when isOnTap is true',
         );
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: ((isOnTap ?? false) && user != null)
+          ? () {
+              context.push(
+                PagePath.profile.path,
+                extra: ProfilePage(user: user!),
+              );
+            }
+          : null,
       child: Stack(
         children: [
           Container(
