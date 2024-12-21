@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../application/state/me/provider.dart';
 import '../pages/hima_list.dart';
 import '../pages/profile.dart';
+import '../router/page_path.dart';
 
 class ViewPage extends ConsumerStatefulWidget {
   @override
@@ -16,6 +18,20 @@ class _ViewPageState extends ConsumerState<ViewPage> {
   @override
   Widget build(BuildContext context) {
     final meAsyncValue = ref.watch(meProvider);
+
+    meAsyncValue.when(
+      data: (user) {
+        print('user: $user');
+        if (user == null) {
+          // サインインしていない場合はサインインページにリダイレクト
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            context.go(PagePath.signIn.path); // サインインページのパスに変更してください
+          });
+        }
+      },
+      loading: () => {},
+      error: (err, stack) => {},
+    );
 
     final List<Widget> widgetOptions = <Widget>[
       HimaListPage(),
@@ -44,14 +60,14 @@ class _ViewPageState extends ConsumerState<ViewPage> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.add_outlined),
-              activeIcon: Icon(Icons.add),
-              label: 'Business',
+              icon: Icon(Icons.add_circle_rounded),
+              activeIcon: Icon(Icons.add_circle_rounded),
+              label: 'Add',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_outline),
               activeIcon: Icon(Icons.person),
-              label: 'School',
+              label: 'Profile',
             ),
           ],
           currentIndex: _selectedIndex,
