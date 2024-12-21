@@ -11,6 +11,8 @@ class UserNotifier extends AsyncNotifier<User?> {
     if (credential == null) return null;
     final api = ref.read(userApiProvider);
     final user = api.getUser(uid: credential.userID);
+    print('user: $user');
+    print(credential.userID);
     return user;
   }
 }
