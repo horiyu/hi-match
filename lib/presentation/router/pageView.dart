@@ -21,20 +21,6 @@ class _ViewPageState extends ConsumerState<ViewPage> {
   Widget build(BuildContext context) {
     final meAsyncValue = ref.watch(meProvider);
 
-    meAsyncValue.when(
-      data: (user) {
-        print('user: $user');
-        if (user == null) {
-          // サインインしていない場合はサインインページにリダイレクト
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            context.go(PagePath.signIn.path); // サインインページのパスに変更してください
-          });
-        }
-      },
-      loading: () => {},
-      error: (err, stack) => {},
-    );
-
     final List<Widget> widgetOptions = <Widget>[
       HimaListPage(),
       PlanPage(),
@@ -42,8 +28,8 @@ class _ViewPageState extends ConsumerState<ViewPage> {
       FriendPage(),
       meAsyncValue.when(
         data: (user) => ProfilePage(user: user),
-        loading: () => const CircularProgressIndicator(),
-        error: (err, stack) => Text('Error: $err'),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => const Center(child: Text('エラーが発生しました')),
       ),
     ];
 
