@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_web_app/presentation/pages/friend.dart';
-import 'package:my_web_app/presentation/pages/plan.dart';
 
 import '../../application/state/me/provider.dart';
 import '../../domain/types/user.dart';
 import '../pages/hima_list.dart';
+import '../pages/notice.dart';
+import '../pages/plan.dart';
 import '../pages/profile.dart';
 import '../router/page_path.dart';
 
@@ -26,7 +27,7 @@ class _ViewPageState extends ConsumerState<ViewPage> {
       const HimaListPage(),
       PlanPage(),
       const HimaListPage(),
-      FriendPage(),
+      NoticePage(),
       meAsyncValue.when(
         data: (me) => ProfilePage(user: me as User),
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -57,12 +58,11 @@ class _ViewPageState extends ConsumerState<ViewPage> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.add_circle_rounded),
-              activeIcon: Icon(Icons.add_circle_rounded),
               label: 'Add',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.people_outline),
-              activeIcon: Icon(Icons.people),
+              icon: Icon(Icons.notifications_none_rounded),
+              activeIcon: Icon(Icons.notifications_rounded),
               label: 'Friend',
             ),
             BottomNavigationBarItem(
