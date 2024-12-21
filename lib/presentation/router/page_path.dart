@@ -1,5 +1,7 @@
 enum PagePath {
-  himaList('/'),
+  viewPage('/'),
+  himaList('/hima-list'),
+  profile('/profile'),
   signIn('/sign-in'),
   signUp('/sign-up');
 
