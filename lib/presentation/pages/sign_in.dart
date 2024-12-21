@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:my_web_app/list.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:my_web_app/password_reset.dart';
-import 'package:my_web_app/presentation/widgets/pill_elavated_button.dart';
-import 'package:my_web_app/presentation/widgets/pill_outlined_button.dart';
-import 'package:my_web_app/presentation/widgets/rounded_form_field.dart';
-import 'package:my_web_app/signup_page.dart';
+import 'package:go_router/go_router.dart';
+
+import '../router/page_path.dart';
+import '../widgets/pill_elavated_button.dart';
+import '../widgets/pill_outlined_button.dart';
+import '../widgets/rounded_form_field.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -24,22 +25,26 @@ class _SignInPageState extends State<SignInPage> {
   bool _isButtonAbleEmail = false;
   bool _isButtonAblePassword = false;
 
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
     _checkLoginStatus();
   }
 
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   Future<void> _checkLoginStatus() async {
     final User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const NextPage(),
-          settings: const RouteSettings(name: '/next_page'),
-        ),
-      );
+      context.go(PagePath.viewPage.path);
     }
   }
 
@@ -67,7 +72,7 @@ class _SignInPageState extends State<SignInPage> {
                           _isButtonAbleEmail = value.isNotEmpty;
                         });
                       },
-                      controller: TextEditingController(),
+                      controller: _emailController,
                     ),
                     const SizedBox(height: 20),
                     RoundedFormField(
@@ -81,7 +86,7 @@ class _SignInPageState extends State<SignInPage> {
                           _isButtonAblePassword = value.isNotEmpty;
                         });
                       },
-                      controller: TextEditingController(),
+                      controller: _passwordController,
                       suffixIcon: password.isNotEmpty
                           ? IconButton(
                               icon: Icon(_isObscure
@@ -117,14 +122,7 @@ class _SignInPageState extends State<SignInPage> {
                                     email: email,
                                     password: password,
                                   );
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const NextPage(),
-                                      settings: const RouteSettings(
-                                          name: '/next_page'),
-                                    ),
-                                  );
+                                  context.go(PagePath.viewPage.path);
                                 } catch (e) {
                                   setState(() {
                                     infoText = "ログインに失敗しました。もう一度お試しください";
@@ -149,14 +147,7 @@ class _SignInPageState extends State<SignInPage> {
                     const SizedBox(height: 5),
                     TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const PasswordResetPage(),
-                            settings:
-                                const RouteSettings(name: '/password_reset'),
-                          ),
-                        );
+                        context.push(PagePath.signUp.path);
                       },
                       child: const Text('パスワードをお忘れですか？'),
                     ),
@@ -170,12 +161,7 @@ class _SignInPageState extends State<SignInPage> {
                     height: 40,
                     child: PillOutlinedButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SignupPage(),
-                              settings: const RouteSettings(name: '/signup'),
-                            ));
+                        context.push(PagePath.signUp.path);
                       },
                       child: const Text('新規登録'),
                     ),
