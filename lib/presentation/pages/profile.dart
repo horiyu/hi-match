@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_web_app/domain/types/user.dart';
 
 import '../../application/state/me/provider.dart';
+import '../../domain/features/hima_checker.dart';
 import '../widgets/user_icon.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -11,8 +12,11 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('user: $user');
-    print('user.uid: ${user.uid}');
+    final bool _isCheckedHima = HimaChecker(
+      isHima: user.isHima,
+      deadline: user.deadline,
+    ).checkHima();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -24,18 +28,18 @@ class ProfilePage extends StatelessWidget {
             UserIcon(
               size: 100,
               isDisplayedStatus: true,
-              isStatus: true,
+              isStatus: _isCheckedHima,
               onTap: () {},
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Your Name',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            Text(
+              user.name,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
-            const Text(
-              'your.email@example.com',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+            Text(
+              '@${user.handle}',
+              style: const TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
