@@ -29,7 +29,6 @@ class ProfilePage extends StatelessWidget {
               size: 100,
               isDisplayedStatus: true,
               isStatus: _isCheckedHima,
-              onTap: () {},
             ),
             const SizedBox(height: 20),
             Text(
