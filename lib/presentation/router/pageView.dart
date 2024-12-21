@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../pages/hima_list.dart';
+import '../pages/profile.dart';
 
 class ViewPage extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class _ViewPageState extends State<ViewPage> {
   static final List<Widget> _widgetOptions = <Widget>[
     HimaListPage(),
     HimaListPage(),
-    HimaListPage(),
+    ProfilePage(firestore.)
   ];
 
   void _onItemTapped(int index) {
@@ -30,15 +31,18 @@ class _ViewPageState extends State<ViewPage> {
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: Icon(Icons.home_outlined),
+              activeIcon: Icon(Icons.home),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.business),
+              icon: Icon(Icons.add_outlined),
+              activeIcon: Icon(Icons.add),
               label: 'Business',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.school),
+              icon: Icon(Icons.person_outline),
+              activeIcon: Icon(Icons.person),
               label: 'School',
             ),
           ],
