@@ -22,9 +22,9 @@ class _ViewPageState extends ConsumerState<ViewPage> {
     final meAsyncValue = ref.watch(meProvider);
 
     final List<Widget> widgetOptions = <Widget>[
-      HimaListPage(),
+      const HimaListPage(),
       PlanPage(),
-      HimaListPage(),
+      const HimaListPage(),
       FriendPage(),
       meAsyncValue.when(
         data: (user) => ProfilePage(user: user),
