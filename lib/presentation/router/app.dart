@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:my_web_app/firebase/analytics_repository.dart';
 import 'package:my_web_app/infrastructure/firestore/impl_dev.dart';
 import 'package:my_web_app/presentation/pages/hima_list.dart';
+import 'package:my_web_app/presentation/router/notified_shell.dart';
 import 'package:my_web_app/presentation/theme/fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -13,9 +14,9 @@ import 'go_router.dart';
 import 'mobile_simulator_view.dart';
 import 'pageView.dart';
 
-void main() {
-  runApp(const ProviderScope(child: App()));
-}
+// void main() {
+//   runApp(const ProviderScope(child: App()));
+// }
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -37,6 +38,9 @@ class App extends ConsumerWidget {
       routeInformationProvider: router.routeInformationProvider, // GoRouter
       debugShowCheckedModeBanner: false,
       builder: (_, child) {
+        return NotifiedShell(builder: (notifications) {
+          return child!;
+        });
         return ViewPage();
         // return MobileSimulatorView(
         //   child: ViewPage(),
