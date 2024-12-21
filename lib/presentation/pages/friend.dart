@@ -60,7 +60,7 @@ class FriendPage extends ConsumerWidget {
 
             return ListTile(
               leading: Opacity(
-                opacity: isCheckedHima ? 1 : 0.5,
+                opacity: isCheckedHima ? 1 : 0.3,
                 child: UserIcon(
                   size: 50,
                   isDisplayedStatus: isCheckedHima,
@@ -73,7 +73,7 @@ class FriendPage extends ConsumerWidget {
                   fontWeight: FontWeight.bold,
                   color: isCheckedHima
                       ? BrandColors.black
-                      : BrandColors.black.withOpacity(0.5),
+                      : BrandColors.black.withOpacity(0.3,),
                 ),
               ),
               subtitle: isCheckedHima
