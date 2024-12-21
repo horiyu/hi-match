@@ -11,6 +11,8 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('user: $user');
+    print('user.uid: ${user.uid}');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
