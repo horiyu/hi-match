@@ -55,7 +55,7 @@ class HimaListPage extends ConsumerWidget {
               }
               if (a.uid == 'S5EcL2tMsWcMWK6cNV0ugFYaqpB2') return -1;
               if (b.uid == 'S5EcL2tMsWcMWK6cNV0ugFYaqpB2') return 1;
-              return b.deadline.compareTo(a.deadline);
+              return a.deadline.compareTo(b.deadline);
             });
 
             final user = users[index];
