@@ -6,7 +6,7 @@ import '../../application/state/hima_list/provider.dart';
 import '../../domain/features/hima_checker.dart';
 import '../theme/colors.dart';
 import '../widgets/count_down_widget.dart';
-import '../widgets/tag.dart';
+import '../widgets/tag_button.dart';
 import '../widgets/user_icon.dart';
 
 class HimaListPage extends ConsumerWidget {
@@ -88,7 +88,11 @@ class HimaListPage extends ConsumerWidget {
               subtitle: isCheckedHima
                   ? Row(
                       children: [
-                        TagWidget(text: user.name, height: 25),
+                        TagButton(
+                          text: user.name,
+                          height: 25,
+                          onTap: () {},
+                        ),
                       ],
                     )
                   : null,
