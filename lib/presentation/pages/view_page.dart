@@ -8,11 +8,12 @@ import '../pages/hima_list.dart';
 import '../pages/notice.dart';
 import '../pages/plan.dart';
 import '../pages/profile.dart';
+import 'hima_modal.dart';
 
 class ViewPage extends ConsumerStatefulWidget {
   final Widget child;
 
-  const ViewPage({Key? key, required this.child}) : super(key: key);
+  const ViewPage({super.key, required this.child});
 
   @override
   _ViewPageState createState() => _ViewPageState();
@@ -30,11 +31,7 @@ class _ViewPageState extends ConsumerState<ViewPage> {
       PlanPage(),
       const HimaListPage(),
       NoticePage(),
-      meAsyncValue.when(
-        data: (me) => ProfilePage(user: me as User),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => const Center(child: Text('エラーが発生しました')),
-      ),
+      _buildProfilePage(meAsyncValue),
     ];
 
     void onItemTapped(int index) {
@@ -79,6 +76,32 @@ class _ViewPageState extends ConsumerState<ViewPage> {
         onTap: onItemTapped,
         type: BottomNavigationBarType.fixed,
       ),
+    );
+  }
+
+  Widget _buildHimaModal(AsyncValue<User?> meAsyncValue) {
+    return meAsyncValue.when(
+      data: (me) {
+        if (me == null) {
+          return const Center(child: Text('ユーザーが見つかりません'));
+        }
+        return HimaModal(me.uid);
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, stack) => const Center(child: Text('エラーが発生しました')),
+    );
+  }
+
+  Widget _buildProfilePage(AsyncValue<User?> meAsyncValue) {
+    return meAsyncValue.when(
+      data: (me) {
+        if (me == null) {
+          return const Center(child: Text('ユーザーが見つかりません'));
+        }
+        return ProfilePage(user: me);
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, stack) => const Center(child: Text('エラーが発生しました')),
     );
   }
 }
