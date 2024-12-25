@@ -49,39 +49,147 @@ class _ViewPageState extends ConsumerState<ViewPage> {
     return MaterialApp(
       home: Scaffold(
         body: widgetOptions.elementAt(_selectedIndex),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              activeIcon: Icon(Icons.home),
-              label: 'Home',
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: SizedBox(
+          width: 100,
+          height: 100,
+          child: FloatingActionButton(
+            backgroundColor: Colors.blue[200],
+            shape: const CircleBorder(),
+            onPressed: null,
+            // onPressed: () {
+            //   _toggleHimaStatus();
+            //   if (!_isHima) {
+            //     final user = FirebaseAuth.instance.currentUser;
+            //     final uid = user?.uid;
+            //     FirebaseFirestore.instance
+            //         .collection("users")
+            //         .where("id", isEqualTo: uid)
+            //         .get()
+            //         .then((snapshot) async {
+            //       // var himaActivities = await FirebaseFirestore.instance
+            //       //     .collection("users")
+            //       //     .doc(snapshot.docs[0].id)
+            //       //     .collection("himaActivities")
+            //       //     .get();
+            //       Map<String, Map<String, dynamic>> himaActivitiesMap = {};
+            //       for (var doc in himaActivities.docs) {
+            //         himaActivitiesMap[doc.id] = {
+            //           'icon': doc.data()['icon'],
+            //           'content': doc.data()['content'],
+            //           'selected': false,
+            //         };
+            //       }
+            //       showModalBottomSheet(
+            //         context: context,
+            //         builder: (context) => HimaModal(uid),
+            //       ).then((_) {
+            //         if (mounted) {
+            //           setState(() {
+            //             // _isHima = true;
+            //           });
+            //         }
+            //       });
+            //     }
+            //     );
+            //   }
+            // },
+            child: const Icon(Icons.add),
+          ),
+        ),
+        bottomNavigationBar: BottomAppBar(
+          color: const Color.fromARGB(255, 23, 63, 122),
+          notchMargin: 11.0,
+          shape: const AutomaticNotchedShape(
+            RoundedRectangleBorder(),
+            StadiumBorder(
+              side: BorderSide(),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today_outlined),
-              activeIcon: Icon(Icons.calendar_today),
-              label: 'Plan',
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.home,
+                      color: Colors.white,
+                      size: 32.0,
+                    ),
+                    onPressed: () {
+                      onItemTapped(0);
+                    },
+                  ),
+                ),
+                Container(
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.calendar_today,
+                      color: Colors.white,
+                      size: 32.0,
+                    ),
+                    onPressed: () {
+                      onItemTapped(1);
+                    },
+                  ),
+                ),
+                Container(
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.add_circle_rounded,
+                      color: Colors.white,
+                      size: 32.0,
+                    ),
+                    onPressed: () {
+                      onItemTapped(2);
+                    },
+                  ),
+                ),
+                Container(
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.notifications_none_rounded,
+                      color: Colors.white,
+                      size: 32.0,
+                    ),
+                    onPressed: () {
+                      onItemTapped(3);
+                    },
+                  ),
+                ),
+                Container(
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.person_outline,
+                      color: Colors.white,
+                      size: 32.0,
+                    ),
+                    onPressed: () {
+                      onItemTapped(4);
+                    },
+                  ),
+                ),
+              ],
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add_circle_rounded),
-              label: 'Add',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications_none_rounded),
-              activeIcon: Icon(Icons.notifications_rounded),
-              label: 'Friend',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
-              activeIcon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          onTap: onItemTapped,
-          type: BottomNavigationBarType.fixed,
+          ),
         ),
       ),
     );
