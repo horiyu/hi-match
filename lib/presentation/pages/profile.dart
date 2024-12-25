@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_web_app/domain/types/user.dart';
+import 'package:my_web_app/presentation/widgets/pill_elavated_button.dart';
 
 import '../../application/state/me/provider.dart';
 import '../../domain/features/hima_checker.dart';
@@ -41,12 +44,63 @@ class ProfilePage extends StatelessWidget {
               style: const TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Add your logout logic here
+            Consumer(
+              builder: (context, ref, child) {
+                // final meAsyncValue = ref.watch(meProvider);
+
+                // meAsyncValue.when(
+                //   data: (me) => ElevatedButton(
+                //     onPressed: () {
+                //       if (me.uid == user.uid) {
+                //         // Navigate to edit profile page
+                //       } else {
+                //         // Follow user action
+                //       }
+                //     },
+                //     child: const Text('フォロー'),
+                //   ),
+                //   loading: () => const CircularProgressIndicator(),
+                //   error: (err, stack) => const Text('エラーが発生しました'),
+                // );
+
+                final meUid = ref.watch(meProvider).maybeWhen(
+                      data: (me) => me?.uid,
+                      orElse: () => null,
+                    );
+
+                if (meUid == user.uid) {
+                  return PillElevatedButton(
+                    onPressed: () {
+                      // Navigate to edit profile page
+                    },
+                    child: const Text('プロフィールを編集'),
+                  );
+                } else {
+                  return PillElevatedButton(
+                    onPressed: () {
+                      // Follow user action
+                    },
+                    child: const Text('フォロー'),
+                  );
+                }
+
+                // if (me.uid == user.uid) {
+                //   return ElevatedButton(
+                //     onPressed: () {
+                //       // Navigate to edit profile page
+                //     },
+                //     child: const Text('プロフィールを編集'),
+                //   );
+                // } else {
+                //   return ElevatedButton(
+                //     onPressed: () {
+                //       // Follow user action
+                //     },
+                //     child: const Text('フォロー'),
+                //   );
+                // }
               },
-              child: const Text('Logout'),
-            ),
+            )
           ],
         ),
       ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/state/hima_list/provider.dart';
+import '../../application/state/me/provider.dart';
 import '../../domain/features/hima_checker.dart';
 import '../theme/colors.dart';
 import '../widgets/count_down_widget.dart';
@@ -40,6 +41,11 @@ class HimaListPage extends ConsumerWidget {
           itemExtent: 70,
           itemCount: users.length,
           itemBuilder: (context, index) {
+            final meUid = ref.watch(meProvider).maybeWhen(
+                  data: (me) => me?.uid,
+                  orElse: () => null,
+                );
+
             users.sort((a, b) {
               if (HimaChecker(isHima: a.isHima, deadline: a.deadline)
                       .checkHima() &&
@@ -53,13 +59,13 @@ class HimaListPage extends ConsumerWidget {
                       .checkHima()) {
                 return 1;
               }
-              if (a.uid == 'S5EcL2tMsWcMWK6cNV0ugFYaqpB2') return -1;
-              if (b.uid == 'S5EcL2tMsWcMWK6cNV0ugFYaqpB2') return 1;
+              if (a.uid == meUid) return -1;
+              if (b.uid == meUid) return 1;
               return a.deadline.compareTo(b.deadline);
             });
 
             final user = users[index];
-            bool isMe = user.uid == 'S5EcL2tMsWcMWK6cNV0ugFYaqpB2';
+            bool isMe = user.uid == meUid;
             bool isCheckedHima = HimaChecker(
               isHima: user.isHima,
               deadline: user.deadline,
