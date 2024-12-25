@@ -38,9 +38,7 @@ class UserIcon extends StatelessWidget {
     return GestureDetector(
       onTap: ((isOnTap ?? false) && user != null)
           ? () {
-              MaterialPageRoute<void>(
-                builder: (context) => ProfilePage(user: user!),
-              );
+              context.go('/profile', extra: user);
             }
           : null,
       child: Stack(
