@@ -11,7 +11,6 @@ import '../pages/hima_modal.dart';
 import '../pages/notice.dart';
 import '../pages/plan.dart';
 import '../pages/profile.dart';
-import '../router/page_path.dart';
 
 class ViewPage extends ConsumerStatefulWidget {
   @override
