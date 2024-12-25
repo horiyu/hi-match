@@ -12,7 +12,7 @@ import '../../application/state/flavor/provider.dart';
 import '../../infrastructure/console/provider.dart';
 import 'go_router.dart';
 import 'mobile_simulator_view.dart';
-import 'pageView.dart';
+import 'page_view.dart';
 
 // void main() {
 //   runApp(const ProviderScope(child: App()));
