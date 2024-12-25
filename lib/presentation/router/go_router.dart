@@ -8,8 +8,9 @@ import 'package:my_web_app/presentation/pages/sign_up.dart';
 import 'package:my_web_app/presentation/pages/hima_list.dart';
 import '../../application/state/me/provider.dart';
 import '../../application/state/user/provider.dart';
+import '../../domain/types/user.dart';
 import '../../infrastructure/auth/provider.dart';
-import 'pageView.dart';
+import 'page_view.dart';
 import 'page_path.dart';
 import 'signed_in_shell.dart';
 import 'splash_completed_shell.dart';
@@ -54,23 +55,20 @@ final goRouterProvider = Provider(
 
     // final meAsyncValue = ref.watch(meProvider);
 
-    // final profile = GoRoute(
-    //   path: PagePath.profile.path,
-    //   name: PagePath.profile.name,
-    //   builder: (_, __) {
-    //     return meAsyncValue.when(
-    //       data: (user) => ProfilePage(user: user),
-    //       loading: () => const CircularProgressIndicator(),
-    //       error: (err, stack) => Text('Error: $err'),
-    //     );
-    //   },
-    // );
+    final profile = GoRoute(
+      path: '/profile',
+      name: 'profile',
+      builder: (context, state) {
+        final user = state.extra as User;
+        return ProfilePage(user: user);
+      },
+    );
 
     // サインインしないと見れない画面範囲
     final signedInShell = ShellRoute(
       routes: [
         // himaList,
-        // profile,
+        profile,
         viewPage,
         // GoRoute(
         //   path: '/home',
