@@ -86,7 +86,7 @@ class _ViewPageState extends ConsumerState<ViewPage> {
 
   IconButton _buildNavigationIcon(IconData icon, int index) {
     return IconButton(
-      icon: Icon(icon, color: Colors.white, size: 32.0),
+      icon: Icon(icon, color: Colors.white, size: 30.0),
       onPressed: () => setState(() => _selectedIndex = index),
     );
   }
