@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_web_app/presentation/theme/colors.dart';
 
 import '../../application/state/me/provider.dart';
 import '../../domain/types/user.dart';
@@ -50,12 +51,12 @@ class _ViewPageState extends ConsumerState<ViewPage> {
       home: Scaffold(
         body: widgetOptions.elementAt(_selectedIndex),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: SizedBox(
+        floatingActionButton: const SizedBox(
           width: 100,
           height: 100,
           child: FloatingActionButton(
-            backgroundColor: Colors.blue[200],
-            shape: const CircleBorder(),
+            backgroundColor: BrandColors.primary,
+            shape: CircleBorder(),
             onPressed: null,
             // onPressed: () {
             //   _toggleHimaStatus();
@@ -94,11 +95,11 @@ class _ViewPageState extends ConsumerState<ViewPage> {
             //     );
             //   }
             // },
-            child: const Icon(Icons.add),
+            child: Icon(Icons.add),
           ),
         ),
         bottomNavigationBar: BottomAppBar(
-          color: const Color.fromARGB(255, 23, 63, 122),
+          color: BrandColors.primary,
           notchMargin: 11.0,
           shape: const AutomaticNotchedShape(
             RoundedRectangleBorder(),
@@ -107,85 +108,68 @@ class _ViewPageState extends ConsumerState<ViewPage> {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 1.0),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Container(
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.home,
-                      color: Colors.white,
-                      size: 32.0,
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.home_outlined,
+                        color: Colors.white,
+                        size: 32.0,
+                      ),
+                      onPressed: () {
+                        onItemTapped(0);
+                      },
                     ),
-                    onPressed: () {
-                      onItemTapped(0);
-                    },
-                  ),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.calendar_today,
+                        color: Colors.white,
+                        size: 32.0,
+                      ),
+                      onPressed: () {
+                        onItemTapped(1);
+                      },
+                    ),
+                  ],
                 ),
-                Container(
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.calendar_today,
-                      color: Colors.white,
-                      size: 32.0,
+                // IconButton(
+                //   icon: const Icon(
+                //     Icons.add_circle_rounded,
+                //     color: Colors.white,
+                //     size: 32.0,
+                //   ),
+                //   onPressed: () {
+                //     onItemTapped(2);
+                //   },
+                // ),
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.notifications_none_rounded,
+                        color: Colors.white,
+                        size: 32.0,
+                      ),
+                      onPressed: () {
+                        onItemTapped(3);
+                      },
                     ),
-                    onPressed: () {
-                      onItemTapped(1);
-                    },
-                  ),
-                ),
-                Container(
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.add_circle_rounded,
-                      color: Colors.white,
-                      size: 32.0,
+                    IconButton(
+                      icon: const Icon(
+                        Icons.person_outline,
+                        color: Colors.white,
+                        size: 32.0,
+                      ),
+                      onPressed: () {
+                        onItemTapped(4);
+                      },
                     ),
-                    onPressed: () {
-                      onItemTapped(2);
-                    },
-                  ),
-                ),
-                Container(
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.notifications_none_rounded,
-                      color: Colors.white,
-                      size: 32.0,
-                    ),
-                    onPressed: () {
-                      onItemTapped(3);
-                    },
-                  ),
-                ),
-                Container(
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.person_outline,
-                      color: Colors.white,
-                      size: 32.0,
-                    ),
-                    onPressed: () {
-                      onItemTapped(4);
-                    },
-                  ),
+                  ],
                 ),
               ],
             ),
