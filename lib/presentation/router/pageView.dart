@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_web_app/presentation/theme/colors.dart';
 
@@ -11,6 +12,8 @@ import '../pages/plan.dart';
 import '../pages/profile.dart';
 
 class ViewPage extends ConsumerStatefulWidget {
+  const ViewPage({super.key});
+
   @override
   _ViewPageState createState() => _ViewPageState();
 }
@@ -47,7 +50,12 @@ class _ViewPageState extends ConsumerState<ViewPage> {
 
   Widget _buildHimaModal(AsyncValue<User?> meAsyncValue) {
     return meAsyncValue.when(
-      data: (me) => HimaModal(me!.uid),
+      data: (me) {
+        if (me == null) {
+          return const Center(child: Text('ユーザーが見つかりません'));
+        }
+        return HimaModal(me.uid);
+      },
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (err, stack) => const Center(child: Text('エラーが発生しました')),
     );
@@ -55,7 +63,12 @@ class _ViewPageState extends ConsumerState<ViewPage> {
 
   Widget _buildProfilePage(AsyncValue<User?> meAsyncValue) {
     return meAsyncValue.when(
-      data: (me) => ProfilePage(user: me as User),
+      data: (me) {
+        if (me == null) {
+          return const Center(child: Text('ユーザーが見つかりません'));
+        }
+        return ProfilePage(user: me);
+      },
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (err, stack) => const Center(child: Text('エラーが発生しました')),
     );
