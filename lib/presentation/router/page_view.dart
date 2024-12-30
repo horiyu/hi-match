@@ -39,11 +39,11 @@ class _ViewPageState extends ConsumerState<ViewPage> {
       home: Scaffold(
         body: widget.child ?? widgetOptions.elementAt(_selectedIndex),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: const FloatingActionButton(
+        floatingActionButton: FloatingActionButton(
           backgroundColor: BrandColors.primary,
-          shape: CircleBorder(),
-          onPressed: null,
-          child: Icon(Icons.add),
+          shape: const CircleBorder(),
+          onPressed: () => setState(() => _selectedIndex = 2),
+          child: const Icon(Icons.add),
         ),
         bottomNavigationBar: _buildBottomAppBar(),
       ),
