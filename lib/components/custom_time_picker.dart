@@ -119,7 +119,6 @@ Future<void> showCustomTimePicker({
                               minuteController.jumpToItem(newTime.minute ~/ 5);
                               selectedHour = newTime.hour;
                               selectedMinute = newTime.minute;
-                              handler(date: newTime);
                             },
                             child: const Text('30分'),
                           ),
@@ -151,7 +150,6 @@ Future<void> showCustomTimePicker({
                               minuteController.jumpToItem(newTime.minute ~/ 5);
                               selectedHour = newTime.hour;
                               selectedMinute = newTime.minute;
-                              handler(date: newTime);
                             },
                             child: const Text('1時間'),
                           ),
@@ -183,7 +181,6 @@ Future<void> showCustomTimePicker({
                               minuteController.jumpToItem(newTime.minute ~/ 5);
                               selectedHour = newTime.hour;
                               selectedMinute = newTime.minute;
-                              handler(date: newTime);
                             },
                             child: const Text('2時間'),
                           ),
