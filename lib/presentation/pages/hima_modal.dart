@@ -3,17 +3,23 @@ import '../../components/custom_time_picker.dart';
 import '../../components/hima_activity_list.dart';
 import '../widgets/pill_outlined_button.dart';
 
-class HimaModal extends StatelessWidget {
+class HimaModal extends StatefulWidget {
   final String uid;
 
   const HimaModal(this.uid, {super.key});
 
   @override
-  Widget build(BuildContext context) {
-    DateTime? selectedDate;
+  _HimaModalState createState() => _HimaModalState();
+}
 
+class _HimaModalState extends State<HimaModal> {
+  DateTime? selectedDate;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.9,
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -31,7 +37,9 @@ class HimaModal extends StatelessWidget {
                 textSize: 20,
                 selectedTime: selectedDate,
                 handler: ({required DateTime date}) {
-                  selectedDate = date;
+                  setState(() {
+                    selectedDate = date;
+                  });
                 },
                 context: context,
               );
@@ -61,10 +69,12 @@ class HimaModal extends StatelessWidget {
             onPressed: () async {
               await himaActivityList(
                 handler: ({required String himaActivities}) {
-                  // Handle himaActivities
+                  setState(() {
+                    // Handle himaActivities
+                  });
                 },
                 context: context,
-                uid: uid,
+                uid: widget.uid,
               );
             },
             child: const Row(
