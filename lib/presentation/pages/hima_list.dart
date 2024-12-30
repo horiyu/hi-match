@@ -18,6 +18,9 @@ class HimaListPage extends ConsumerWidget {
     final usersAsyncValue = ref.watch(himaListProvider);
 
     final bool isMeHima = usersAsyncValue.whenData((users) {
+          if (users.isEmpty) {
+            return false;
+          }
           return HimaChecker(
             isHima: users.first.isHima,
             deadline: users.first.deadline,
