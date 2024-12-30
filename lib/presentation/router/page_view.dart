@@ -42,7 +42,19 @@ class _ViewPageState extends ConsumerState<ViewPage> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: BrandColors.primary,
           shape: const CircleBorder(),
-          onPressed: () => setState(() => _selectedIndex = 2),
+          onPressed: () {
+            final me = ref.read(meProvider).value;
+            if (me != null) {
+              showModalBottomSheet<void>(
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                context: context,
+                builder: (BuildContext context) {
+                  return HimaModal(me.uid);
+                },
+              );
+            }
+          },
           child: const Icon(Icons.add),
         ),
         bottomNavigationBar: _buildBottomAppBar(),
