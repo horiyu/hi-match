@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../application/state/hima_activity/notifier.dart';
+import '../../application/state/hima_activity/provider.dart';
+import '../../domain/types/hima_activity.dart';
 
 typedef Fn = Function({required String himaActivities});
+
+// final himaActivityProvider =
+//     StateNotifierProvider<HimaActivityNotifier, AsyncValue<List<HimaActivity>>>(
+//         (ref) {
+//   return HimaActivityNotifier();
+// });
 
 Future<void> himaActivityList({
   required BuildContext context,
@@ -20,104 +31,74 @@ Future<void> himaActivityList({
   await showModalBottomSheet(
     context: context,
     builder: (context) {
-      return FutureBuilder<QuerySnapshot>(
-        future: FirebaseFirestore.instance
-            .collection("users")
-            .where("id", isEqualTo: uid)
-            .get(),
-        builder: (context, userSnapshot) {
-          if (userSnapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
-          }
-          if (userSnapshot.hasError) {
-            return const Text('エラーが発生しました');
-          }
-          if (!userSnapshot.hasData || userSnapshot.data!.docs.isEmpty) {
-            return const Text('ユーザーが見つかりません');
-          }
+      return Consumer(
+        builder: (context, ref, child) {
+          final himaActivitiesAsyncValue = ref.watch(himaActivityProvider);
 
-          final userId = userSnapshot.data!.docs[0].id;
+          print(himaActivitiesAsyncValue);
 
-          return Container(
-            decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15.0),
-                  topRight: Radius.circular(15.0),
-                )),
-            height: 500,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      TextField(
-                        controller: textController,
-                        decoration: const InputDecoration(
-                          labelText: '何したい？',
-                        ),
-                        onChanged: (value) {
-                          newHimaActivity = value;
-                        },
-                      ),
-                      ValueListenableBuilder<bool>(
-                        valueListenable: isButtonEnabled,
-                        builder: (context, value, child) {
-                          return ElevatedButton(
-                            onPressed: value
-                                ? () async {
-                                    await FirebaseFirestore.instance
-                                        .collection("users")
-                                        .doc(userId)
-                                        .collection("himaActivities")
-                                        .add({
-                                      'content': newHimaActivity,
-                                    });
-                                    textController.clear();
-                                  }
-                                : null,
-                            child: const Text('選択肢に追加'),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 50),
-                      FutureBuilder<QuerySnapshot>(
-                        future: FirebaseFirestore.instance
-                            .collection("users")
-                            .doc(userId)
-                            .collection("himaActivities")
-                            .get(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
-                          }
-                          if (snapshot.hasError) {
-                            return const Text('エラーが発生しました');
-                          }
-                          if (!snapshot.hasData ||
-                              snapshot.data!.docs.isEmpty) {
-                            return const Text('タグが見つかりません');
-                          }
-
-                          final tags = snapshot.data!.docs
-                              .map((doc) => doc['content'] as String)
-                              .toList();
-
-                          return Wrap(
+          return himaActivitiesAsyncValue.when(
+            loading: () => const CircularProgressIndicator(),
+            error: (err, stack) => const Text('エラーが発生しました'),
+            data: (himaActivities) {
+              return Container(
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15.0),
+                      topRight: Radius.circular(15.0),
+                    )),
+                height: 500,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          TextField(
+                            controller: textController,
+                            decoration: const InputDecoration(
+                              labelText: '何したい？',
+                            ),
+                            onChanged: (value) {
+                              newHimaActivity = value;
+                            },
+                          ),
+                          ValueListenableBuilder<bool>(
+                            valueListenable: isButtonEnabled,
+                            builder: (context, value, child) {
+                              return ElevatedButton(
+                                onPressed: value
+                                    ? () async {
+                                        await FirebaseFirestore.instance
+                                            .collection("users")
+                                            .doc(uid)
+                                            .collection("himaActivities")
+                                            .add({
+                                          'content': newHimaActivity,
+                                        });
+                                        textController.clear();
+                                      }
+                                    : null,
+                                child: const Text('選択肢に追加'),
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 50),
+                          Wrap(
                             runSpacing: 16,
                             spacing: 16,
-                            children: tags.map((tag) {
-                              final isSelected = selectedTags.contains(tag);
+                            children: himaActivities.map((activity) {
+                              final isSelected =
+                                  selectedTags.contains(activity.content);
                               return InkWell(
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(32)),
                                 onTap: () {
                                   if (isSelected) {
-                                    selectedTags.remove(tag);
+                                    selectedTags.remove(activity.content);
                                   } else {
-                                    selectedTags.add(tag);
+                                    selectedTags.add(activity.content);
                                   }
                                 },
                                 child: AnimatedContainer(
@@ -132,7 +113,7 @@ Future<void> himaActivityList({
                                     color: isSelected ? Colors.pink : null,
                                   ),
                                   child: Text(
-                                    tag,
+                                    activity.content,
                                     style: TextStyle(
                                       color: isSelected
                                           ? Colors.white
@@ -143,53 +124,54 @@ Future<void> himaActivityList({
                                 ),
                               );
                             }).toList(),
-                          );
-                        },
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.grey),
+                              minimumSize: MaterialStateProperty.all(
+                                  const Size(150, 45)),
+                            ),
+                            child: const Text(
+                              '閉じる',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            onPressed: () => Navigator.of(context).pop(),
+                          ),
+                          const SizedBox(width: 30),
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  Colors.deepOrangeAccent),
+                              minimumSize: MaterialStateProperty.all(
+                                  const Size(150, 45)),
+                            ),
+                            child: const Text(
+                              '決定',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            onPressed: () {
+                              handler(
+                                himaActivities: selectedTags.join(', '),
+                              );
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 30),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStateProperty.all(Colors.grey),
-                          minimumSize:
-                              WidgetStateProperty.all(const Size(150, 45)),
-                        ),
-                        child: const Text(
-                          '閉じる',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                      const SizedBox(width: 30),
-                      ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              WidgetStateProperty.all(Colors.deepOrangeAccent),
-                          minimumSize:
-                              WidgetStateProperty.all(const Size(150, 45)),
-                        ),
-                        child: const Text(
-                          '決定',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onPressed: () {
-                          handler(
-                            himaActivities: selectedTags.join(', '),
-                          );
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              );
+            },
           );
         },
       );

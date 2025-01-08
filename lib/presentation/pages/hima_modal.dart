@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../components/custom_time_picker.dart';
-import '../../components/hima_activity_list.dart';
+
 import '../widgets/pill_outlined_button.dart';
+import 'custom_time_picker.dart';
+import 'hima_activity_list.dart';
 
 class HimaModal extends StatefulWidget {
   final String uid;
