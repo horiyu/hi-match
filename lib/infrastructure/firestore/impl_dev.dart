@@ -104,6 +104,7 @@ class ImplDev implements Firestore {
         .update(updateData);
   }
 
+  @override
   Future<void> deleteUserByUid(String uid,
       {bool physicalDelete = false}) async {
     if (physicalDelete) {
@@ -170,11 +171,11 @@ class ImplDev implements Firestore {
     });
   }
 
+  @override
   Future<List<HimaActivity>> getHimaActivities(String userId) async {
     final snapshot = await _firestore
-        .collection("users")
-        .doc(userId)
         .collection("himaActivities")
+        .where('createdBy', isEqualTo: userId)
         .get();
     if (snapshot.docs.isEmpty) {
       return [];

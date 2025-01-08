@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_web_app/domain/types/handle.dart';
 
+import '../../domain/features/hima_activity_creator.dart';
+import '../../domain/features/hima_activity_updater.dart';
 import '../../domain/features/user_creator.dart';
 import '../../domain/features/user_updater.dart';
+import '../../domain/types/hima_activity.dart';
 import '../../domain/types/user.dart';
 
 import 'interface.dart';
@@ -146,5 +149,99 @@ class ImplStg implements Firestore {
       print('Error fetching users: $e');
       return [];
     }
+  }
+
+  Future<void> addHimaActivity(
+      String userId, String newHimaActivityContent) async {
+    final newHimaActivity = HimaActivityCreater(
+      uid: userId,
+      content: newHimaActivityContent,
+    ).createNewHimaActivity();
+
+    await _firestore
+        .collection("users")
+        .doc(userId)
+        .collection("himaActivities")
+        .add({
+      'content': newHimaActivity.content,
+      'createdBy': newHimaActivity.createdBy,
+      'createdAt': newHimaActivity.createdAt,
+      'updatedAt': newHimaActivity.updatedAt,
+    });
+  }
+
+  @override
+  Future<List<HimaActivity>> getHimaActivities(String userId) async {
+    final snapshot = await _firestore
+        .collection("users")
+        .doc(userId)
+        .collection("himaActivities")
+        .get();
+    if (snapshot.docs.isEmpty) {
+      return [];
+    }
+    return snapshot.docs.map((doc) {
+      final data = doc.data();
+      return HimaActivity(
+        content: data['content'] as String? ?? '',
+        createdBy: data['createdBy'] as String? ?? '',
+        createdAt:
+            (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime(1970, 1, 1),
+        updatedAt:
+            (data['updatedAt'] as Timestamp?)?.toDate() ?? DateTime(1970, 1, 1),
+      );
+    }).toList();
+  }
+
+  Future<void> deleteHimaActivity(String userId, String activityId) async {
+    await _firestore
+        .collection("users")
+        .doc(userId)
+        .collection("himaActivities")
+        .doc(activityId)
+        .delete();
+  }
+
+  Future<void> updateHimaActivity(
+      String userId, String activityId, String newHimaActivityContent) async {
+    final snapshot = await _firestore
+        .collection("users")
+        .doc(userId)
+        .collection("himaActivities")
+        .doc(activityId)
+        .get();
+
+    if (!snapshot.exists) {
+      throw Exception('HimaActivity not found');
+    }
+
+    final data = snapshot.data();
+    if (data == null) {
+      throw Exception('HimaActivity data is null');
+    }
+
+    final existingHimaActivity = HimaActivity(
+      content: data['content'] as String? ?? '',
+      createdBy: data['createdBy'] as String? ?? '',
+      createdAt:
+          (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime(1970, 1, 1),
+      updatedAt:
+          (data['updatedAt'] as Timestamp?)?.toDate() ?? DateTime(1970, 1, 1),
+    );
+
+    final updatedHimaActivity = HimaActivityUpdater().updateContent(
+      existingHimaActivity,
+      newHimaActivityContent,
+    );
+
+    await _firestore
+        .collection("users")
+        .doc(userId)
+        .collection("himaActivities")
+        .doc(activityId)
+        .update({
+      'content': updatedHimaActivity.content,
+      'updatedAt': updatedHimaActivity.updatedAt,
+    });
   }
 }
