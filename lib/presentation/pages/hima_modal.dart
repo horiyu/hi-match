@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../application/usecases/set_hima.dart';
+import '../../infrastructure/firestore/provider.dart';
 import '../widgets/pill_outlined_button.dart';
 import 'custom_time_picker.dart';
 import 'hima_activity_list.dart';
@@ -98,7 +100,19 @@ class _HimaModalState extends State<HimaModal> {
                 ),
                 minimumSize: MaterialStateProperty.all(const Size(300, 50)),
               ),
-              onPressed: selectedDate == null ? null : () async {},
+              onPressed: selectedDate == null
+                  ? null
+                  : () async {
+                      print(selectedDate);
+
+                      SetHimaUseCase(
+                        uid: widget.uid,
+                        selectedDate: selectedDate!,
+                      ).turnOnHima();
+                      Navigator.of(context).pop();
+
+                      print('Set Hima');
+                    },
               child: const Text(
                 'ひま',
                 style: TextStyle(color: Colors.white),
