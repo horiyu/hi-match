@@ -9,4 +9,6 @@ abstract interface class Firestore {
   Future<List<User>> getUsers();
 
   Future<List<HimaActivity>> getHimaActivities(String userId);
+
+  Future<void> registerHima(String userId, DateTime deadline);
 }

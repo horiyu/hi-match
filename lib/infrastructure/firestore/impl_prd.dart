@@ -244,4 +244,17 @@ class ImplPrd implements Firestore {
       'updatedAt': updatedHimaActivity.updatedAt,
     });
   }
+
+  Future<void> registerHima(String userId, DateTime deadline) async {
+    // final newHimaActivity = HimaActivityCreater(
+    //   uid: userId,
+    //   content: himaContent,
+    // ).createNewHimaActivity();
+
+    await _firestore.collection("users").doc(userId).update({
+      'isHima': true,
+      'deadline': deadline,
+      'updatedAt': DateTime.now(),
+    });
+  }
 }
