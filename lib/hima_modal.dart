@@ -215,7 +215,7 @@ class _HimaModalState extends State<HimaModal> {
                                   .doc(snapshot.docs[0].id)
                                   .update({
                                 'deadline': Timestamp.fromDate(selectedDate!),
-                                'isHima': !isHima,
+                                'isHima': true,
                                 'himaActivitiesIds': selectedHimaActivitiesID,
                               });
                               Navigator.of(context).pop();
