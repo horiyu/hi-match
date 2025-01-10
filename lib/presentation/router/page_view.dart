@@ -1,9 +1,13 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_web_app/presentation/theme/colors.dart';
 
 import '../../application/state/me/provider.dart';
+import '../../application/usecases/set_hima.dart';
+import '../../domain/features/hima_checker.dart';
 import '../../domain/types/user.dart';
 import '../pages/hima_list.dart';
 import '../pages/hima_modal.dart';
@@ -50,7 +54,20 @@ class _ViewPageState extends ConsumerState<ViewPage> {
                 backgroundColor: Colors.transparent,
                 context: context,
                 builder: (BuildContext context) {
-                  return HimaModal(me.uid);
+                  final isMeHima = HimaChecker(
+                    isHima: me.isHima,
+                    deadline: me.deadline,
+                  ).checkHima();
+                  if (isMeHima) {
+                    SetHimaUseCase(uid: me.uid, selectedDate: DateTime.now())
+                        .turnOffHima();
+                    // return const HimaListPage();
+                    // setState(() => _selectedIndex = 0);
+                    return const HimaListPage();
+                  } else {
+                    return HimaModal(me.uid);
+                  }
+                  // return HimaModal(me.uid);
                 },
               );
             }
