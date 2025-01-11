@@ -4,6 +4,7 @@ import 'package:my_web_app/name_reg.dart';
 
 import '../widgets/pill_outlined_button.dart';
 import '../widgets/rounded_form_field.dart';
+import 'sign_up_detail.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -154,10 +155,11 @@ class _SignUpPageState extends State<SignUpPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const NameReg(),
-                                      settings: const RouteSettings(
-                                          name: '/name_reg'),
-                                    ),
+                                        builder: (context) =>
+                                            const SignUpDetail(),
+                                        settings: const RouteSettings(
+                                          name: '/sign_up_detail',
+                                        )),
                                   );
                                 } catch (e) {
                                   setState(() {
