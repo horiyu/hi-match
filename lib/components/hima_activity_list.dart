@@ -213,6 +213,36 @@ Future<void> himaActivityList({
                               });
                         },
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(120, 30),
+                          ),
+                          onPressed: () async {
+                            // Firestore内のタグをすべて削除
+                            final activities = await FirebaseFirestore.instance
+                                .collection("users")
+                                .doc(userId)
+                                .collection("himaActivities")
+                                .get();
+
+                            for (var doc in activities.docs) {
+                              await doc.reference.delete();
+                            }
+
+                            selectedTagsNotifier.value = []; // 表示をクリア
+                            print("All tags have been deleted.");
+                          },
+                          child: const Text(
+                            'すべてのタグを消去',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
