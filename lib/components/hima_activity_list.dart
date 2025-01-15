@@ -143,11 +143,13 @@ Future<void> himaActivityList({
                                         // print(tag);
                                         // print(selectedTags);
                                         if (isSelected) {
-                                          selectedTags.removeWhere((map) => map['id'] == tag['id']);
+                                          selectedTags.removeWhere(
+                                              (map) => map['id'] == tag['id']);
                                         } else {
                                           selectedTags.add(tag);
                                         }
-                                        selectedTagsNotifier.value = List.from(selectedTags);
+                                        selectedTagsNotifier.value =
+                                            List.from(selectedTags);
                                       },
                                       child: AnimatedContainer(
                                         duration:
@@ -212,7 +214,7 @@ Future<void> himaActivityList({
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {
-                          handler(himaActivities: selectedTags);
+                          handler(himaActivities: selectedTagsNotifier.value);
                           Navigator.of(context).pop();
                         },
                       ),
