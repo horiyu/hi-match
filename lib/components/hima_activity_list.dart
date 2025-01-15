@@ -53,35 +53,67 @@ Future<void> himaActivityList({
                 Expanded(
                   child: Column(
                     children: [
-                      TextField(
-                        controller: textController,
-                        decoration: const InputDecoration(
-                          labelText: '何したい？',
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 20), // You can adjust this value
+                        child: Center(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: TextField(
+                              controller: textController,
+                              decoration: InputDecoration(
+                                labelText: '何したい？',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide.none,
+                                ),
+                                filled: true,
+                                fillColor: Colors.white,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 15),
+                              ),
+                              onChanged: (value) {
+                                newHimaActivity = value;
+                              },
+                            ),
+                          ),
                         ),
-                        onChanged: (value) {
-                          newHimaActivity = value;
-                          // No need to call setState here
-                        },
                       ),
-                      ValueListenableBuilder<bool>(
-                        valueListenable: isButtonEnabled,
-                        builder: (context, value, child) {
-                          return ElevatedButton(
-                            onPressed: value
-                                ? () async {
-                                    await FirebaseFirestore.instance
-                                        .collection("users")
-                                        .doc(userId)
-                                        .collection("himaActivities")
-                                        .add({
-                                      'content': newHimaActivity,
-                                    });
-                                    textController.clear();
-                                  }
-                                : null,
-                            child: const Text('選択肢に追加'),
-                          );
-                        },
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 20), // Adjust this value as needed
+                        child: ValueListenableBuilder<bool>(
+                          valueListenable: isButtonEnabled,
+                          builder: (context, value, child) {
+                            return ElevatedButton(
+                              onPressed: value
+                                  ? () async {
+                                      await FirebaseFirestore.instance
+                                          .collection("users")
+                                          .doc(userId)
+                                          .collection("himaActivities")
+                                          .add({
+                                        'content': newHimaActivity,
+                                      });
+                                      textController.clear();
+                                    }
+                                  : null,
+                              child: const Text('選択肢に追加'),
+                            );
+                          },
+                        ),
                       ),
                       const SizedBox(height: 50),
                       FutureBuilder<QuerySnapshot>(
