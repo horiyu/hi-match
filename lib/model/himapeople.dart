@@ -8,6 +8,9 @@ class HimaPeople {
   DateTime? deadline;
   String? place;
   List<String>? himaActivitiesIds;
+  List<String>? sentRequests;
+  List<String>? gotRequests;
+  List<String>? friends;
 
   HimaPeople({
     required this.id,
@@ -17,6 +20,9 @@ class HimaPeople {
     required this.deadline,
     required this.place,
     required this.himaActivitiesIds,
+     this.sentRequests,
+     this.gotRequests,
+     this.friends,
   });
 
   factory HimaPeople.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
@@ -37,6 +43,7 @@ class HimaPeople {
               as List<dynamic>?) // 明示的に List<dynamic>? にキャスト
           ?.map((item) => item as String) // 各要素を String にキャスト
           .toList(), // List<String> に変換
+      friends: (data['friends'] as List<dynamic>?)?.map((item) => item as String).toList(),
     );
   }
 
@@ -49,6 +56,7 @@ class HimaPeople {
       "deadline": deadline,
       "place": place,
       "himaActivitiesIds": himaActivitiesIds,
+      "friends": friends,
     };
   }
 }

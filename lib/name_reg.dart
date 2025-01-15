@@ -23,16 +23,11 @@ class _NameRegState extends State<NameReg> {
   @override
   void initState() {
     super.initState();
-    // getHimaPeople();
+    
     get();
   }
 
-  Future getHimaPeople() async {
-    setState(() => isLoading = true);
-    himaPeople = await FirestoreHelper.instance
-        .selectAllHimaPeople("Ian4IDN4ryYtbv9h4igNeUdZQkB3");
-    setState(() => isLoading = false);
-  }
+  
 
   // usersコレクションのドキュメントを全件読み込む
   Future get() async {
@@ -134,7 +129,6 @@ class _NameRegState extends State<NameReg> {
 
                   // Firestoreにデータを追加
 
-                  // getHimaPeople();
                   get();
                   Navigator.push(
                       context,

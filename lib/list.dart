@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:my_web_app/friend_search.dart';
 import 'package:my_web_app/login_page.dart';
 import 'package:my_web_app/main.dart';
 import 'package:my_web_app/model/himapeople.dart';
@@ -97,22 +98,56 @@ class _NextPageState extends State<NextPage> {
     setState(() => isLoading = false);
   }
 
+  // Future get() async {
+  //   final snapshot = await FirebaseFirestore.instance.collection('users').get();
+  //   final himaPeople = snapshot.docs
+  //       .map((doc) => HimaPeople.fromFirestore(
+  //           doc as DocumentSnapshot<Map<String, dynamic>>))
+  //       .toList();
+  //   setState(() {
+  //     this.himaPeople = himaPeople;
+  //   });
+  // }
   Future get() async {
-    final snapshot = await FirebaseFirestore.instance.collection('users').get();
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    // カレントユーザーのドキュメントを取得
+    final currentUserSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+
+    if (!currentUserSnapshot.exists) return;
+
+    // カレントユーザーのfriendsフィールドを取得
+    final friends =
+        List<String>.from(currentUserSnapshot.data()?['friends'] ?? []);
+
+    print(friends);
+
+    // friendsの要素と一致するユーザーを取得
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where(FieldPath.documentId, whereIn: friends)
+        .get();
+
     final himaPeople = snapshot.docs
         .map((doc) => HimaPeople.fromFirestore(
             doc as DocumentSnapshot<Map<String, dynamic>>))
         .toList();
+
+    // カレントユーザー自身を追加
+    himaPeople.add(HimaPeople.fromFirestore(
+        currentUserSnapshot as DocumentSnapshot<Map<String, dynamic>>));
+
+    print(himaPeople);
+    for (var person in himaPeople) {
+      print('Name: ${person.name}, ID: ${person.id}, isHima: ${person.isHima}');
+    }
+
     setState(() {
       this.himaPeople = himaPeople;
-    });
-  }
-
-  Future<void> addHimaPerson(HimaPeople person) async {
-    await FirebaseFirestore.instance.collection('users').add({
-      'id': person.id,
-      'name': person.name,
-      'isHima': person.isHima,
     });
   }
 
@@ -676,11 +711,19 @@ class _NextPageState extends State<NextPage> {
                 ),
                 child: IconButton(
                   icon: Icon(
-                    Icons.person_add,
+                    Icons.search,
                     color: Colors.white,
                     size: 32.0,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FriendSearch(),
+                        settings: const RouteSettings(name: '/friend_search'),
+                      ),
+                    );
+                  },
                 ),
               )
             ],
