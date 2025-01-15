@@ -408,28 +408,63 @@ class _NextPageState extends State<NextPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      subtitle: Text(
-                        himaPeople
-                                .firstWhere(
-                                    (person) =>
-                                        person.id ==
-                                        FirebaseAuth.instance.currentUser?.uid,
-                                    orElse: () => HimaPeople(
-                                          id: '',
-                                          mail: '',
-                                          isHima: false,
-                                          name: 'No Name',
-                                          deadline: null,
-                                          place: '',
-                                          himaActivitiesIds: [],
-                                        ))
-                                .place ??
-                            "Nowhere",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 10,
-                        ),
+                      subtitle: FutureBuilder<List<String>>(
+                        future: fetchHimaTags(
+                            FirebaseAuth.instance.currentUser?.uid ?? ''),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          }
+                          if (snapshot.hasError) {
+                            return const Text('エラーが発生しました');
+                          }
+                          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                            return const Text('タグが見つかりません');
+                          }
+
+                          final tags = snapshot.data!;
+                          return Wrap(
+                            spacing: 15.0,
+                            children: tags.map((tag) {
+                              return Chip(
+                                label: Text(
+                                  tag,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 7.0),
+                              );
+                            }).toList(),
+                          );
+                        },
+                      ),
+                      trailing: Column(
+                        children: [
+                          _getCountdownString(
+                            himaPeople
+                                    .firstWhere(
+                                        (person) =>
+                                            person.id ==
+                                            FirebaseAuth
+                                                .instance.currentUser?.uid,
+                                        orElse: () => HimaPeople(
+                                              id: '',
+                                              mail: '',
+                                              isHima: false,
+                                              name: 'No Name',
+                                              deadline: null,
+                                              place: '',
+                                              himaActivitiesIds: [],
+                                            ))
+                                    .deadline ??
+                                DateTime.now(),
+                          ),
+                        ],
                       ),
                     ),
                   ),
