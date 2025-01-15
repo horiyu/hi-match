@@ -126,45 +126,56 @@ class _NextPageState extends State<NextPage> {
   void _toggleHimaStatus() async {
     final user = FirebaseAuth.instance.currentUser;
     final uid = user?.uid;
-    final email = user?.email;
-    bool isLogin = FirebaseAuth.instance.currentUser != null;
-    // if (!isLogin) {
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //       builder: (context) => const LoginPage(),
-    //       settings: const RouteSettings(name: '/login'),
-    //     ),
-    //   );
-    //   return;
-    // }
+
+    if (uid == null) {
+      // ユーザーがログインしていない場合の処理
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginPage(),
+          settings: const RouteSettings(name: '/login'),
+        ),
+      );
+      return;
+    }
+
     final snapshot = await FirebaseFirestore.instance
         .collection("users")
         .where("id", isEqualTo: uid)
         .get();
-    HimaPeople newPerson;
-    bool isHima = true;
+
     if (snapshot.docs.isEmpty) {
-      newPerson = HimaPeople(
-        id: '$uid',
-        mail: '$email',
+      // Firestoreにドキュメントが存在しない場合、新しいユーザーを作成
+      HimaPeople newPerson = HimaPeople(
+        id: uid,
+        mail: user?.email ?? "no-email@example.com", // 条件付きアクセスとデフォルト値
         isHima: true,
         name: name,
         deadline: null,
         place: "春日",
         himaActivitiesIds: [],
       );
-      await addHimaPerson(newPerson);
+
+      await FirebaseFirestore.instance
+          .collection("users")
+          .add(newPerson.toFirestore());
+
+      setState(() {
+        _isHima = true;
+      });
     } else {
-      isHima = snapshot.docs[0].data()['isHima'];
-      // await FirebaseFirestore.instance
-      //     .collection("users")
-      //     .doc(snapshot.docs[0].id)
-      //     .update({'isHima': !isHima});
+      // Firestoreから現在の`isHima`を取得して反転させる
+      final docRef = snapshot.docs.first.reference;
+      bool currentIsHima = snapshot.docs.first.data()['isHima'] ?? false;
+
+      await docRef.update({'isHima': !currentIsHima});
+
+      setState(() {
+        _isHima = !currentIsHima; // ローカル状態をFirestoreと同期
+      });
     }
-    setState(() {
-      _isHima = !isHima;
-    });
+
+    // ユーザーリストを再取得
     get();
   }
 
