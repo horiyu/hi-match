@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_web_app/model/himapeople.dart';
@@ -19,7 +20,6 @@ class _FriendSearchState extends State<FriendSearch> {
     });
 
     final query = _controller.text.trim();
-    print(query);
     if (query.isEmpty) {
       setState(() {
         _isLoading = false;
@@ -42,6 +42,33 @@ class _FriendSearchState extends State<FriendSearch> {
       _isLoading = false;
       _searchResults = results;
     });
+  }
+
+  Future<String> _getButtonText(HimaPeople friend) async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+
+    final currentUserDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser?.uid)
+        .get();
+
+    if (currentUserDoc.exists) {
+      final currentUserData = currentUserDoc.data()!;
+      final friends = List<String>.from(currentUserData['friends'] ?? []);
+      final sentRequests =
+          List<String>.from(currentUserData['sentRequests'] ?? []);
+      final gotRequests =
+          List<String>.from(currentUserData['gotRequests'] ?? []);
+
+      if (friends.contains(friend.id)) {
+        return "友達です";
+      } else if (sentRequests.contains(friend.id)) {
+        return "申請済みです";
+      } else if (gotRequests.contains(friend.id)) {
+        return "申請を許可しますか？";
+      }
+    }
+    return "フォロー";
   }
 
   @override
@@ -74,31 +101,38 @@ class _FriendSearchState extends State<FriendSearch> {
                           itemCount: _searchResults.length,
                           itemBuilder: (context, index) {
                             final friend = _searchResults[index];
-                            return ListTile(
-                              leading: const CircleAvatar(
-                                child: Icon(Icons.person),
-                              ),
-                              title: Text(
-                                friend.name ?? 'No Name',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              trailing: ElevatedButton(
-                                onPressed: () {},
-                                child: Text("follow"),
-                              ),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => UserPage(friend),
-                                    settings:
-                                        const RouteSettings(name: '/user_page'),
+                            return FutureBuilder<String>(
+                              future: _getButtonText(friend),
+                              builder: (context, snapshot) {
+                                final buttonText = snapshot.data ?? "読み込み中...";
+
+                                return ListTile(
+                                  leading: const CircleAvatar(
+                                    child: Icon(Icons.person),
                                   ),
+                                  title: Text(
+                                    friend.name ?? 'No Name',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  trailing: ElevatedButton(
+                                    onPressed: () {},
+                                    child: Text(buttonText),
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => UserPage(friend),
+                                        settings: const RouteSettings(
+                                            name: '/user_page'),
+                                      ),
+                                    );
+                                  },
                                 );
                               },
                             );
