@@ -25,6 +25,7 @@ class _UserPageState extends State<UserPage> {
   // User? _user;
   bool _isLoading = false;
   // List<HimaPeople> himaPeople = [];
+  bool isMe = false;
 
   @override
   void initState() {
@@ -33,6 +34,7 @@ class _UserPageState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
+    isMe = widget.person.id == FirebaseAuth.instance.currentUser?.uid;
     return Scaffold(
       appBar: AppBar(
           // title: const Text('User Page'),
@@ -141,10 +143,7 @@ class _UserPageState extends State<UserPage> {
                                 backgroundColor:
                                     const Color.fromARGB(255, 38, 173, 252),
                               ),
-                              child: Text(widget.person.id ==
-                                      FirebaseAuth.instance.currentUser?.uid
-                                  ? 'プロフィールを編集する'
-                                  : 'フレンド申請する'),
+                              child: Text(isMe ? 'プロフィールを編集する' : 'フレンド申請する'),
                             ),
                           ],
                         ),
