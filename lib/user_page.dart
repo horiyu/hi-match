@@ -29,33 +29,7 @@ class _UserPageState extends State<UserPage> {
   @override
   void initState() {
     super.initState();
-    // get(widget.uid);
-    // _getUser();
   }
-
-  // Future get(uid) async {
-  //   final snapshot = await FirebaseFirestore.instance.collection('users').get();
-  //   final himaPeople = snapshot.docs.firstWhere(
-  //     (person) => person.id == uid,
-  //     orElse: () => HimaPeople(
-  //         id: uid,
-  //         mail: '',
-  //         isHima: true,
-  //         name: "name",
-  //         deadline: "12:34",
-  //         place: "春日",
-  //       ),
-  //   setState(() {
-  //     this.himaPeople = himaPeople as List<HimaPeople>;
-  //   });
-  // }
-  // Future<void> _getUser() async {
-  //   User? user = _auth.currentUser;
-  //   setState(() {
-  //     _user = user;
-  //     _isLoading = false;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -84,22 +58,6 @@ class _UserPageState extends State<UserPage> {
                                   'images/ひマッチ@4x.png',
                                   fit: BoxFit.cover, // 画像をContainer全体にフィットさせる
                                 ),
-                                // Positioned(
-                                //   bottom: -50,
-                                //   left: 16,
-                                //   child: Container(
-                                //     decoration: BoxDecoration(
-                                //       border:
-                                //           Border.all(color: Colors.black, width: 4),
-                                //       borderRadius: BorderRadius.circular(60),
-                                //     ),
-                                //     child: CircleAvatar(
-                                //       radius: 50,
-                                //       foregroundImage:
-                                //           AssetImage('images/user-icon.png'),
-                                //     ),
-                                //   ),
-                                // ),
                               ],
                             ),
                           ),
