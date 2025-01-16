@@ -112,39 +112,44 @@ class _NextPageState extends State<NextPage> {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
-    // カレントユーザーのドキュメントを取得
-    final currentUserSnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .get();
-
-    if (!currentUserSnapshot.exists) return;
-
-    // カレントユーザーのfriendsフィールドを取得
-    final friends =
-        List<String>.from(currentUserSnapshot.data()?['friends'] ?? []);
-
-    print(friends);
-
-    // friendsの要素と一致するユーザーを取得
     final snapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .where(FieldPath.documentId, whereIn: friends)
+        .collection("users")
+        .where("id", isEqualTo: user.uid)
         .get();
 
-    final himaPeople = snapshot.docs
-        .map((doc) => HimaPeople.fromFirestore(
-            doc as DocumentSnapshot<Map<String, dynamic>>))
-        .toList();
+    final friendsUid =
+        List<String>.from(snapshot.docs.first.data()['friends'] ?? []);
 
-    // カレントユーザー自身を追加
-    himaPeople.add(HimaPeople.fromFirestore(
-        currentUserSnapshot as DocumentSnapshot<Map<String, dynamic>>));
+    final himaPeople = await Future.wait(friendsUid.map((friendUid) async {
+      final snapshot = await FirebaseFirestore.instance
+          .collection("users")
+          .where("id", isEqualTo: friendUid)
+          .get();
 
-    print(himaPeople);
-    for (var person in himaPeople) {
-      print('Name: ${person.name}, ID: ${person.id}, isHima: ${person.isHima}');
-    }
+      return HimaPeople.fromFirestore(
+          snapshot.docs.first as DocumentSnapshot<Map<String, dynamic>>);
+    }));
+
+    // print(himaPeople);
+    // // friendsの要素と一致するユーザーを取得
+    // final snapshot = await FirebaseFirestore.instance
+    //     .collection('users')
+    //     .where(FieldPath.documentId, whereIn: friends)
+    //     .get();
+
+    // final himaPeople = snapshot.docs
+    //     .map((doc) => HimaPeople.fromFirestore(
+    //         doc as DocumentSnapshot<Map<String, dynamic>>))
+    //     .toList();
+
+    // // カレントユーザー自身を追加
+    // himaPeople.add(HimaPeople.fromFirestore(
+    //     currentUserSnapshot as DocumentSnapshot<Map<String, dynamic>>));
+
+    // print(himaPeople);
+    // for (var person in himaPeople) {
+    //   print('Name: ${person.name}, ID: ${person.id}, isHima: ${person.isHima}');
+    // }
 
     setState(() {
       this.himaPeople = himaPeople;
