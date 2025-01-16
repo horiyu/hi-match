@@ -29,11 +29,13 @@ class _FriendSearchState extends State<FriendSearch> {
 
     final snapshot = await FirebaseFirestore.instance
         .collection('users')
-        .where('id', isEqualTo: query)
+        .where('id', isGreaterThanOrEqualTo: query)
+        .where('id', isLessThanOrEqualTo: query + '\uf8ff')
         .get();
 
     final results = snapshot.docs.map((doc) {
-      return HimaPeople.fromFirestore(doc as DocumentSnapshot<Map<String, dynamic>>);
+      return HimaPeople.fromFirestore(
+          doc as DocumentSnapshot<Map<String, dynamic>>);
     }).toList();
 
     setState(() {
