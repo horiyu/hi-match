@@ -13,6 +13,8 @@ import 'package:toggle_switch/toggle_switch.dart';
 import 'package:my_web_app/user_page.dart';
 import 'package:my_web_app/hima_modal.dart';
 
+import 'notification_page.dart';
+
 class NextPage extends StatefulWidget {
   const NextPage({super.key});
 
@@ -133,7 +135,7 @@ class _NextPageState extends State<NextPage> {
     // himaPeopleに自分自身追加
     himaPeople.add(HimaPeople.fromFirestore(
         snapshot.docs.first as DocumentSnapshot<Map<String, dynamic>>));
-        
+
     setState(() {
       this.himaPeople = himaPeople;
     });
@@ -337,25 +339,40 @@ class _NextPageState extends State<NextPage> {
         ),
         backgroundColor: Colors.white,
         actions: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.grey[300],
-              foregroundColor: Colors.lightBlue,
-              minimumSize: Size(20, 40),
-            ),
-            child: const Text(
-                style: TextStyle(
-                  fontSize: 10,
-                ),
-                'ログアウト'),
-            onPressed: () async {
-              try {
-                await FirebaseAuth.instance.signOut();
-                Navigator.popUntil(context, (route) => route.isFirst);
-              } catch (e) {
-                setState(() {});
-              }
+          // ElevatedButton(
+          //   style: ElevatedButton.styleFrom(
+          //     backgroundColor: Colors.grey[300],
+          //     foregroundColor: Colors.lightBlue,
+          //     minimumSize: Size(20, 40),
+          //   ),
+          //   child: const Text(
+          //       style: TextStyle(
+          //         fontSize: 10,
+          //       ),
+          //       'ログアウト'),
+          //   onPressed: () async {
+          //     try {
+          //       await FirebaseAuth.instance.signOut();
+          //       Navigator.popUntil(context, (route) => route.isFirst);
+          //     } catch (e) {
+          //       setState(() {});
+          //     }
+          //   },
+          // ),
+
+          IconButton(
+            onPressed: () {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NotificationPage(),
+                    settings: const RouteSettings(name: '/notifications'),
+                  ),
+                );
+              });
             },
+            icon: const Icon(Icons.notifications),
           ),
         ],
       ),
