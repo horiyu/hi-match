@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:my_web_app/friend_search.dart';
 import 'package:my_web_app/login_page.dart';
 import 'package:my_web_app/main.dart';
 import 'package:my_web_app/model/himapeople.dart';
@@ -11,6 +12,8 @@ import 'package:my_web_app/firebase/firestore.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:my_web_app/user_page.dart';
 import 'package:my_web_app/hima_modal.dart';
+
+import 'notification_page.dart';
 
 class NextPage extends StatefulWidget {
   const NextPage({super.key});
@@ -97,22 +100,44 @@ class _NextPageState extends State<NextPage> {
     setState(() => isLoading = false);
   }
 
+  // Future get() async {
+  //   final snapshot = await FirebaseFirestore.instance.collection('users').get();
+  //   final himaPeople = snapshot.docs
+  //       .map((doc) => HimaPeople.fromFirestore(
+  //           doc as DocumentSnapshot<Map<String, dynamic>>))
+  //       .toList();
+  //   setState(() {
+  //     this.himaPeople = himaPeople;
+  //   });
+  // }
   Future get() async {
-    final snapshot = await FirebaseFirestore.instance.collection('users').get();
-    final himaPeople = snapshot.docs
-        .map((doc) => HimaPeople.fromFirestore(
-            doc as DocumentSnapshot<Map<String, dynamic>>))
-        .toList();
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .where("id", isEqualTo: user.uid)
+        .get();
+
+    final friendsUid =
+        List<String>.from(snapshot.docs.first.data()['friends'] ?? []);
+
+    final himaPeople = await Future.wait(friendsUid.map((friendUid) async {
+      final FriendSnapshot = await FirebaseFirestore.instance
+          .collection("users")
+          .where("id", isEqualTo: friendUid)
+          .get();
+
+      return HimaPeople.fromFirestore(
+          FriendSnapshot.docs.first as DocumentSnapshot<Map<String, dynamic>>);
+    }));
+
+    // himaPeopleに自分自身追加
+    himaPeople.add(HimaPeople.fromFirestore(
+        snapshot.docs.first as DocumentSnapshot<Map<String, dynamic>>));
+
     setState(() {
       this.himaPeople = himaPeople;
-    });
-  }
-
-  Future<void> addHimaPerson(HimaPeople person) async {
-    await FirebaseFirestore.instance.collection('users').add({
-      'id': person.id,
-      'name': person.name,
-      'isHima': person.isHima,
     });
   }
 
@@ -314,25 +339,40 @@ class _NextPageState extends State<NextPage> {
         ),
         backgroundColor: Colors.white,
         actions: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.grey[300],
-              foregroundColor: Colors.lightBlue,
-              minimumSize: Size(20, 40),
-            ),
-            child: const Text(
-                style: TextStyle(
-                  fontSize: 10,
-                ),
-                'ログアウト'),
-            onPressed: () async {
-              try {
-                await FirebaseAuth.instance.signOut();
-                Navigator.popUntil(context, (route) => route.isFirst);
-              } catch (e) {
-                setState(() {});
-              }
+          // ElevatedButton(
+          //   style: ElevatedButton.styleFrom(
+          //     backgroundColor: Colors.grey[300],
+          //     foregroundColor: Colors.lightBlue,
+          //     minimumSize: Size(20, 40),
+          //   ),
+          //   child: const Text(
+          //       style: TextStyle(
+          //         fontSize: 10,
+          //       ),
+          //       'ログアウト'),
+          //   onPressed: () async {
+          //     try {
+          //       await FirebaseAuth.instance.signOut();
+          //       Navigator.popUntil(context, (route) => route.isFirst);
+          //     } catch (e) {
+          //       setState(() {});
+          //     }
+          //   },
+          // ),
+
+          IconButton(
+            onPressed: () {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NotificationPage(),
+                    settings: const RouteSettings(name: '/notifications'),
+                  ),
+                );
+              });
             },
+            icon: const Icon(Icons.notifications),
           ),
         ],
       ),
@@ -676,11 +716,19 @@ class _NextPageState extends State<NextPage> {
                 ),
                 child: IconButton(
                   icon: Icon(
-                    Icons.person_add,
+                    Icons.search,
                     color: Colors.white,
                     size: 32.0,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FriendSearch(),
+                        settings: const RouteSettings(name: '/friend_search'),
+                      ),
+                    );
+                  },
                 ),
               )
             ],
