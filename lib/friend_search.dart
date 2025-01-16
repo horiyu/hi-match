@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_web_app/model/himapeople.dart';
+import 'package:my_web_app/user_page.dart';
 
 class FriendSearch extends StatefulWidget {
   @override
@@ -33,7 +34,8 @@ class _FriendSearchState extends State<FriendSearch> {
         .get();
 
     final results = snapshot.docs.map((doc) {
-      return HimaPeople.fromFirestore(doc as DocumentSnapshot<Map<String, dynamic>>);
+      return HimaPeople.fromFirestore(
+          doc as DocumentSnapshot<Map<String, dynamic>>);
     }).toList();
 
     setState(() {
@@ -73,10 +75,31 @@ class _FriendSearchState extends State<FriendSearch> {
                           itemBuilder: (context, index) {
                             final friend = _searchResults[index];
                             return ListTile(
-                              title: Text(friend.name ?? 'No Name'),
-                              subtitle: Text(friend.mail),
+                              leading: const CircleAvatar(
+                                child: Icon(Icons.person),
+                              ),
+                              title: Text(
+                                friend.name ?? 'No Name',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              trailing: ElevatedButton(
+                                onPressed: () {},
+                                child: Text("follow"),
+                              ),
                               onTap: () {
-                                // フレンド詳細ページに遷移する処理を追加
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UserPage(friend),
+                                    settings:
+                                        const RouteSettings(name: '/user_page'),
+                                  ),
+                                );
                               },
                             );
                           },
