@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_web_app/model/himapeople.dart';
@@ -26,6 +27,7 @@ class _UserPageState extends State<UserPage> {
   bool _isLoading = false;
   // List<HimaPeople> himaPeople = [];
   bool isMe = false;
+  bool isEdit = false;
 
   @override
   void initState() {
@@ -128,15 +130,56 @@ class _UserPageState extends State<UserPage> {
 
                             // Action Button
                             ElevatedButton(
-                              onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => const NextPage(),
-                                //       settings:
-                                //           const RouteSettings(name: '/next_page')),
-                                // );
-                              },
+                              onPressed: isMe
+                                  ? () {
+                                      setState(() {
+                                        isEdit = true;
+                                      });
+                                    }
+                                  : () async {
+                                      // Firestoreのデータを更新する処理を追加
+                                      QuerySnapshot querySnapshot =
+                                          await FirebaseFirestore.instance
+                                              .collection('users')
+                                              .where('id',
+                                                  isEqualTo: widget.person.id)
+                                              .get();
+
+                                      if (querySnapshot.docs.isNotEmpty) {
+                                        DocumentReference userDoc =
+                                            querySnapshot.docs.first.reference;
+
+                                        await userDoc.update({
+                                          'gotRequests': FieldValue.arrayUnion([
+                                            FirebaseAuth
+                                                .instance.currentUser?.uid
+                                          ])
+                                        });
+
+                                        QuerySnapshot currentUserSnapshot =
+                                            await FirebaseFirestore.instance
+                                                .collection('users')
+                                                .where('id',
+                                                    isEqualTo: FirebaseAuth
+                                                        .instance
+                                                        .currentUser
+                                                        ?.uid)
+                                                .get();
+
+                                        if (currentUserSnapshot
+                                            .docs.isNotEmpty) {
+                                          DocumentReference currentUserDoc =
+                                              currentUserSnapshot
+                                                  .docs.first.reference;
+
+                                          await currentUserDoc.update({
+                                            'sentRequests':
+                                                FieldValue.arrayUnion(
+                                                    [widget.person.id])
+                                          });
+                                        }
+                                      }
+                                    },
                               style: ElevatedButton.styleFrom(
                                 elevation: 0,
                                 foregroundColor: Colors.white,
