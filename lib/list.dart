@@ -121,14 +121,18 @@ class _NextPageState extends State<NextPage> {
         List<String>.from(snapshot.docs.first.data()['friends'] ?? []);
 
     final himaPeople = await Future.wait(friendsUid.map((friendUid) async {
-      final snapshot = await FirebaseFirestore.instance
+      final FriendSnapshot = await FirebaseFirestore.instance
           .collection("users")
           .where("id", isEqualTo: friendUid)
           .get();
 
       return HimaPeople.fromFirestore(
-          snapshot.docs.first as DocumentSnapshot<Map<String, dynamic>>);
+          FriendSnapshot.docs.first as DocumentSnapshot<Map<String, dynamic>>);
     }));
+
+    // himaPeopleに自分自身追加
+    himaPeople.add(HimaPeople.fromFirestore(
+        snapshot.docs.first as DocumentSnapshot<Map<String, dynamic>>));
 
     // print(himaPeople);
     // // friendsの要素と一致するユーザーを取得
