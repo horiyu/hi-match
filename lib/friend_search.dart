@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_web_app/model/himapeople.dart';
@@ -89,7 +90,44 @@ class _FriendSearchState extends State<FriendSearch> {
                                 ),
                               ),
                               trailing: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  // Firestoreのデータを更新する処理を追加
+                                  QuerySnapshot querySnapshot =
+                                      await FirebaseFirestore.instance
+                                          .collection('users')
+                                          .where('id', isEqualTo: friend.id)
+                                          .get();
+
+                                  if (querySnapshot.docs.isNotEmpty) {
+                                    DocumentReference userDoc =
+                                        querySnapshot.docs.first.reference;
+
+                                    await userDoc.update({
+                                      'gotRequests': FieldValue.arrayUnion([
+                                        FirebaseAuth.instance.currentUser?.uid
+                                      ])
+                                    });
+
+                                    QuerySnapshot currentUserSnapshot =
+                                        await FirebaseFirestore.instance
+                                            .collection('users')
+                                            .where('id',
+                                                isEqualTo: FirebaseAuth
+                                                    .instance.currentUser?.uid)
+                                            .get();
+
+                                    if (currentUserSnapshot.docs.isNotEmpty) {
+                                      DocumentReference currentUserDoc =
+                                          currentUserSnapshot
+                                              .docs.first.reference;
+
+                                      await currentUserDoc.update({
+                                        'sentRequests':
+                                            FieldValue.arrayUnion([friend.id])
+                                      });
+                                    }
+                                  }
+                                },
                                 child: Text("follow"),
                               ),
                               onTap: () {
