@@ -105,52 +105,84 @@ class _FriendSearchState extends State<FriendSearch> {
                                         )
                                       : ElevatedButton(
                                           onPressed: () async {
-                                            // Firestoreのデータを更新する処理を追加
-                                            QuerySnapshot querySnapshot =
-                                                await FirebaseFirestore.instance
-                                                    .collection('users')
-                                                    .where('id',
-                                                        isEqualTo: friend.id)
-                                                    .get();
-
-                                            if (querySnapshot.docs.isNotEmpty) {
-                                              DocumentReference userDoc =
-                                                  querySnapshot
-                                                      .docs.first.reference;
-
-                                              await userDoc.update({
-                                                'gotRequests':
-                                                    FieldValue.arrayUnion([
-                                                  FirebaseAuth
-                                                      .instance.currentUser?.uid
-                                                ])
-                                              });
-
-                                              QuerySnapshot
-                                                  currentUserSnapshot =
-                                                  await FirebaseFirestore
-                                                      .instance
+                                            if (friend.isFriend(FirebaseAuth
+                                                    .instance
+                                                    .currentUser
+                                                    ?.uid) ==
+                                                1) {
+                                              var currentUserSnapshot =
+                                                  FirebaseFirestore.instance
                                                       .collection('users')
                                                       .where('id',
                                                           isEqualTo:
                                                               FirebaseAuth
                                                                   .instance
-                                                                  .currentUser
-                                                                  ?.uid)
-                                                      .get();
-
-                                              if (currentUserSnapshot
-                                                  .docs.isNotEmpty) {
-                                                DocumentReference
-                                                    currentUserDoc =
-                                                    currentUserSnapshot
-                                                        .docs.first.reference;
-
-                                                await currentUserDoc.update({
-                                                  'sentRequests':
+                                                                  .currentUser!
+                                                                  .uid)
+                                                      .get()
+                                                      .then(
+                                                          (currentUserSnapshot) {
+                                                currentUserSnapshot
+                                                    .docs.first.reference
+                                                    .update({
+                                                  'gotRequests':
+                                                      FieldValue.arrayRemove(
+                                                          [friend.id]),
+                                                  'friends':
                                                       FieldValue.arrayUnion(
                                                           [friend.id])
                                                 });
+                                              });
+                                            } else {
+                                              // Firestoreのデータを更新する処理を追加
+                                              QuerySnapshot querySnapshot =
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection('users')
+                                                      .where('id',
+                                                          isEqualTo: friend.id)
+                                                      .get();
+
+                                              if (querySnapshot
+                                                  .docs.isNotEmpty) {
+                                                DocumentReference userDoc =
+                                                    querySnapshot
+                                                        .docs.first.reference;
+
+                                                await userDoc.update({
+                                                  'gotRequests':
+                                                      FieldValue.arrayUnion([
+                                                    FirebaseAuth.instance
+                                                        .currentUser?.uid
+                                                  ])
+                                                });
+
+                                                QuerySnapshot
+                                                    currentUserSnapshot =
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection('users')
+                                                        .where('id',
+                                                            isEqualTo:
+                                                                FirebaseAuth
+                                                                    .instance
+                                                                    .currentUser
+                                                                    ?.uid)
+                                                        .get();
+
+                                                if (currentUserSnapshot
+                                                    .docs.isNotEmpty) {
+                                                  DocumentReference
+                                                      currentUserDoc =
+                                                      currentUserSnapshot
+                                                          .docs.first.reference;
+
+                                                  await currentUserDoc.update({
+                                                    'sentRequests':
+                                                        FieldValue.arrayUnion(
+                                                            [friend.id])
+                                                  });
+                                                }
                                               }
                                             }
                                           },
