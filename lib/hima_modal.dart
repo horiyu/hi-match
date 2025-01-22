@@ -118,11 +118,18 @@ class _HimaModalState extends State<HimaModal> {
                         if (selectedDate == null)
                           const Text('選択')
                         else
-                          const Text('選択'),
-                        const SizedBox(width: 10),
-                        const Icon(
-                          Icons.chevron_right,
-                        ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: selectedHimaActivitiesContent!
+                                .map((content) => Text(
+                                      content,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey,
+                                      ),
+                                    ))
+                                .toList(),
+                          ),
                       ],
                     ),
                   ],
@@ -158,36 +165,6 @@ class _HimaModalState extends State<HimaModal> {
               //   ),
               // ),
               const SizedBox(height: 20),
-              OutlinedButton(
-                style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(Colors.white),
-                  minimumSize: WidgetStateProperty.all(const Size(300, 50)),
-                  maximumSize: WidgetStateProperty.all(const Size(300, 50)),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('場所を入力する'),
-                    Row(
-                      children: [
-                        if (selectedDate == null)
-                          const Text('全員')
-                        else
-                          const Text('選択'),
-                        const SizedBox(width: 10),
-                        const Icon(
-                          Icons.chevron_right,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                onPressed: () {},
-              ),
-              // const SizedBox(height: 20),
-              const Expanded(
-                child: SizedBox(height: 20),
-              ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 30),
                 child: Row(
