@@ -62,7 +62,7 @@ class NotificationPage extends StatelessWidget {
                           });
                         });
                       },
-                      child: Text('Approve'),
+                      child: Text('承認'),
                     ),
                   );
                 },
