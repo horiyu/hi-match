@@ -45,6 +45,7 @@ class _NameRegState extends State<NameReg> {
       'name': person.name,
       'isHima': person.isHima,
       'email': person.mail,
+      'handle': person.id,
     });
   }
 
