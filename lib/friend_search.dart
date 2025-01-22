@@ -31,7 +31,8 @@ class _FriendSearchState extends State<FriendSearch> {
 
     final snapshot = await FirebaseFirestore.instance
         .collection('users')
-        .where('id', isEqualTo: query)
+        .where('id', isGreaterThanOrEqualTo: query)
+        .where('id', isLessThanOrEqualTo: query + '\uf8ff')
         .get();
 
     final results = snapshot.docs.map((doc) {
@@ -88,7 +89,6 @@ class _FriendSearchState extends State<FriendSearch> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-<<<<<<< HEAD
                               trailing: friend.isFriend(FirebaseAuth
                                           .instance.currentUser?.uid) ==
                                       3
@@ -326,12 +326,6 @@ class _FriendSearchState extends State<FriendSearch> {
                               //                 : 'フレンド申請',
                               //   ),
                               // ),
-=======
-                              trailing: ElevatedButton(
-                                onPressed: () {},
-                                child: Text("follow"),
-                              ),
->>>>>>> origin/develop
                               onTap: () {
                                 Navigator.push(
                                   context,
