@@ -43,6 +43,12 @@ class HimaPeople {
               as List<dynamic>?) // 明示的に List<dynamic>? にキャスト
           ?.map((item) => item as String) // 各要素を String にキャスト
           .toList(), // List<String> に変換
+      sentRequests: (data['sentRequests'] as List<dynamic>?)
+          ?.map((item) => item as String)
+          .toList(),
+      gotRequests: (data['gotRequests'] as List<dynamic>?)
+          ?.map((item) => item as String)
+          .toList(),
       friends: (data['friends'] as List<dynamic>?)
           ?.map((item) => item as String)
           .toList(),
@@ -63,13 +69,20 @@ class HimaPeople {
   }
 
   int isFriend(id) {
+    print('friends');
+    print(friends);
+    print('gotRequests');
+    print(gotRequests);
+    print('sentRequests');
+    print(sentRequests);
     if (friends?.contains(id) ?? false) {
       return 3;
-    } else if (sentRequests?.contains(id) ?? false) {
-      return 2;
     } else if (gotRequests?.contains(id) ?? false) {
+      return 2;
+    } else if (sentRequests?.contains(id) ?? false) {
       return 1;
     } else {
+      print('none');
       return 0;
     }
   }
