@@ -128,7 +128,7 @@ class _FriendSearchState extends State<FriendSearch> {
                                     }
                                   }
                                 },
-                                child: Text("follow"),
+                                child: Text("フォロー"),
                               ),
                               onTap: () {
                                 Navigator.push(
