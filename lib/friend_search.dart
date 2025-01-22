@@ -101,7 +101,7 @@ class _FriendSearchState extends State<FriendSearch> {
                                           2
                                       ? OutlinedButton(
                                           onPressed: null,
-                                          child: const Text('フレンドリクエスト送信済み'),
+                                          child: const Text('申請中'),
                                         )
                                       : ElevatedButton(
                                           onPressed: () async {
@@ -159,7 +159,7 @@ class _FriendSearchState extends State<FriendSearch> {
                                                       .currentUser
                                                       ?.uid) ==
                                                   1
-                                              ? const Text('フレンドリクエストを承認')
+                                              ? const Text('承認')
                                               : const Text('フレンド申請'),
                                         ),
                               // ElevatedButton(
