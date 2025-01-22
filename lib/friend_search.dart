@@ -93,15 +93,90 @@ class _FriendSearchState extends State<FriendSearch> {
                                           .instance.currentUser?.uid) ==
                                       3
                                   ? OutlinedButton(
-                                      onPressed: null,
+                                      onPressed: () {
+                                        // Firestoreのデータを更新する処理を追加
+                                        var currentUserSnapshot =
+                                            FirebaseFirestore.instance
+                                                .collection('users')
+                                                .where('id',
+                                                    isEqualTo: FirebaseAuth
+                                                        .instance
+                                                        .currentUser!
+                                                        .uid)
+                                                .get()
+                                                .then((currentUserSnapshot) {
+                                          currentUserSnapshot
+                                              .docs.first.reference
+                                              .update({
+                                            'friends': FieldValue.arrayRemove(
+                                                [friend.id])
+                                          });
+                                        });
+
+                                        // 相手のデータも更新する処理を追加
+                                        var friendSnapshot = FirebaseFirestore
+                                            .instance
+                                            .collection('users')
+                                            .where('id', isEqualTo: friend.id)
+                                            .get()
+                                            .then((friendSnapshot) {
+                                          friendSnapshot.docs.first.reference
+                                              .update({
+                                            'friends': FieldValue.arrayRemove([
+                                              FirebaseAuth
+                                                  .instance.currentUser?.uid
+                                            ])
+                                          });
+                                        });
+                                      },
                                       child: const Text('フレンド'),
                                     )
                                   : friend.isFriend(FirebaseAuth
                                               .instance.currentUser?.uid) ==
                                           2
                                       ? OutlinedButton(
-                                          onPressed: null,
-                                          child: const Text('申請中'),
+                                          onPressed: () {
+                                            // Firestoreのデータを更新する処理を追加
+                                            var currentUserSnapshot =
+                                                FirebaseFirestore.instance
+                                                    .collection('users')
+                                                    .where('id',
+                                                        isEqualTo: FirebaseAuth
+                                                            .instance
+                                                            .currentUser!
+                                                            .uid)
+                                                    .get()
+                                                    .then(
+                                                        (currentUserSnapshot) {
+                                              currentUserSnapshot
+                                                  .docs.first.reference
+                                                  .update({
+                                                'sentRequests':
+                                                    FieldValue.arrayRemove(
+                                                        [friend.id])
+                                              });
+                                            });
+
+                                            // 相手のデータも更新する処理を追加
+                                            var friendSnapshot =
+                                                FirebaseFirestore.instance
+                                                    .collection('users')
+                                                    .where('id',
+                                                        isEqualTo: friend.id)
+                                                    .get()
+                                                    .then((friendSnapshot) {
+                                              friendSnapshot
+                                                  .docs.first.reference
+                                                  .update({
+                                                'gotRequests':
+                                                    FieldValue.arrayRemove([
+                                                  FirebaseAuth
+                                                      .instance.currentUser?.uid
+                                                ])
+                                              });
+                                            });
+                                          },
+                                          child: const Text('申請を取り消す'),
                                         )
                                       : ElevatedButton(
                                           onPressed: () async {

@@ -23,11 +23,9 @@ class _NameRegState extends State<NameReg> {
   @override
   void initState() {
     super.initState();
-    
+
     get();
   }
-
-  
 
   // usersコレクションのドキュメントを全件読み込む
   Future get() async {
@@ -42,7 +40,7 @@ class _NameRegState extends State<NameReg> {
   }
 
   Future<void> addHimaPerson(HimaPeople person) async {
-    await FirebaseFirestore.instance.collection('users').add({
+    await FirebaseFirestore.instance.collection('users').doc(person.id).set({
       'id': person.id,
       'name': person.name,
       'isHima': person.isHima,
