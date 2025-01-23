@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 typedef Fn = Function({required DateTime date});
@@ -127,7 +126,10 @@ Future<void> showCustomTimePicker({
                               selectedMinute = newTime.minute;
                               handler(date: newTime);
                             },
-                            child: const Text('30分'),
+                            child: const Text(
+                              '30分',
+                              style: TextStyle(color: Colors.black),
+                            ),
                           ),
                         ),
                         Expanded(
@@ -159,7 +161,10 @@ Future<void> showCustomTimePicker({
                               selectedMinute = newTime.minute;
                               handler(date: newTime);
                             },
-                            child: const Text('1時間'),
+                            child: const Text(
+                              '1時間',
+                              style: TextStyle(color: Colors.black),
+                            ),
                           ),
                         ),
                         Expanded(
@@ -191,7 +196,10 @@ Future<void> showCustomTimePicker({
                               selectedMinute = newTime.minute;
                               handler(date: newTime);
                             },
-                            child: const Text('2時間'),
+                            child: const Text(
+                              '2時間',
+                              style: TextStyle(color: Colors.black),
+                            ),
                           ),
                         ),
                       ],
