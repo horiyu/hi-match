@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 
 typedef Fn = Function({required List<Map<String, String>> himaActivities});
+final formKey = GlobalKey<FormState>();
 
 Future<void> himaActivityList({
   required BuildContext context,
@@ -20,7 +21,6 @@ Future<void> himaActivityList({
   });
 
   await showModalBottomSheet(
-    isScrollControlled: true, // これを追加して全画面表示に対応
     constraints: BoxConstraints(
       maxHeight: MediaQuery.of(context).size.height * 0.85, // 画面の85%の高さを指定
     ),
@@ -76,26 +76,29 @@ Future<void> himaActivityList({
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            child: TextField(
-                              controller: textController,
-                              inputFormatters: [
-                                // 最大10文字まで入力可能
-                                LengthLimitingTextInputFormatter(10),
-                              ],
-                              decoration: InputDecoration(
-                                labelText: '何したい？',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide: BorderSide.none,
+                            child: Form(
+                              key: formKey,
+                              child: TextField(
+                                controller: textController,
+                                inputFormatters: [
+                                  // 最大10文字まで入力可能
+                                  LengthLimitingTextInputFormatter(10),
+                                ],
+                                decoration: InputDecoration(
+                                  labelText: '何したい？',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 15),
                                 ),
-                                filled: true,
-                                fillColor: Colors.white,
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 15),
+                                onChanged: (value) {
+                                  newHimaActivity = value;
+                                },
                               ),
-                              onChanged: (value) {
-                                newHimaActivity = value;
-                              },
                             ),
                           ),
                         ),
