@@ -264,7 +264,7 @@ Future<void> himaActivityList({
                         const SizedBox(width: 30),
                         ElevatedButton(
                           style: const ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
+                            backgroundColor: WidgetStateProperty.all(
                                 Colors.deepOrangeAccent),
                             minimumSize:
                                 MaterialStateProperty.all(Size(150, 45)),
