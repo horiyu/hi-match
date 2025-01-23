@@ -18,13 +18,17 @@ class NotificationPage extends StatelessWidget {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
-
           var gotFriendRequests = snapshot.data!.docs
-              .map((doc) => doc['gotRequests'] as List<dynamic>)
+              .map((doc) =>
+                  (doc['gotRequests'] as List<dynamic>? ?? [])) // null チェックを追加
               .expand((i) => i)
               .toList();
 
-          print(gotFriendRequests);
+          if (gotFriendRequests.isEmpty) {
+            return const Center(
+              child: Text('フレンドリクエストがありません'), // 空の場合のメッセージを表示
+            );
+          }
 
           return ListView.builder(
             itemCount: gotFriendRequests.length,
@@ -35,9 +39,12 @@ class NotificationPage extends StatelessWidget {
                     .where('id', isEqualTo: gotFriendRequests[index])
                     .get(),
                 builder: (context, userSnapshot) {
-                  if (!userSnapshot.hasData) {
-                    return ListTile(
-                      title: Text('Loading...'),
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text('エラーが発生しました'),
                     );
                   }
 
