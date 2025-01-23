@@ -583,50 +583,7 @@ class _NextPageState extends State<NextPage> {
                           ],
                         ),
                       ),
-                // Column(
-                //   children: [
-                //     _getCountdownString(
-                //         person.deadline ?? DateTime.now()),
-                //   ],
-                // ),
-                //         Column(
-                //           children: [
-                //             Text(
-                //               person.place ?? "Nowhere",
-                //               maxLines: 1, // 表示する最大行数を1行に制限
-                //               overflow: TextOverflow
-                //                   .ellipsis, // テキストが制限を超えた場合に省略記号を表示
-                //             ),
-                //           ],
-                //         ),
-                //       ],
-                //     )
-                //   ],
-                // )
-                /*Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Text(
-                              person.name ?? "No Name",
-                              maxLines: 1, // 表示する最大行数を1行に制限
-                              overflow: TextOverflow
-                                  .ellipsis, // テキストが制限を超えた場合に省略記号を表示
-                            ),
-                            Text(
-                              _getCountdownString(
-                                  person.deadline ?? DateTime.now()),
-                              maxLines: 1, // 表示する最大行数を1行に制限
-                              overflow: TextOverflow
-                                  .ellipsis, // テキストが制限を超えた場合に省略記号を表示
-                            ),
-                            Text(
-                              person.place ?? "Nowhere",
-                              maxLines: 1, // 表示する最大行数を1行に制限
-                              overflow: TextOverflow
-                                  .ellipsis, // テキストが制限を超えた場合に省略記号を表示
-                            ),
-                          ],
-                        ),*/
+                
               ],
             ),
           ),
@@ -710,7 +667,7 @@ class _NextPageState extends State<NextPage> {
                     size: 32.0,
                   ),
                   onPressed: () {
-                    Navigator.popUntil(context, (route) => route.isFirst);
+                    
                   },
                 ),
               ),
