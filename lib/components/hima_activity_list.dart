@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 
 typedef Fn = Function({required List<Map<String, String>> himaActivities});
 
@@ -11,8 +12,8 @@ Future<void> himaActivityList({
   String newHimaActivity = "";
   final textController = TextEditingController();
   final isButtonEnabled = ValueNotifier<bool>(false);
-  var selectedTags = <Map<String, String>>[];
   final selectedTagsNotifier = ValueNotifier<List<Map<String, String>>>([]);
+  final errorNotifier = ValueNotifier<String?>(null); // エラーメッセージ用のNotifier
 
   textController.addListener(() {
     isButtonEnabled.value = textController.text.isNotEmpty;
@@ -73,6 +74,10 @@ Future<void> himaActivityList({
                             ),
                             child: TextField(
                               controller: textController,
+                              inputFormatters: [
+                                // 最大10文字まで入力可能
+                                LengthLimitingTextInputFormatter(10), 
+                              ],
                               decoration: InputDecoration(
                                 labelText: '何したい？',
                                 border: OutlineInputBorder(
@@ -100,14 +105,31 @@ Future<void> himaActivityList({
                             return ElevatedButton(
                               onPressed: value
                                   ? () async {
-                                      await FirebaseFirestore.instance
+                                      final snapshot = await FirebaseFirestore.instance
                                           .collection("users")
                                           .doc(userId)
                                           .collection("himaActivities")
-                                          .add({
+                                          .get();
+
+                                      if (snapshot.docs.length >= 5) {
+                                        errorNotifier.value = "タグの数が5個を超えています。追加できません。";
+                                        return;
+                                      }
+
+                                      final docRef = FirebaseFirestore.instance
+                                          .collection("users")
+                                          .doc(userId)
+                                          .collection("himaActivities")
+                                          .doc(); // ドキュメントIDを生成
+
+                                      await docRef.set({
                                         'content': newHimaActivity,
+                                        'HimaActivitiesID':
+                                            docRef.id, // ドキュメントIDを格納
                                       });
+
                                       textController.clear();
+                                      errorNotifier.value = null; // エラーメッセージをクリア
                                     }
                                   : null,
                               child: const Text('選択肢に追加'),
@@ -115,13 +137,28 @@ Future<void> himaActivityList({
                           },
                         ),
                       ),
+                      ValueListenableBuilder<String?>(
+                        valueListenable: errorNotifier,
+                        builder: (context, error, child) {
+                          return error != null
+                              ? Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Text(
+                                    error,
+                                    style: const TextStyle(color: Colors.red),
+                                  ),
+                                )
+                              : const SizedBox.shrink();
+                        },
+                      ),
                       const SizedBox(height: 50),
-                      FutureBuilder<QuerySnapshot>(
-                        future: FirebaseFirestore.instance
+                      StreamBuilder<QuerySnapshot>(
+                        //リアルタイムでタグを表示
+                        stream: FirebaseFirestore.instance
                             .collection("users")
                             .doc(userId)
                             .collection("himaActivities")
-                            .get(),
+                            .snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
@@ -135,13 +172,6 @@ Future<void> himaActivityList({
                             return const Text('タグが見つかりません');
                           }
 
-                          // final tags = snapshot.data!.docs
-                          //     .map((doc) => doc['content'] as String)
-                          //     .toList();
-                          // final tagsId = snapshot.data!.docs
-                          //     .map((doc) => doc.id as String)
-                          //     .toList();
-
                           final tagsWithIds = snapshot.data!.docs.map((doc) {
                             return {
                               'id': doc.id,
@@ -149,9 +179,6 @@ Future<void> himaActivityList({
                             };
                           }).toList();
 
-                          //                return ValueListenableBuilder<List<Map<String, String>>>(
-                          // valueListenable: selectedTagsNotifier,
-                          // builder: (context, selectedTags, child) {
                           return ValueListenableBuilder<
                                   List<Map<String, String>>>(
                               valueListenable: selectedTagsNotifier,
@@ -164,21 +191,15 @@ Future<void> himaActivityList({
                                         (map) => map.containsValue(tag['id']));
 
                                     return InkWell(
-                                      // borderRadius:
-                                      //     const BorderRadius.all(Radius.circul),
                                       onTap: () {
-                                        final isSelected = selectedTags.any(
-                                            (map) =>
-                                                map.containsValue(tag['id']));
-                                        // print(isSelected);
-
-                                        // print(tag);
-                                        // print(selectedTags);
                                         if (isSelected) {
                                           selectedTags.removeWhere(
                                               (map) => map['id'] == tag['id']);
                                         } else {
-                                          selectedTags.add(tag);
+                                          if (selectedTags.length < 6) {
+                                            // タグの数を6個に制限
+                                            selectedTags.add(tag);
+                                          }
                                         }
                                         selectedTagsNotifier.value =
                                             List.from(selectedTags);
@@ -253,9 +274,10 @@ Future<void> himaActivityList({
                     children: [
                       ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: WidgetStateProperty.all(Colors.grey),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.grey),
                           minimumSize:
-                              WidgetStateProperty.all(const Size(150, 45)),
+                              MaterialStateProperty.all(const Size(150, 45)),
                         ),
                         child: const Text(
                           '閉じる',
@@ -266,10 +288,10 @@ Future<void> himaActivityList({
                       const SizedBox(width: 30),
                       ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor:
-                              WidgetStateProperty.all(Colors.deepOrangeAccent),
+                          backgroundColor: MaterialStateProperty.all(
+                              Colors.deepOrangeAccent),
                           minimumSize:
-                              WidgetStateProperty.all(const Size(150, 45)),
+                              MaterialStateProperty.all(const Size(150, 45)),
                         ),
                         child: const Text(
                           '決定',
