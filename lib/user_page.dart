@@ -119,12 +119,12 @@ class _UserPageState extends State<UserPage> {
                             SizedBox(height: 12),
 
                             // Followers (example - replace with actual follower count)
-                            // Text(
-                            //   '0 Followers', // Replace with actual follower count
-                            //   style: TextStyle(
-                            //     color: Colors.grey,
-                            //   ),
-                            // ),
+                            Text(
+                              '0 Followers', // Replace with actual follower count
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
 
                             SizedBox(height: 16),
 

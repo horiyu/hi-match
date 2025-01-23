@@ -61,21 +61,8 @@ class NotificationPage extends StatelessWidget {
                                 [gotFriendRequests[index]])
                           });
                         });
-
-                        // 相手のデータも更新
-                        var friendSnapshot = FirebaseFirestore.instance
-                            .collection('users')
-                            .where('id', isEqualTo: gotFriendRequests[index])
-                            .get()
-                            .then((friendSnapshot) {
-                          friendSnapshot.docs.first.reference.update({
-                            'sentRequests':
-                                FieldValue.arrayRemove([currentUser.uid]),
-                            'friends': FieldValue.arrayUnion([currentUser.uid])
-                          });
-                        });
                       },
-                      child: Text('承認'),
+                      child: Text('Approve'),
                     ),
                   );
                 },

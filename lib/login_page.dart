@@ -43,7 +43,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: Center(
         child: Container(
           padding: const EdgeInsets.all(24),
@@ -58,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                     TextFormField(
                       style: TextStyle(fontWeight: FontWeight.bold),
                       decoration: InputDecoration(
-                        hintText: 'メールアドレス',
+                        labelText: 'メールアドレス',
                         labelStyle: TextStyle(
                           fontSize: 18,
                         ),
@@ -93,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                       obscureText: _isObscure,
                       decoration: InputDecoration(
-                        hintText: 'パスワード',
+                        labelText: 'パスワード',
                         labelStyle: TextStyle(
                           fontSize: 18,
                         ),

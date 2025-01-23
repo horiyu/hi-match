@@ -14,7 +14,7 @@ class HimaModal extends StatefulWidget {
 
 class _HimaModalState extends State<HimaModal> {
   DateTime? selectedDate;
-  List<String> selectedHimaActivitiesContent = []; // 初期値として空リストを設定
+  List<String>? selectedHimaActivitiesContent;
   List<String>? selectedHimaActivitiesID;
 
   @override
@@ -117,26 +117,12 @@ class _HimaModalState extends State<HimaModal> {
                       children: [
                         if (selectedDate == null)
                           const Text('選択')
-                        else if (selectedHimaActivitiesContent.isEmpty)
-                          const Text('選択')
                         else
-                          Row(
-                            children: selectedHimaActivitiesContent
-                                .map(
-                                  (content) => Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 8.0), // 右側に隙間を追加
-                                    child: Text(
-                                      content,
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        color: Color.fromARGB(255, 255, 120, 0),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                          ),
+                          const Text('選択'),
+                        const SizedBox(width: 10),
+                        const Icon(
+                          Icons.chevron_right,
+                        ),
                       ],
                     ),
                   ],
@@ -172,6 +158,36 @@ class _HimaModalState extends State<HimaModal> {
               //   ),
               // ),
               const SizedBox(height: 20),
+              OutlinedButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(Colors.white),
+                  minimumSize: WidgetStateProperty.all(const Size(300, 50)),
+                  maximumSize: WidgetStateProperty.all(const Size(300, 50)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('場所を入力する'),
+                    Row(
+                      children: [
+                        if (selectedDate == null)
+                          const Text('全員')
+                        else
+                          const Text('選択'),
+                        const SizedBox(width: 10),
+                        const Icon(
+                          Icons.chevron_right,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                onPressed: () {},
+              ),
+              // const SizedBox(height: 20),
+              const Expanded(
+                child: SizedBox(height: 20),
+              ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 30),
                 child: Row(
