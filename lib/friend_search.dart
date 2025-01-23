@@ -31,7 +31,8 @@ class _FriendSearchState extends State<FriendSearch> {
 
     final snapshot = await FirebaseFirestore.instance
         .collection('users')
-        .where('id', isEqualTo: query)
+        .where('id', isGreaterThanOrEqualTo: query)
+        .where('id', isLessThanOrEqualTo: query + '\uf8ff')
         .get();
 
     final results = snapshot.docs.map((doc) {
@@ -109,8 +110,7 @@ class _FriendSearchState extends State<FriendSearch> {
                                       sentRequests.contains(friend.id);
                                   final isRequestReceived =
                                       gotRequests.contains(friend.id);
-                                  final isFriend =
-                                      friends.contains(friend.id);
+                                  final isFriend = friends.contains(friend.id);
 
                                   return OutlinedButton(
                                     onPressed: () async {
@@ -121,17 +121,15 @@ class _FriendSearchState extends State<FriendSearch> {
                                             .doc(FirebaseAuth
                                                 .instance.currentUser!.uid)
                                             .update({
-                                          'friends':
-                                              FieldValue.arrayRemove(
-                                                  [friend.id])
+                                          'friends': FieldValue.arrayRemove(
+                                              [friend.id])
                                         });
 
                                         await FirebaseFirestore.instance
                                             .collection('users')
                                             .doc(friend.id)
                                             .update({
-                                          'friends':
-                                              FieldValue.arrayRemove([
+                                          'friends': FieldValue.arrayRemove([
                                             FirebaseAuth
                                                 .instance.currentUser!.uid
                                           ])
@@ -165,11 +163,10 @@ class _FriendSearchState extends State<FriendSearch> {
                                             .doc(FirebaseAuth
                                                 .instance.currentUser!.uid)
                                             .update({
-                                          'gotRequests':
-                                              FieldValue.arrayRemove(
-                                                  [friend.id]),
-                                          'friends': FieldValue.arrayUnion(
-                                              [friend.id])
+                                          'gotRequests': FieldValue.arrayRemove(
+                                              [friend.id]),
+                                          'friends':
+                                              FieldValue.arrayUnion([friend.id])
                                         });
 
                                         await FirebaseFirestore.instance
@@ -194,16 +191,14 @@ class _FriendSearchState extends State<FriendSearch> {
                                                 .instance.currentUser!.uid)
                                             .update({
                                           'sentRequests':
-                                              FieldValue.arrayUnion(
-                                                  [friend.id])
+                                              FieldValue.arrayUnion([friend.id])
                                         });
 
                                         await FirebaseFirestore.instance
                                             .collection('users')
                                             .doc(friend.id)
                                             .update({
-                                          'gotRequests':
-                                              FieldValue.arrayUnion([
+                                          'gotRequests': FieldValue.arrayUnion([
                                             FirebaseAuth
                                                 .instance.currentUser!.uid
                                           ])
