@@ -167,7 +167,8 @@ class _LoginPageState extends State<LoginPage> {
                                   );
                                 } catch (e) {
                                   setState(() {
-                                    infoText = "ログインに失敗しました。もう一度お試しください";
+                                    infoText =
+                                        "ログインに失敗しました。もう一度お試しください.。エラー内容: $e";
                                   });
                                 }
                               }

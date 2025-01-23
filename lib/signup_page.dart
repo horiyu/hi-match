@@ -195,7 +195,8 @@ class _SignupPageState extends State<SignupPage> {
                                   );
                                 } catch (e) {
                                   setState(() {
-                                    infoText = "登録に失敗しました。もう一度お試しください";
+                                    infoText =
+                                        "登録に失敗しました。もう一度お試しください。エラー内容: $e";
                                   });
                                 }
                               }
