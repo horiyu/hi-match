@@ -20,6 +20,10 @@ Future<void> himaActivityList({
   });
 
   await showModalBottomSheet(
+    isScrollControlled: true, // これを追加して全画面表示に対応
+    constraints: BoxConstraints(
+      maxHeight: MediaQuery.of(context).size.height * 0.85, // 画面の85%の高さを指定
+    ),
     context: context,
     builder: (context) {
       return FutureBuilder<QuerySnapshot>(
@@ -47,7 +51,7 @@ Future<void> himaActivityList({
                   topLeft: Radius.circular(15.0),
                   topRight: Radius.circular(15.0),
                 )),
-            height: 500,
+            height: MediaQuery.of(context).size.height,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -76,7 +80,7 @@ Future<void> himaActivityList({
                               controller: textController,
                               inputFormatters: [
                                 // 最大10文字まで入力可能
-                                LengthLimitingTextInputFormatter(10), 
+                                LengthLimitingTextInputFormatter(10),
                               ],
                               decoration: InputDecoration(
                                 labelText: '何したい？',
@@ -105,14 +109,16 @@ Future<void> himaActivityList({
                             return ElevatedButton(
                               onPressed: value
                                   ? () async {
-                                      final snapshot = await FirebaseFirestore.instance
+                                      final snapshot = await FirebaseFirestore
+                                          .instance
                                           .collection("users")
                                           .doc(userId)
                                           .collection("himaActivities")
                                           .get();
 
                                       if (snapshot.docs.length >= 5) {
-                                        errorNotifier.value = "タグの数が5個を超えています。追加できません。";
+                                        errorNotifier.value =
+                                            "タグの数が5個を超えています。追加できません。";
                                         return;
                                       }
 
@@ -129,7 +135,8 @@ Future<void> himaActivityList({
                                       });
 
                                       textController.clear();
-                                      errorNotifier.value = null; // エラーメッセージをクリア
+                                      errorNotifier.value =
+                                          null; // エラーメッセージをクリア
                                     }
                                   : null,
                               child: const Text('選択肢に追加'),

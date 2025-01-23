@@ -663,6 +663,11 @@ class _NextPageState extends State<NextPage> {
                   };
                 }
                 showModalBottomSheet(
+                  isScrollControlled: true, // これを追加して全画面表示に対応
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height *
+                        0.85, // 画面の85%の高さを指定
+                  ),
                   context: context,
                   builder: (context) => HimaModal(uid),
                 ).then((_) {
