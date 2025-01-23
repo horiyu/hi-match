@@ -20,10 +20,7 @@ Future<void> himaActivityList({
   });
 
   await showModalBottomSheet(
-    isScrollControlled: true, // これを追加して全画面表示に対応
-    constraints: BoxConstraints(
-      maxHeight: MediaQuery.of(context).size.height * 0.85, // 画面の85%の高さを指定
-    ),
+    isScrollControlled: true,
     context: context,
     builder: (context) {
       return FutureBuilder<QuerySnapshot>(
@@ -48,18 +45,22 @@ Future<void> himaActivityList({
             resizeToAvoidBottomInset: true,
             body: Padding(
               padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+                top: 20,
+                left: 20,
+                right: 20,
               ),
               child: SingleChildScrollView(
                 child: Container(
                   decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(15.0),
-                        topRight: Radius.circular(15.0),
-                      )),
-                  height: MediaQuery.of(context).size.height,
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15.0),
+                      topRight: Radius.circular(15.0),
+                    ),
+                  ),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Expanded(
