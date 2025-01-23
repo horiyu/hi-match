@@ -22,7 +22,7 @@ Future<void> himaActivityList({
 
   await showModalBottomSheet(
     constraints: BoxConstraints(
-      maxHeight: MediaQuery.of(context).size.height * 0.85, // 画面の85%の高さを指定
+      maxHeight: MediaQuery.of(context).size.height,
     ),
     context: context,
     builder: (context) {
