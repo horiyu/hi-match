@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 
 typedef Fn = Function({required List<Map<String, String>> himaActivities});
-final formKey = GlobalKey<FormState>();
 
 Future<void> himaActivityList({
   required BuildContext context,
@@ -26,37 +25,38 @@ Future<void> himaActivityList({
     ),
     context: context,
     builder: (context) {
-      return FutureBuilder<QuerySnapshot>(
-        future: FirebaseFirestore.instance
-            .collection("users")
-            .where("id", isEqualTo: uid)
-            .get(),
-        builder: (context, userSnapshot) {
-          if (userSnapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
-          }
-          if (userSnapshot.hasError) {
-            return const Text('エラーが発生しました');
-          }
-          if (!userSnapshot.hasData || userSnapshot.data!.docs.isEmpty) {
-            return const Text('ユーザーが見つかりません');
-          }
+      return Container(
+        decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15.0),
+              topRight: Radius.circular(15.0),
+            )),
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(
+              child: FutureBuilder<QuerySnapshot>(
+                future: FirebaseFirestore.instance
+                    .collection("users")
+                    .where("id", isEqualTo: uid)
+                    .get(),
+                builder: (context, userSnapshot) {
+                  if (userSnapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  }
+                  if (userSnapshot.hasError) {
+                    return const Text('エラーが発生しました');
+                  }
+                  if (!userSnapshot.hasData ||
+                      userSnapshot.data!.docs.isEmpty) {
+                    return const Text('ユーザーが見つかりません');
+                  }
 
-          final userId = userSnapshot.data!.docs[0].id;
+                  final userId = userSnapshot.data!.docs[0].id;
 
-          return Container(
-            decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15.0),
-                  topRight: Radius.circular(15.0),
-                )),
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Expanded(
-                  child: Column(
+                  return Column(
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
@@ -76,29 +76,26 @@ Future<void> himaActivityList({
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            child: Form(
-                              key: formKey,
-                              child: TextField(
-                                controller: textController,
-                                inputFormatters: [
-                                  // 最大10文字まで入力可能
-                                  LengthLimitingTextInputFormatter(10),
-                                ],
-                                decoration: InputDecoration(
-                                  labelText: '何したい？',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 15),
+                            child: TextField(
+                              controller: textController,
+                              inputFormatters: [
+                                // 最大10文字まで入力可能
+                                LengthLimitingTextInputFormatter(10),
+                              ],
+                              decoration: InputDecoration(
+                                labelText: '何したい？',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide.none,
                                 ),
-                                onChanged: (value) {
-                                  newHimaActivity = value;
-                                },
+                                filled: true,
+                                fillColor: Colors.white,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 15),
                               ),
+                              onChanged: (value) {
+                                newHimaActivity = value;
+                              },
                             ),
                           ),
                         ),
@@ -275,51 +272,51 @@ Future<void> himaActivityList({
                         ),
                       ),
                     ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 30),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.grey),
-                          minimumSize:
-                              MaterialStateProperty.all(const Size(150, 45)),
-                        ),
-                        child: const Text(
-                          '閉じる',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                      const SizedBox(width: 30),
-                      ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Colors.deepOrangeAccent),
-                          minimumSize:
-                              MaterialStateProperty.all(const Size(150, 45)),
-                        ),
-                        child: const Text(
-                          '決定',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onPressed: () {
-                          handler(himaActivities: selectedTagsNotifier.value);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                  );
+                },
+              ),
             ),
-          );
-        },
+            Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.grey),
+                      minimumSize:
+                          MaterialStateProperty.all(const Size(150, 45)),
+                    ),
+                    child: const Text(
+                      '閉じる',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  const SizedBox(width: 30),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.deepOrangeAccent),
+                      minimumSize:
+                          MaterialStateProperty.all(const Size(150, 45)),
+                    ),
+                    child: const Text(
+                      '決定',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      handler(himaActivities: selectedTagsNotifier.value);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       );
     },
+    // );
   );
 }
